@@ -5,7 +5,7 @@ for i in range(num):
     eng = int(input("영어 성적을 입력하세요 >>> "))
     c = int(input("C-언어 성적을 입력하세요 >>> "))
     python = int(input("파이썬 성적을 입력하세요 >>> "))
-    total = eng
+    total = eng + c + python
     score_list[i] = total
 
 rank_list = [sorted(score_list, reverse=True).index(i) for i in score_list]
