@@ -26,6 +26,26 @@ SECRET_KEY = 'django-insecure-iz7%i9$3y#4#u2)4!i74yxouf*$aex$&kp1^$ly_9nrmv)ifvw
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/path/to/django.log',  # 로그 파일 경로를 지정합니다.
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 
 # Application definition

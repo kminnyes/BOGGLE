@@ -3,11 +3,10 @@ import 'package:boggle/quiz.dart';
 import 'package:boggle/sewer_repot.dart';
 import 'package:boggle/timer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     home: MyHomePage(),
   ));
@@ -15,7 +14,7 @@ void main() {
 
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +36,10 @@ class MyHomePage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      minimumSize: Size(350, 100),
-                      backgroundColor: Color.fromARGB(255, 147, 159, 248), // 수정된 부분
+                      minimumSize: const Size(350, 100),
+                      backgroundColor: const Color.fromARGB(255, 147, 159, 248), // 수정된 부분
                     ),
-                    child: Column(
+                    child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
@@ -55,15 +54,15 @@ class MyHomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 20), // 위젯 간격 조절
+                const SizedBox(height: 20), // 위젯 간격 조절
                 Center(
                   child: Container(
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(10), // 적당한 margin 설정
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(10), // 적당한 margin 설정
                     width: 350, // 컨테이너의 너비 설정
                     height: 450, // 컨테이너의 높이 설정
                     decoration: BoxDecoration(
-                      color:Color.fromARGB(255, 147, 159, 248), // 수정된 부분
+                      color:const Color.fromARGB(255, 147, 159, 248), // 수정된 부분
                       borderRadius: BorderRadius.circular(20), // 컨테이너의 경계를 둥글게 설정
                     ),
                     child: Column(
@@ -73,17 +72,17 @@ class MyHomePage extends StatelessWidget {
                              onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=>Timer()),
+                              MaterialPageRoute(builder: (context)=>const Timer()),
                               );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            minimumSize: Size(330, 100),
+                            minimumSize: const Size(330, 100),
                             backgroundColor: Colors.white, // 수정된 부분
                           ),
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -106,22 +105,22 @@ class MyHomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         ElevatedButton(
                              onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=>Detergent()),
+                              MaterialPageRoute(builder: (context)=>const Detergent(title: "세제 인증")),
                               );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            minimumSize: Size(330, 100),
+                            minimumSize: const Size(330, 100),
                             backgroundColor: Colors.white, // 수정된 부분
                           ),
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -143,22 +142,22 @@ class MyHomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=>SewerReport()),
+                              MaterialPageRoute(builder: (context)=>const SewerReport()),
                               );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            minimumSize: Size(330, 100),
+                            minimumSize: const Size(330, 100),
                             backgroundColor: Colors.white, // 수정된 부분
                           ),
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -180,22 +179,22 @@ class MyHomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         ElevatedButton(
                              onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=>Quiz()),
+                              MaterialPageRoute(builder: (context)=>const Quiz()),
                               );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            minimumSize: Size(330, 100),
+                            minimumSize: const Size(330, 100),
                             backgroundColor: Colors.white, // 수정된 부분
                           ),
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
