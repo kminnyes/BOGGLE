@@ -6,16 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MyHomePage(),
-  ));
-}
-
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class DoList extends StatelessWidget {
+  const DoList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
