@@ -5,16 +5,8 @@ import 'package:boggle/timer.dart';
 import 'package:flutter/material.dart';
 
 
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MyHomePage(),
-  ));
-}
-
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class DoList extends StatelessWidget {
+  const DoList({super.key});
 
   @override
   Widget build(BuildContext context) {
