@@ -29,7 +29,7 @@ class DoList extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       minimumSize: const Size(350, 100),
-                      backgroundColor: const Color.fromARGB(255, 147, 159, 248), // 수정된 부분
+                      backgroundColor: const Color.fromRGBO(199, 166, 233, 1), // 수정된 부분
                     ),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +54,7 @@ class DoList extends StatelessWidget {
                     width: 350, // 컨테이너의 너비 설정
                     height: 450, // 컨테이너의 높이 설정
                     decoration: BoxDecoration(
-                      color:const Color.fromARGB(255, 147, 159, 248), // 수정된 부분
+                      color:const Color.fromRGBO(199, 166, 233, 1), // 수정된 부분
                       borderRadius: BorderRadius.circular(20), // 컨테이너의 경계를 둥글게 설정
                     ),
                     child: Column(

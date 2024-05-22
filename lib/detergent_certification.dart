@@ -55,7 +55,7 @@ class _DetergentState extends State<Detergent> {
   }
 
   Future<void> getTaskFromServer() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8000/posting'));
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/boggle'));
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
       List<dynamic> jsonList = json.decode(responseBody);
@@ -74,7 +74,7 @@ class _DetergentState extends State<Detergent> {
     if (_image != null) {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://10.0.2.2:8000/posting/addTask'),
+        Uri.parse('http://10.0.2.2:8000/boggle/addTask'),
       );
 
       request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
@@ -96,13 +96,13 @@ class _DetergentState extends State<Detergent> {
   }
 
   Future<void> updateTaskToServer(int id, String work) async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8000/posting/updateTask/$id/$work'));
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/boggle/updateTask/$id/$work'));
     getTaskFromServer();
     print(response.body);
   }
 
   Future<void> deleteTaskToServer(int id) async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8000/posting/deleteTask/$id'));
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/boggle/deleteTask/$id'));
     getTaskFromServer();
     print(response.body);
   }

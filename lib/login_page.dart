@@ -88,14 +88,14 @@ class _LoginPageState extends State<LoginPage> {
                   backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
                   foregroundColor: Colors.white,
                 ),
-                  // onPressed: () {
-                  //           Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(builder: (context)=>const DoList()),
-                  //             );
-                  //         },
+                  onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context)=>const DoList()),
+                              );
+                          },
                   //페이지 연결 확인을 위한 임시 코드 
-                onPressed: _login,
+                //onPressed: _login,
                 child: const Text('로그인'),
               ),
             ),
