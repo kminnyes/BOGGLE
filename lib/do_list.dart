@@ -4,7 +4,6 @@ import 'package:boggle/sewer_repot.dart';
 import 'package:boggle/timer.dart';
 import 'package:flutter/material.dart';
 
-
 class DoList extends StatelessWidget {
   const DoList({super.key});
 
@@ -29,7 +28,8 @@ class DoList extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       minimumSize: const Size(350, 100),
-                      backgroundColor: const Color.fromARGB(255, 147, 159, 248), // 수정된 부분
+                      backgroundColor:
+                          const Color.fromARGB(255, 147, 159, 248), // 수정된 부분
                     ),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -54,18 +54,20 @@ class DoList extends StatelessWidget {
                     width: 350, // 컨테이너의 너비 설정
                     height: 450, // 컨테이너의 높이 설정
                     decoration: BoxDecoration(
-                      color:const Color.fromARGB(255, 147, 159, 248), // 수정된 부분
-                      borderRadius: BorderRadius.circular(20), // 컨테이너의 경계를 둥글게 설정
+                      color: const Color.fromARGB(255, 147, 159, 248), // 수정된 부분
+                      borderRadius:
+                          BorderRadius.circular(20), // 컨테이너의 경계를 둥글게 설정
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
-                             onPressed: () {
+                          onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=>const Timer()),
-                              );
+                              MaterialPageRoute(
+                                  builder: (context) => const Timer()),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -81,8 +83,7 @@ class DoList extends StatelessWidget {
                                 '타이머 기록하기',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color:Colors.black,
-                              
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -99,11 +100,13 @@ class DoList extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         ElevatedButton(
-                             onPressed: () {
+                          onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=>const Detergent(title: "세제 인증")),
-                              );
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const Detergent(title: "세제 인증")),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -119,7 +122,7 @@ class DoList extends StatelessWidget {
                                 '세제 인증하기',
                                 style: TextStyle(
                                   fontSize: 20,
-                                 color:Colors.black, // 수정된 부분
+                                  color: Colors.black, // 수정된 부분
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -139,8 +142,9 @@ class DoList extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=>const SewerReport()),
-                              );
+                              MaterialPageRoute(
+                                  builder: (context) => const SewerReport()),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -156,7 +160,7 @@ class DoList extends StatelessWidget {
                                 '하수구 신고 하기 ',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color:Colors.black, // 수정된 부분
+                                  color: Colors.black, // 수정된 부분
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -173,11 +177,12 @@ class DoList extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         ElevatedButton(
-                             onPressed: () {
+                          onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=>const Quiz()),
-                              );
+                              MaterialPageRoute(
+                                  builder: (context) => const Quiz()),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -193,7 +198,7 @@ class DoList extends StatelessWidget {
                                 '퀴즈 맞추기',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color:Colors.black, // 수정된 부분
+                                  color: Colors.black, // 수정된 부분
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
