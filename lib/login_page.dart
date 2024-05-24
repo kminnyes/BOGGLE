@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const MyHomePage()),
+                    MaterialPageRoute(builder: (context) => const DoList()),
                   );
                 },
                 //페이지 연결 확인을 위한 임시 코드
