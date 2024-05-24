@@ -5,6 +5,7 @@ import 'package:boggle/find_pw_page.dart';
 import 'package:boggle/register_page.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/main.dart';
+import 'package:boggle/myhome.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const DoList()),
+                    MaterialPageRoute(builder: (context) => MyHomePage()),
                   );
                 },
                 //페이지 연결 확인을 위한 임시 코드
