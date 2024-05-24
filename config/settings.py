@@ -25,11 +25,18 @@ SECRET_KEY = 'django-insecure-(l#r#+jt0at&_a_&4q7onxr#6e^iz&m1)*__!dm05$a7lspg(s
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+DATA_GO_KR_API_KEY = 'REh3PMeCnCEQ8FDmxaJsDJdEVH8X1+svbH+0muVQSeCsWAgkk7AMmT9CzH2o5hK5zfL1Pf2hH2uwTS5JnQcx2g=='
 ALLOWED_HOSTS = ['*']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+}
+
 
 # Application definition
 

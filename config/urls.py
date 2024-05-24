@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('boggle/',include('boggle.urls'))
+    path('',include('boggle.urls'))
 ]
 # static() 함수를 urlpatterns에 추가하여 미디어 URL 처리
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
