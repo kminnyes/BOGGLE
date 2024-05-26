@@ -1,5 +1,6 @@
 import 'package:boggle/detergent_certification.dart';
 import 'package:boggle/quiz.dart';
+import 'package:boggle/quizlist.dart';
 import 'package:boggle/sewer_repot.dart';
 import 'package:boggle/timer.dart';
 import 'package:flutter/material.dart';
@@ -226,7 +227,7 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Quiz(),
+                                builder: (context) => const Quizlist(),
                               ),
                             );
                           },
@@ -270,11 +271,11 @@ class _DoListState extends State<DoList> {
         bottomNavigationBar: BottomNavigationBar(
           onTap: (index) {
             setState(() {
-              _index = index;
+              _index = 1;
             });
             _navigateToPage(index);
           },
-          currentIndex: _index,
+          currentIndex: 1,
           selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
           unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
           items: const <BottomNavigationBarItem>[

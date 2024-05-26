@@ -100,85 +100,91 @@ class _QuizState extends State<Quiz> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          title: const Text(
-            'BOGGLE',
-            style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
-          ),
-          centerTitle: true,
-        ),
-      body: _isQuizCompleted ? _buildScorePage() : _buildQuizPage(),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-          _navigateToPage(index);
-        },
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
-        unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person)),
-        ],
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
+      title: const Text(
+        'BOGGLE',
+        style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
       ),
-    );
-  }
+      centerTitle: true,
+    ),
+    body: _isQuizCompleted ? _buildScorePage() : _buildQuizPage(),
+    bottomNavigationBar: BottomNavigationBar(
+      onTap: (index) {
+        setState(() {
+          _selectedIndex = 1;
+        });
+        _navigateToPage(_selectedIndex);
+      },
+      currentIndex: 1,
+      selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
+      unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(label: '홈', icon: Icon(Icons.check_circle)),
+        BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
+        BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.check_circle)),
+        BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.check_circle)),
+      ],
+    ),
+  );
+}
 
 Widget _buildQuizPage() {
-  return _quizData.isEmpty
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('단어 퀴즈 맞추기'),
+    ),
+    body: _quizData.isEmpty
       ? const Center(child: CircularProgressIndicator())
       : Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                _quizData[_currentQuizIndex]['explain'],
-                style: const TextStyle(fontSize: 15.0),
-                textAlign: TextAlign.center,
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              _quizData[_currentQuizIndex]['explain'],
+              style: const TextStyle(fontSize: 15.0),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              onChanged: (value) {
+                _userAnswer = value;
+              },
+              decoration: const InputDecoration(
+                labelText: '정답을 입력하세요',
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.all(12),
               ),
-              const SizedBox(height: 20),
-              TextField(
-                onChanged: (value) {
-                  _userAnswer = value;
-                },
-                decoration: const InputDecoration(
-                  labelText: '정답을 입력하세요',
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(12),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _checkAnswer(_quizData[_currentQuizIndex]['explain'], _userAnswer),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24), 
+                backgroundColor: Colors.purple,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _checkAnswer(_quizData[_currentQuizIndex]['explain'], _userAnswer),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24), backgroundColor: Colors.purple,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text(
-                  '확인하기',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
+              child: const Text(
+                '확인하기',
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
-              const SizedBox(height: 20),
-              Text(
-                _resultMessage,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-        );
+            ),
+            const SizedBox(height: 20),
+            Text(
+              _resultMessage,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+      ),
+  );
 }
 
 
