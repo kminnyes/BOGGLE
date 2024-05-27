@@ -16,11 +16,11 @@ class Quiz extends StatefulWidget {
 class _QuizState extends State<Quiz> {
   List<dynamic> _quizData = [];
   int _currentQuizIndex = 0;
-  String _userAnswer = '';
   String _resultMessage = '';
   int _correctAnswers = 0;
   bool _isQuizCompleted = false;
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
+  String _selectedAnswer = '';
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _QuizState extends State<Quiz> {
     }
   }
 
-  Future<void> _checkAnswer(String question, String answer) async {
+  Future<void> _checkAnswer(String question, String selectedAnswer) async {
     final response = await http.post(
       Uri.parse('http://10.0.2.2:8000/check_answer/'),
       headers: <String, String>{
@@ -47,7 +47,7 @@ class _QuizState extends State<Quiz> {
       },
       body: jsonEncode(<String, String>{
         'question': question,
-        'answer': answer,
+        'answer': selectedAnswer,
       }),
     );
 
@@ -67,7 +67,7 @@ class _QuizState extends State<Quiz> {
           _isQuizCompleted = true;
           _resultMessage += '\n\nQuiz completed! You got $_correctAnswers out of ${_quizData.length} correct.';
         }
-        _userAnswer = '';
+        _selectedAnswer = '';
       });
     } else {
       throw Exception('Failed to check answer');
@@ -100,47 +100,47 @@ class _QuizState extends State<Quiz> {
     }
   }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
-      title: const Text(
-        'BOGGLE',
-        style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        title: const Text(
+          'BOGGLE',
+          style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+        ),
+        centerTitle: true,
       ),
-      centerTitle: true,
-    ),
-    body: _isQuizCompleted ? _buildScorePage() : _buildQuizPage(),
-    bottomNavigationBar: BottomNavigationBar(
-      onTap: (index) {
-        setState(() {
-          _selectedIndex = 1;
-        });
-        _navigateToPage(_selectedIndex);
-      },
-      currentIndex: 1,
-      selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
-      unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(label: '홈', icon: Icon(Icons.check_circle)),
-        BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-        BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.check_circle)),
-        BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.check_circle)),
-      ],
-    ),
-  );
-}
+      body: _isQuizCompleted ? _buildScorePage() : _buildQuizPage(),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = 1;
+          });
+          _navigateToPage(_selectedIndex);
+        },
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
+        unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
+            BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
+            BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
+            BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person)),
+        ],
+      ),
+    );
+  }
 
-Widget _buildQuizPage() {
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text('단어 퀴즈 맞추기'),
-    ),
-    body: _quizData.isEmpty
-      ? const Center(child: CircularProgressIndicator())
-      : Padding(
+  Widget _buildQuizPage() {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('단어 퀴즈 맞추기'),
+      ),
+      body: _quizData.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -151,21 +151,15 @@ Widget _buildQuizPage() {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            TextField(
-              onChanged: (value) {
-                _userAnswer = value;
-              },
-              decoration: const InputDecoration(
-                labelText: '정답을 입력하세요',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(12),
-              ),
-            ),
+            ..._buildChoiceButtons(_quizData[_currentQuizIndex]),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => _checkAnswer(_quizData[_currentQuizIndex]['explain'], _userAnswer),
+              onPressed: () => _checkAnswer(
+                _quizData[_currentQuizIndex]['explain'],
+                _selectedAnswer,
+              ),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24), 
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                 backgroundColor: Colors.purple,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -184,56 +178,75 @@ Widget _buildQuizPage() {
           ],
         ),
       ),
-  );
-}
+    );
+  }
 
-
-Widget _buildScorePage() {
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(
-          Icons.check_circle_outline,
-          size: 80,
-          color: Colors.purple,
-        ),
-        const SizedBox(height: 20),
-        const Text(
-          '퀴즈 완료!',
-          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          '$_correctAnswers / ${_quizData.length} 정답',
-          style: const TextStyle(fontSize: 20.0),
-        ),
-        const SizedBox(height: 30),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CorrectAnswersPage(quizData: _quizData),
-              ),
-            );
+  List<Widget> _buildChoiceButtons(Map<String, dynamic> quiz) {
+    List<Widget> choiceButtons = [];
+    for (String choice in quiz['choices']) {
+      choiceButtons.add(
+        RadioListTile<String>(
+          title: Text(choice),
+          value: choice,
+          groupValue: _selectedAnswer,
+          onChanged: (String? value) {
+            setState(() {
+              _selectedAnswer = value!;
+            });
           },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24), backgroundColor: Colors.blue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        ),
+      );
+    }
+    return choiceButtons;
+  }
+
+  Widget _buildScorePage() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.check_circle_outline,
+            size: 80,
+            color: Colors.purple,
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            '퀴즈 완료!',
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            '$_correctAnswers / ${_quizData.length} 정답',
+            style: const TextStyle(fontSize: 20.0),
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CorrectAnswersPage(quizData: _quizData),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+              backgroundColor: Colors.blue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              '정답 확인하기',
+              style: TextStyle(fontSize: 18, color: Colors.white),
             ),
           ),
-          child: const Text(
-            '정답 확인하기',
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
 
-}
 class CorrectAnswersPage extends StatelessWidget {
   final List<dynamic> quizData;
 

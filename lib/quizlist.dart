@@ -1,3 +1,4 @@
+import 'package:boggle/studyquiz.dart';
 import 'package:flutter/material.dart';
 import 'package:boggle/quiz.dart';
 
@@ -37,7 +38,7 @@ class Quizlist extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Quiz()),
+                  MaterialPageRoute(builder: (context) => const StudyQuiz()),
                 );
               },
               child: const Text('퀴즈 공부하기'),
