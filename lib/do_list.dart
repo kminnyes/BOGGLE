@@ -1,7 +1,7 @@
 import 'package:boggle/detergent_certification.dart';
 import 'package:boggle/quiz.dart';
 import 'package:boggle/quizlist.dart';
-import 'package:boggle/sewer_repot.dart';
+import 'package:boggle/sewer_report.dart';
 import 'package:boggle/timer.dart';
 import 'package:flutter/material.dart';
 import 'package:boggle/community.dart';
@@ -14,9 +14,9 @@ class DoList extends StatefulWidget {
   @override
   _DoListState createState() => _DoListState();
 }
- 
+
 class _DoListState extends State<DoList> {
-  var _index = 0;
+  var _index = 1; // Ensure the initial index is set correctly
 
   void _navigateToPage(int index) {
     Widget nextPage;
@@ -31,7 +31,7 @@ class _DoListState extends State<DoList> {
         nextPage = Community();
         break;
       case 3:
-        nextPage =const MyPage();
+        nextPage = const MyPage();
         break;
       default:
         nextPage = MyHomePage();
@@ -59,7 +59,8 @@ class _DoListState extends State<DoList> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          child: Padding(
+          child: Container(
+            margin: const EdgeInsets.all(10),
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
@@ -71,8 +72,7 @@ class _DoListState extends State<DoList> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       minimumSize: const Size(350, 90),
-                      backgroundColor:
-                          const Color.fromARGB(255, 147, 159, 248),
+                      backgroundColor: const Color.fromARGB(255, 147, 159, 248),
                     ),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +95,7 @@ class _DoListState extends State<DoList> {
                     margin: const EdgeInsets.all(5),
                     padding: const EdgeInsets.all(10),
                     width: 350,
-                    height: 420,
+                    height: 320,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 147, 159, 248),
                       borderRadius: BorderRadius.circular(20),
@@ -103,44 +103,6 @@ class _DoListState extends State<DoList> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Timer(),
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            minimumSize: const Size(330, 90),
-                            backgroundColor: Colors.white,
-                          ),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '타이머 기록하기',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                '손씻기, 샤워하기, 설거지',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                         const SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () {
@@ -188,7 +150,7 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const SewerReport(),
+                                builder: (context) => const SewerReport(title: '하수구 신고'),
                               ),
                             );
                           },
@@ -203,7 +165,7 @@ class _DoListState extends State<DoList> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '하수구 신고 하기 ',
+                                '하수구 신고하기',
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.black,
@@ -271,11 +233,11 @@ class _DoListState extends State<DoList> {
         bottomNavigationBar: BottomNavigationBar(
           onTap: (index) {
             setState(() {
-              _index = 1;
+              _index = index;
             });
             _navigateToPage(index);
           },
-          currentIndex: 1,
+          currentIndex: _index,
           selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
           unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
           items: const <BottomNavigationBarItem>[
