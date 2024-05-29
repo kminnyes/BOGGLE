@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/community.dart';
+import 'package:boggle/user_info.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
