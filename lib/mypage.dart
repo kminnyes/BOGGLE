@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/community.dart';
+import 'package:boggle/user_info.dart';
 
 class MyPage extends StatefulWidget {
   @override
@@ -43,17 +44,32 @@ class _MyPageState extends State<MyPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        title: Text(
+        title: const Text(
           'BOGGLE',
           style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
         ),
         centerTitle: false,
       ),
       body: Center(
-        child: Text(
-          'MY',
-          style: TextStyle(fontSize: 40),
-        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 300,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context)=> UserInfo()),
+                    );
+                },
+                child: const Text('회원정보 수정'),),
+            )
+          ],)        
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
