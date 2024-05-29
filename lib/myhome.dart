@@ -38,38 +38,53 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        title: Text(
-          'BOGGLE',
-          style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+    return DefaultTabController(
+      length: 2, // 상단 탭의 수
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          title: Text(
+            'BOGGLE',
+            style: TextStyle(color: Color.fromARGB(196, 147, 159, 248)),
+          ),
+          centerTitle: false,
+          bottom: TabBar(
+            tabAlignment: TabAlignment.start, // 탭을 왼쪽으로 정렬
+            isScrollable: true, // 탭이 스크롤 가능하게 설정
+            tabs: [
+              Tab(text: '어항'),
+              Tab(text: '포인트'),
+            ],
+            indicatorColor: Color.fromARGB(255, 196, 42, 250), // 인디케이터 색상
+            labelColor: Color.fromARGB(255, 196, 42, 250), // 선택된 탭의 색상
+            unselectedLabelColor: Colors.black, // 선택되지 않은 탭의 색상
+          ),
         ),
-        centerTitle: false,
-      ),
-      body: Center(
-        child: Text(
-          '메인 페이지',
-          style: TextStyle(fontSize: 40),
+        body: TabBarView(
+          children: [
+            Center(child: Text('어항 페이지')),
+            Center(child: Text('포인트 페이지')),
+          ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          setState(() {
-            _index = index;
-          });
-          _navigateToPage(index);
-        },
-        currentIndex: _index,
-        selectedItemColor: Color.fromARGB(255, 196, 42, 250),
-        unselectedItemColor: Color.fromARGB(255, 235, 181, 253),
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.home))
-        ],
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (index) {
+            setState(() {
+              _index = index;
+            });
+            _navigateToPage(index);
+          },
+          currentIndex: _index,
+          selectedItemColor: Color.fromARGB(255, 196, 42, 250),
+          unselectedItemColor: Color.fromARGB(255, 235, 181, 253),
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
+            BottomNavigationBarItem(
+                label: '실천', icon: Icon(Icons.check_circle)),
+            BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
+            BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
+          ],
+        ),
       ),
     );
   }
