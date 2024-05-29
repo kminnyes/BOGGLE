@@ -1,3 +1,5 @@
+import 'package:boggle/change_pw.dart';
+import 'package:boggle/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
@@ -52,11 +54,41 @@ class _MyPageState extends State<MyPage> {
         ),
         centerTitle: false,
       ),
-      body: const Center(
-        child: Text(
-          'MY',
-          style: TextStyle(fontSize: 40),
-        ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 300,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context)=> UserInfo()),
+                    );
+                },
+                child: const Text('회원정보 수정'),),
+            ),
+            SizedBox(
+              width: 300,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context)=> ChangePW()),
+                    );
+                },
+                child: const Text('비밀번호 수정'),),
+            ),
+          ],)        
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
@@ -78,3 +110,6 @@ class _MyPageState extends State<MyPage> {
     );
   }
 }
+
+
+
