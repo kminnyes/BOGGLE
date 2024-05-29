@@ -180,7 +180,7 @@ Future<void> deleteReportToServer(int id) async {
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: pickImage,
-                      child: const Text('Select Image'),
+                      child: const Text('사진'),
                     ),
                     _image != null
                         ? GestureDetector(
@@ -191,7 +191,7 @@ Future<void> deleteReportToServer(int id) async {
                               width: MediaQuery.of(context).size.width * 0.8,
                             ),
                           )
-                        : const Text('No image selected.'),
+                        : const Text('사진 선택하기'),
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () async {
@@ -215,7 +215,7 @@ Future<void> deleteReportToServer(int id) async {
                           print("Please select an image.");
                         }
                       },
-                      child: Text(isModifying ? "Update" : "Add"),
+                      child: Text(isModifying ? "Update" : "신고하기"),
                     ),
                   ],
                 ),
@@ -247,7 +247,7 @@ Future<void> deleteReportToServer(int id) async {
                                 modifyingIndex = index;
                               });
                             },
-                            child: const Text("Edit"),
+                            child: const Text("수정"),
                           ),
                           TextButton(
                             onPressed: () {
@@ -255,7 +255,7 @@ Future<void> deleteReportToServer(int id) async {
                                 deleteReportToServer(report.id);
                               });
                             },
-                            child: const Text("Delete"),
+                            child: const Text("삭제"),
                           ),
                         ],
                       ),

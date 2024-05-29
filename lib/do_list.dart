@@ -71,8 +71,10 @@ class _DoListState extends State<DoList> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+                      shadowColor: Colors.black, // Shadow color
+                      elevation: 7, // Elevation for shadow
                       minimumSize: const Size(350, 90),
-                      backgroundColor: const Color.fromARGB(255, 147, 159, 248),
+                      backgroundColor: const Color.fromARGB(255, 235, 181, 253),
                     ),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -97,8 +99,16 @@ class _DoListState extends State<DoList> {
                     width: 350,
                     height: 320,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 147, 159, 248),
+                      color: const Color.fromARGB(255, 235, 181, 253),
                       borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -121,6 +131,8 @@ class _DoListState extends State<DoList> {
                             ),
                             minimumSize: const Size(330, 90),
                             backgroundColor: Colors.white,
+                            shadowColor: Colors.black, // Shadow color
+                            elevation: 7, // Elevation for shadow
                           ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -160,6 +172,8 @@ class _DoListState extends State<DoList> {
                             ),
                             minimumSize: const Size(330, 90),
                             backgroundColor: Colors.white,
+                            shadowColor: Colors.black, // Shadow color
+                            elevation: 7, // Elevation for shadow
                           ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -199,6 +213,8 @@ class _DoListState extends State<DoList> {
                             ),
                             minimumSize: const Size(330, 90),
                             backgroundColor: Colors.white,
+                            shadowColor: Colors.black, // Shadow color
+                            elevation: 7, // Elevation for shadow
                           ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
