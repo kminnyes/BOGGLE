@@ -55,41 +55,43 @@ class _MyPageState extends State<MyPage> {
         centerTitle: false,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 300,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
-                  foregroundColor: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context)=> UserInfo()),
-                    );
-                },
-                child: const Text('회원정보 수정'),),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 300,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserInfo()),
+                );
+              },
+              child: const Text('회원정보 수정'),
             ),
-            SizedBox(
-              width: 300,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
-                  foregroundColor: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context)=> ChangePW()),
-                    );
-                },
-                child: const Text('비밀번호 수정'),),
+          ),
+          SizedBox(
+            width: 300,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChangePW()),
+                );
+              },
+              child: const Text('비밀번호 수정'),
             ),
-          ],)        
-      ),
+          ),
+        ],
+      )),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
@@ -102,14 +104,11 @@ class _MyPageState extends State<MyPage> {
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.home))
+          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
+          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
+          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
         ],
       ),
     );
   }
 }
-
-
-
