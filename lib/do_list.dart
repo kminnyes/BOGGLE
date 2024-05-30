@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:boggle/community.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
+import 'package:boggle/sewer.dart';
 
 class DoList extends StatefulWidget {
   const DoList({super.key});
@@ -162,7 +163,7 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const SewerReport(title: '하수구 신고'),
+                                builder: (context) => Sewer(title: '하수구 신고'),
                               ),
                             );
                           },
