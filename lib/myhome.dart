@@ -199,189 +199,162 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            PageView(
-              children: [
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '홍길동 님의 포인트',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 248, 248, 248),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '655 P',
+                            style: TextStyle(
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 196, 42, 250)),
+                          ),
+                          SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 8, 8, 8), // 배경 색상
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                            child: Text(
+                              '뽑기 바로 진행하러 가기',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      '포인트 리포트',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          '홍길동 님의 포인트',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          padding: EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 248, 248, 248),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '655 P',
-                                style: TextStyle(
-                                    fontSize: 48,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 196, 42, 250)),
-                              ),
-                              SizedBox(height: 10),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 8, 8, 8), // 배경 색상
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                ),
-                                child: Text(
-                                  '뽑기 바로 진행하러 가기',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          '포인트 리포트',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Column(
                           children: [
-                            Column(
-                              children: [
-                                Text(
-                                  '1,136 P',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey),
-                                ),
-                                SizedBox(height: 10),
-                                Container(
-                                  width: 50,
-                                  height: 100,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 10),
-                                Text('전체 사용자 평균 포인트'),
-                              ],
+                            Text(
+                              '1,136 P',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey),
                             ),
-                            Column(
-                              children: [
-                                Text(
-                                  '655 P',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 196, 42, 250)),
-                                ),
-                                SizedBox(height: 10),
-                                Container(
-                                  width: 50,
-                                  height: 60,
-                                  color: Color.fromARGB(255, 196, 42, 250),
-                                ),
-                                SizedBox(height: 10),
-                                Text('나의 포인트'),
-                              ],
+                            SizedBox(height: 10),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              color: Colors.grey,
                             ),
+                            SizedBox(height: 10),
+                            Text('전체 사용자 평균 포인트'),
                           ],
                         ),
-                        SizedBox(height: 20),
-                        Text(
-                          '나의 순위',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10),
-                        ListTile(
-                          leading: Icon(Icons.equalizer, color: Colors.grey),
-                          title: Text('나는 상위 몇 프로?'),
-                          subtitle: Text('나의 포인트 순위를 알려드립니다.'),
+                        Column(
+                          children: [
+                            Text(
+                              '655 P',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 196, 42, 250)),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              width: 50,
+                              height: 60,
+                              color: Color.fromARGB(255, 196, 42, 250),
+                            ),
+                            SizedBox(height: 10),
+                            Text('나의 포인트'),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                ),
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '나의 순위',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 20),
-                        Center(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 200,
-                                height: 200,
-                                child: Stack(
-                                  children: [
-                                    Center(
-                                      child: Container(
-                                        width: 200,
-                                        height: 200,
-                                        child: CircularProgressIndicator(
-                                          value: 0.7,
-                                          strokeWidth: 20,
-                                          color:
-                                              Color.fromARGB(255, 196, 42, 250),
-                                          backgroundColor: Colors.grey[200],
-                                        ),
-                                      ),
+                    SizedBox(height: 20),
+                    Text(
+                      '나의 순위',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            height: 200,
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: Container(
+                                    width: 200,
+                                    height: 200,
+                                    child: CircularProgressIndicator(
+                                      value: 0.7,
+                                      strokeWidth: 20,
+                                      color: Color.fromARGB(255, 196, 42, 250),
+                                      backgroundColor: Colors.grey[200],
                                     ),
-                                    Center(
-                                      child: Text(
-                                        '상위 70%',
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 196, 42, 250)),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.emoji_events,
-                                      color: Colors.amber, size: 32),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    '홍길동 님은 6950등 입니다.',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
                                   ),
-                                ],
+                                ),
+                                Center(
+                                  child: Text(
+                                    '상위 70%',
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color:
+                                            Color.fromARGB(255, 196, 42, 250)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.emoji_events,
+                                  color: Colors.amber, size: 32),
+                              SizedBox(width: 10),
+                              Text(
+                                '홍길동 님은 6950등 입니다.',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ],
         ),
