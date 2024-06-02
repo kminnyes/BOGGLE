@@ -3,6 +3,7 @@ import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
 import 'package:boggle/community.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class UserInfo extends StatefulWidget {
@@ -52,8 +53,12 @@ class _UserInfoState extends State<UserInfo> {
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text(
-          'BOGGLE',
-          style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+          ' BOGGLE',
+          style: GoogleFonts.londrinaSolid(
+              fontSize:27,
+              fontWeight: FontWeight.normal,
+              color: Color.fromARGB(255, 196, 42, 250)
+          ),
         ),
         centerTitle: false,
       ),

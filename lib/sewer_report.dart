@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class SewerReport extends StatefulWidget {
   final String title;
@@ -66,54 +65,54 @@ class _SewerReportState extends State<SewerReport> {
   }
 
   Future<void> addReportToServer(Report report) async {
-  var request = http.MultipartRequest(
-    'POST',
-    Uri.parse('http://10.0.2.2:8000/addReport'), // Ensure the URL matches the backend endpoint
-  );
-
-  if (_image != null) {
-    request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
-  }
-
-  request.fields['work'] = report.work;
-
-  var response = await request.send();
-  if (response.statusCode == 200) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('신고 접수되었습니다'), // Here's the message
-      ),
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('http://10.0.2.2:8000/addReport'),
     );
-    getReportFromServer();
-  } else {
-    print("Failed to add report. Status code: ${response.statusCode}");
+
+    if (_image != null) {
+      request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+    }
+
+    request.fields['work'] = report.work;
+
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('신고 접수되었습니다'),
+        ),
+      );
+      getReportFromServer();
+    } else {
+      print("Failed to add report. Status code: ${response.statusCode}");
+    }
   }
-}
 
   Future<void> updateReportToServer(int id, String work) async {
-  var request = http.MultipartRequest(
-    'POST',
-    Uri.parse('http://10.0.2.2:8000/updateReport/$id/'), // Use POST for updating
-  );
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('http://10.0.2.2:8000/updateReport/$id/'),
+    );
 
-  request.fields['work'] = work;
+    request.fields['work'] = work;
 
-  var response = await request.send();
-  if (response.statusCode == 200) {
-    getReportFromServer();
-  } else {
-    print("Failed to update report. Status code: ${response.statusCode}");
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      getReportFromServer();
+    } else {
+      print("Failed to update report. Status code: ${response.statusCode}");
+    }
   }
-}
 
-Future<void> deleteReportToServer(int id) async {
-  final response = await http.delete(Uri.parse('http://10.0.2.2:8000/deleteReport/$id/'));
-  if (response.statusCode == 200) {
-    getReportFromServer();
-  } else {
-    print("Failed to delete report. Status code: ${response.statusCode}");
+  Future<void> deleteReportToServer(int id) async {
+    final response = await http.delete(Uri.parse('http://10.0.2.2:8000/deleteReport/$id/'));
+    if (response.statusCode == 200) {
+      getReportFromServer();
+    } else {
+      print("Failed to delete report. Status code: ${response.statusCode}");
+    }
   }
-}
 
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -150,72 +149,215 @@ Future<void> deleteReportToServer(int id) async {
       body: SingleChildScrollView(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(getToday()),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 390,
+                height: 652,
+               
+                child: Stack(
                   children: [
-                    const SizedBox(height: 10),
-                    Center(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextField(
-                          controller: _textController,
-                          maxLines: null,
-                          keyboardType: TextInputType.multiline,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(10),
+                    Positioned(
+                      left: 27,
+                      top: 7,
+                      child: SizedBox(
+                        width: 97,
+                        height: 30,
+                        child: Text(
+                          '글 작성',
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.6),
+                            fontSize: 15,
+                            fontFamily: 'Manrope',
+                            height: 0,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: pickImage,
-                      child: const Text('Select Image'),
+                    Positioned(
+                      left: 267,
+                      top: 17,
+                      child: SizedBox(
+                        width: 97,
+                        height: 30,
+                        child: Text(
+                          '작성 시 유의사항',
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.6),
+                            fontSize: 12,
+                            fontFamily: 'Manrope',
+                            height: 0,
+                          ),
+                        ),
+                      ),
                     ),
-                    _image != null
-                        ? GestureDetector(
-                            onTap: pickImage,
-                            child: Image.file(
-                              _image!,
-                              height: MediaQuery.of(context).size.height * 0.2,
-                              width: MediaQuery.of(context).size.width * 0.8,
+                    Positioned(
+                      left: 27,
+                      top: 310,
+                      child: SizedBox(
+                        width: 97,
+                        height: 30,
+                        child: Text(
+                          '사진 첨부',
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.6),
+                            fontSize: 15,
+                            fontFamily: 'Manrope',
+                            height: 0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 29,
+                      top: 79,
+                      child: Container(
+                        width: 339,
+                        height: 41,
+                        decoration: const ShapeDecoration(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 0.50, color: Color(0xFFBABABA)),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: TextField(
+                            controller: _textController,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: '제목을 입력해주세요.',
                             ),
-                          )
-                        : const Text('No image selected.'),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (_image != null || isModifying) {
-                          if (isModifying) {
-                            await updateReportToServer(reports[modifyingIndex].id, _textController.text);
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 28,
+                      top: 136,
+                      child: Container(
+                        width: 339,
+                        height: 162,
+                        decoration: const ShapeDecoration(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 0.50, color: Color(0xFFBABABA)),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: TextField(
+                            controller: _textController,
+                            maxLines: null,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: '내용을 입력해주세요.(최대 1000자)',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 32,
+                      top: 348,
+                      child: GestureDetector(
+                        onTap: pickImage,
+                        child: Container(
+                          width: 54,
+                          height: 54,
+                          decoration: const BoxDecoration(color: Color(0xFFC4C4C4)),
+                          child: _image != null
+                              ? Image.file(
+                                  _image!,
+                                  fit: BoxFit.cover,
+                                )
+                              : const Center(child: Text('+')),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 32,
+                      top: 457,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_image != null || isModifying) {
+                            if (isModifying) {
+                              await updateReportToServer(reports[modifyingIndex].id, _textController.text);
+                            } else {
+                              var task = Report(
+                                id: 0,
+                                work: _textController.text,
+                                imageUrl: '',
+                              );
+                              await addReportToServer(task);
+                            }
+                            setState(() {
+                              _textController.clear();
+                              _image = null;
+                              isModifying = false;
+                            });
                           } else {
-                            var task = Report(
-                              id: 0,
-                              work: _textController.text,
-                              imageUrl: '',
-                            );
-                            await addReportToServer(task);
+                            print("Please select an image.");
                           }
+                        },
+                        child: Container(
+                          width: 335,
+                          height: 56,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFFC42AFA),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              '등록하기',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontFamily: 'Manrope',
+                                height: 1.00,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 32,
+                      top: 519,
+                      child: GestureDetector(
+                        onTap: () {
                           setState(() {
                             _textController.clear();
                             _image = null;
                             isModifying = false;
                           });
-                        } else {
-                          print("Please select an image.");
-                        }
-                      },
-                      child: Text(isModifying ? "Update" : "Add"),
+                        },
+                        child: Container(
+                          width: 335,
+                          height: 56,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFFBABABA),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              '취소하기',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontFamily: 'Manrope',
+                                height: 1.00,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -247,7 +389,7 @@ Future<void> deleteReportToServer(int id) async {
                                 modifyingIndex = index;
                               });
                             },
-                            child: const Text("Edit"),
+                            child: const Text("수정"),
                           ),
                           TextButton(
                             onPressed: () {
@@ -255,7 +397,7 @@ Future<void> deleteReportToServer(int id) async {
                                 deleteReportToServer(report.id);
                               });
                             },
-                            child: const Text("Delete"),
+                            child: const Text("삭제"),
                           ),
                         ],
                       ),
@@ -278,7 +420,7 @@ class ReportDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Image URL: ${report.imageUrl}'); // Debug print
+    print('Image URL: ${report.imageUrl}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task Details'),
@@ -296,9 +438,9 @@ class ReportDetailPage extends StatelessWidget {
             report.imageUrl.isNotEmpty
                 ? Image.network(
                     report.imageUrl,
-                    height: 300, // Set your desired height here
-                    width: double.infinity, // Set the width to fill the available space
-                    fit: BoxFit.cover, // Adjust the image aspect ratio to cover the area
+                    height: 300,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
                   )
                 : const Text('No image available'),
           ],

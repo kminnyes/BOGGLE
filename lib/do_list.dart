@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:boggle/detergent_certification.dart';
 import 'package:boggle/quiz.dart';
 import 'package:boggle/quizlist.dart';
@@ -7,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:boggle/community.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
+import 'package:boggle/sewer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DoList extends StatefulWidget {
   const DoList({super.key});
@@ -47,16 +51,22 @@ class _DoListState extends State<DoList> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        textTheme: GoogleFonts.londrinaSolidTextTheme()// 구글 폰트 적용
+      ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           title: const Text(
-            'BOGGLE',
-            style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+            ' BOGGLE',
+            style: TextStyle(
+                fontSize: 27,
+                fontWeight: FontWeight.normal,
+                color: Color.fromARGB(255, 196, 42, 250)),
           ),
-          centerTitle: true,
+          centerTitle: false,
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -71,8 +81,10 @@ class _DoListState extends State<DoList> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+                      shadowColor: Colors.black, // Shadow color
+                      elevation: 7, // Elevation for shadow
                       minimumSize: const Size(350, 90),
-                      backgroundColor: const Color.fromARGB(255, 147, 159, 248),
+                      backgroundColor: const Color.fromARGB(255, 235, 181, 253),
                     ),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -97,8 +109,16 @@ class _DoListState extends State<DoList> {
                     width: 350,
                     height: 320,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 147, 159, 248),
+                      color: const Color.fromARGB(255, 235, 181, 253),
                       borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -121,6 +141,8 @@ class _DoListState extends State<DoList> {
                             ),
                             minimumSize: const Size(330, 90),
                             backgroundColor: Colors.white,
+                            shadowColor: Colors.black, // Shadow color
+                            elevation: 7, // Elevation for shadow
                           ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +172,7 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const SewerReport(title: '하수구 신고'),
+                                builder: (context) => Sewer(title: '하수구 신고'),
                               ),
                             );
                           },
@@ -160,6 +182,8 @@ class _DoListState extends State<DoList> {
                             ),
                             minimumSize: const Size(330, 90),
                             backgroundColor: Colors.white,
+                            shadowColor: Colors.black, // Shadow color
+                            elevation: 7, // Elevation for shadow
                           ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -199,6 +223,8 @@ class _DoListState extends State<DoList> {
                             ),
                             minimumSize: const Size(330, 90),
                             backgroundColor: Colors.white,
+                            shadowColor: Colors.black, // Shadow color
+                            elevation: 7, // Elevation for shadow
                           ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/mypage.dart';
 import 'package:boggle/community.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -47,10 +48,12 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Row(
             children: [
               Text(
-                'BOGGLE',
-                style: TextStyle(
-                    color: Color.fromARGB(255, 147, 159, 248),
-                    fontWeight: FontWeight.bold),
+                ' BOGGLE',
+                style: GoogleFonts.londrinaSolid(
+                    fontSize:27,
+                    fontWeight: FontWeight.normal,
+                    color: Color.fromARGB(255, 196, 42, 250)
+                ),
               ),
               Text(
                 '.',
