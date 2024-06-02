@@ -5,6 +5,7 @@ import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/community.dart';
 import 'package:boggle/user_info.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -48,9 +49,13 @@ class _MyPageState extends State<MyPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: const Text(
-          'BOGGLE',
-          style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+        title: Text(
+          ' BOGGLE',
+          style: GoogleFonts.londrinaSolid(
+              fontSize:27,
+              fontWeight: FontWeight.normal,
+              color: Color.fromARGB(255, 196, 42, 250)
+          ),
         ),
         centerTitle: false,
       ),

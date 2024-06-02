@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:boggle/community.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
@@ -5,6 +7,7 @@ import 'package:boggle/mypage.dart';
 import 'package:boggle/studyquiz.dart';
 import 'package:flutter/material.dart';
 import 'package:boggle/quiz.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Quizlist extends StatefulWidget {
   const Quizlist({super.key});
@@ -47,12 +50,16 @@ class _QuizlistState extends State<Quizlist> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: const Text(
-          'BOGGLE',
-          style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+        title: Text(
+          ' BOGGLE',
+          style: GoogleFonts.londrinaSolid(
+              fontSize:27,
+              fontWeight: FontWeight.normal,
+              color: Color.fromARGB(255, 196, 42, 250)
+          ),
         ),
         centerTitle: false,
-      ),
+        ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

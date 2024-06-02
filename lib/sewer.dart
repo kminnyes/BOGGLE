@@ -1,5 +1,6 @@
 import 'package:boggle/sewer_report.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Sewer extends StatelessWidget {
   const Sewer({super.key, required String title});
@@ -10,12 +11,16 @@ class Sewer extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: const Text(
-          'BOGGLE',
-          style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+        title: Text(
+          ' BOGGLE',
+          style: GoogleFonts.londrinaSolid(
+              fontSize:27,
+              fontWeight: FontWeight.normal,
+              color: Color.fromARGB(255, 196, 42, 250)
+          ),
         ),
         centerTitle: false,
-      ),
+          ),
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(

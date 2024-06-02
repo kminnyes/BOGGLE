@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:boggle/detergent_certification.dart';
 import 'package:boggle/quiz.dart';
 import 'package:boggle/quizlist.dart';
@@ -8,6 +10,7 @@ import 'package:boggle/community.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
 import 'package:boggle/sewer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DoList extends StatefulWidget {
   const DoList({super.key});
@@ -48,16 +51,22 @@ class _DoListState extends State<DoList> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        textTheme: GoogleFonts.londrinaSolidTextTheme()// 구글 폰트 적용
+      ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           title: const Text(
-            'BOGGLE',
-            style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+            ' BOGGLE',
+            style: TextStyle(
+                fontSize: 27,
+                fontWeight: FontWeight.normal,
+                color: Color.fromARGB(255, 196, 42, 250)),
           ),
-          centerTitle: true,
+          centerTitle: false,
         ),
         body: SingleChildScrollView(
           child: Container(
