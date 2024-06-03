@@ -3,6 +3,7 @@ import 'package:boggle/main.dart';
 import 'package:boggle/mypage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'model.dart';
 
@@ -55,15 +56,15 @@ class _State extends State<cleanserCertificationList> {
               child: ListTile(
                 title: Text(
                   certificationData[index].cleansername,
-                    style: TextStyle(
-                      fontSize: 19,
+                    style: GoogleFonts.notoSans(
+                      fontSize: 18,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 0, 0, 0),
                     )
                 ),
                 subtitle: Text(
                   certificationData[index].certificationcheck,
-                  style: TextStyle(
+                  style: GoogleFonts.notoSans(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 196, 42, 250),
