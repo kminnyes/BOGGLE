@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:boggle/sewer_report.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -180,13 +181,13 @@ class _DetergentState extends State<Detergent> {
                     ),
                     _image != null
                         ? GestureDetector(
-                            onTap: pickImage,
-                            child: Image.file(
-                              _image!,
-                              height: MediaQuery.of(context).size.height * 0.2,
-                              width: MediaQuery.of(context).size.width * 0.8,
-                            ),
-                          )
+                      onTap: pickImage,
+                      child: Image.file(
+                        _image!,
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                      ),
+                    )
                         : const Text('이미지가 선택되지 않았습니다.'),
                     const SizedBox(height: 10),
                     ElevatedButton(
@@ -217,7 +218,7 @@ class _DetergentState extends State<Detergent> {
                   ],
                 ),
               ),
-             
+
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.6,
                 child: ListView.builder(
@@ -225,7 +226,7 @@ class _DetergentState extends State<Detergent> {
                   itemBuilder: (context, index) {
                     final task = tasks[index];
                     return ListTile(
-                     
+
                       title: GestureDetector(
                         onTap: () {
                           navigateToDetailPage(task);
