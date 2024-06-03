@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:boggle/cleanser_certificationList.dart';
 import 'package:boggle/detergent_certification.dart';
 import 'package:boggle/quiz.dart';
 import 'package:boggle/quizlist.dart';
@@ -129,8 +130,7 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Detergent(
-                                  title: "세제 인증",
+                                builder: (context) => const cleanserCertificationList(
                                 ),
                               ),
                             );
