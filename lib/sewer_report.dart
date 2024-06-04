@@ -4,7 +4,6 @@ import 'package:boggle/community.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
-import 'package:boggle/sewer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +19,7 @@ class SewerReport extends StatefulWidget {
   State<SewerReport> createState() => _SewerReportState();
 }
 
-class _SewerState extends State<Sewer> {
+class _SewerState extends State<SewerReport> {
   final int _index = 1; // 페이지 인덱스 0,1,2,3
 
   // 페이지 이동 함수
@@ -59,11 +58,13 @@ class Report {
   final int id;
   final String work;
   final String imageUrl;
+  final String title;
 
   Report({
     required this.id,
     required this.work,
-    required this.imageUrl,
+    required this.imageUrl, 
+    required  this.title,
   });
 
   factory Report.fromJson(Map<String, dynamic> json) {
@@ -71,6 +72,7 @@ class Report {
     return Report(
       id: json['id'],
       work: json['work'],
+      title: json['title'],
       imageUrl: json['image'] != null ? '$baseUrl${json['image']}' : '',
     );
   }
@@ -78,6 +80,7 @@ class Report {
 
 class _SewerReportState extends State<SewerReport> {
   final TextEditingController textController = TextEditingController();
+  final TextEditingController  titleController = TextEditingController ();
   List<Report> reports = [];
   bool isModifying = false;
   int modifyingIndex = 0;
@@ -117,6 +120,7 @@ class _SewerReportState extends State<SewerReport> {
     }
 
     request.fields['work'] = report.work;
+    request.fields['title'] = report.title;
 
     var response = await request.send();
     if (response.statusCode == 200) {
@@ -131,12 +135,13 @@ class _SewerReportState extends State<SewerReport> {
     }
   }
 
-  Future<void> updateReportToServer(int id, String work) async {
+  Future<void> updateReportToServer(int id, String title, String work) async {
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('http://10.0.2.2:8000/updateReport/$id/'),
     );
 
+    request.fields['title'] = title;
     request.fields['work'] = work;
 
     var response = await request.send();
@@ -208,18 +213,15 @@ class _SewerReportState extends State<SewerReport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
-            appBar: AppBar(
+      appBar: AppBar(
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
-              color: const Color.fromARGB(255, 196, 42, 250)
+              color: const Color.fromARGB(255, 196, 42, 250),
           ),
         ),
-      
-      
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -297,7 +299,7 @@ class _SewerReportState extends State<SewerReport> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: TextField(
-                            controller: textController,
+                            controller: titleController,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: '제목을 입력해주세요.',
@@ -326,7 +328,6 @@ class _SewerReportState extends State<SewerReport> {
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: '장소 및 신고 내용을 정확히 입력해주세요',
-                              
                             ),
                           ),
                         ),
@@ -357,10 +358,11 @@ class _SewerReportState extends State<SewerReport> {
                         onTap: () async {
                           if (image != null || isModifying) {
                             if (isModifying) {
-                              await updateReportToServer(reports[modifyingIndex].id, textController.text);
+                              await updateReportToServer(reports[modifyingIndex].id, titleController.text, textController.text);
                             } else {
                               var task = Report(
                                 id: 0,
+                                title: titleController.text,
                                 work: textController.text,
                                 imageUrl: '',
                               );
@@ -368,6 +370,7 @@ class _SewerReportState extends State<SewerReport> {
                             }
                             setState(() {
                               textController.clear();
+                              titleController.clear();
                               image = null;
                               isModifying = false;
                             });
@@ -405,6 +408,7 @@ class _SewerReportState extends State<SewerReport> {
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
+                            titleController.clear();
                             textController.clear();
                             image = null;
                             isModifying = false;
@@ -449,7 +453,7 @@ class _SewerReportState extends State<SewerReport> {
                           navigateToDetailPage(report);
                         },
                         child: Text(
-                          report.work,
+                          report.title,
                           softWrap: true,
                         ),
                       ),
@@ -459,6 +463,7 @@ class _SewerReportState extends State<SewerReport> {
                           TextButton(
                             onPressed: () {
                               setState(() {
+                                titleController.text = report.title;
                                 textController.text = report.work;
                                 isModifying = true;
                                 modifyingIndex = index;
@@ -514,16 +519,15 @@ class ReportDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     print('Image URL: ${report.imageUrl}');
     return Scaffold(
-          appBar: AppBar(
+      appBar: AppBar(
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
-              color: const Color.fromARGB(255, 196, 42, 250)
+              color: const Color.fromARGB(255, 196, 42, 250),
           ),
         ),
-      
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -531,7 +535,7 @@ class ReportDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              report.work,
+              report.title,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
@@ -543,6 +547,11 @@ class ReportDetailPage extends StatelessWidget {
                     fit: BoxFit.cover,
                   )
                 : const Text('No image available'),
+            const SizedBox(height: 10),
+            Text(
+              report.work,
+              style: const TextStyle(fontSize: 16),
+            ),
           ],
         ),
       ),

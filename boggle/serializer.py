@@ -19,4 +19,4 @@ class QuizSerializer(serializers.ModelSerializer):
 class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
-        fields = ('id', 'work','image')
+        fields = ('id', 'work','title','image')

@@ -180,7 +180,7 @@ class _StudyQuizState extends State<StudyQuiz> {
                           onPressed: _navigateToQuizPage,
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                            backgroundColor: Colors.red,
+                            backgroundColor: const Color.fromARGB(255, 97, 151, 209),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),

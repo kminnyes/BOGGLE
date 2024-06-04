@@ -226,6 +226,7 @@ def getReportList(request):
 @api_view(['POST'])
 def updateReport(request, pk):
     report = Report.objects.get(id=pk)
+    report.title = request.data.get('title',report.title)
     report.work = request.data.get('work', report.work)
     if 'image' in request.FILES:
         report.image = request.FILES['image']

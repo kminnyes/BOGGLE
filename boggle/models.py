@@ -28,4 +28,5 @@ class Dictionary(models.Model):
 class Report(models.Model):
     id = models.AutoField(primary_key=True)
     work = models.CharField(max_length=400, default='null')
+    title = models.CharField(max_length=400, default='null')
     image = models.ImageField(upload_to='task_images_2/', null=True, blank=True)

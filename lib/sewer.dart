@@ -198,7 +198,7 @@ class RainGutterWidget extends StatelessWidget {
         ),
         const SizedBox(
           width: 340,
-          height: 50,
+          height: 70,
           child: Text(
             '💧막힌 빗물받이는 각 시청, 군청 홈페이지에서 접수를 통해 해결할 수 있습니다.',
             style: TextStyle(
@@ -221,7 +221,7 @@ class RainGutterWidget extends StatelessWidget {
           },
           child: Container(
             width: 335,
-            height: 70,
+            height: 60,
             decoration: ShapeDecoration(
               color: const Color(0xFFC42AFA),
               shape: RoundedRectangleBorder(
