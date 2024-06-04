@@ -1,4 +1,9 @@
+import 'package:boggle/community.dart';
+import 'package:boggle/do_list.dart';
+import 'package:boggle/myhome.dart';
+import 'package:boggle/mypage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'quiz.dart'; // Quiz 페이지 import
@@ -11,6 +16,32 @@ class StudyQuiz extends StatefulWidget {
 }
 
 class _StudyQuizState extends State<StudyQuiz> {
+  var _index = 1; // 페이지 인덱스 0,1,2,3
+
+  // 페이지 이동 함수
+  void _navigateToPage(int index) {
+    Widget nextPage;
+    switch (index) {
+      case 0:
+        nextPage = MyHomePage();
+        break;
+      case 1:
+        nextPage = const DoList();
+        break;
+      case 2:
+        nextPage = Community();
+        break;
+      case 3:
+        nextPage = const MyPage();
+        break;
+      default:
+        nextPage = MyHomePage();
+    }
+    if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => nextPage));
+    }
+  }
   List<dynamic> _quizData = [];
   int _currentQuizIndex = 0;
 
@@ -59,7 +90,15 @@ class _StudyQuizState extends State<StudyQuiz> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Study Quiz'),
+        title: Text(
+          ' BOGGLE',
+          style: GoogleFonts.londrinaSolid(
+              fontSize:27,
+              fontWeight: FontWeight.normal,
+              color: const Color.fromARGB(255, 196, 42, 250)
+          ),
+        ),
+      
       ),
       body: _quizData.isEmpty
           ? const Center(child: CircularProgressIndicator())
@@ -92,7 +131,7 @@ class _StudyQuizState extends State<StudyQuiz> {
                         onPressed: _previousQuiz,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                          backgroundColor: Colors.purple,
+                          backgroundColor: const Color.fromARGB(255, 191, 116, 201),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -106,7 +145,7 @@ class _StudyQuizState extends State<StudyQuiz> {
                         onPressed: _nextQuiz,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                          backgroundColor: Colors.blue,
+                          backgroundColor:  const Color.fromARGB(255, 100, 16, 111),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -126,14 +165,14 @@ class _StudyQuizState extends State<StudyQuiz> {
                           onPressed: _fetchQuizData,
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                            backgroundColor: Colors.green,
+                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           child: const Text(
                             '더 학습하기',
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: TextStyle(fontSize: 18, color: Colors.black),
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -156,6 +195,23 @@ class _StudyQuizState extends State<StudyQuiz> {
                 ],
               ),
             ),
+             bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          setState(() {
+            _index = index;
+          });
+          _navigateToPage(index);
+        },
+        currentIndex: _index,
+        selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
+        unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
+          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
+          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
+          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
+        ],
+      ),
     );
   }
 }

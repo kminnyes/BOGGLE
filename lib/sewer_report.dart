@@ -1,6 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:boggle/community.dart';
+import 'package:boggle/do_list.dart';
+import 'package:boggle/myhome.dart';
+import 'package:boggle/mypage.dart';
+import 'package:boggle/sewer.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +18,41 @@ class SewerReport extends StatefulWidget {
 
   @override
   State<SewerReport> createState() => _SewerReportState();
+}
+
+class _SewerState extends State<Sewer> {
+  final int _index = 1; // 페이지 인덱스 0,1,2,3
+
+  // 페이지 이동 함수
+  void _navigateToPage(int index) {
+    Widget nextPage;
+    switch (index) {
+      case 0:
+        nextPage = MyHomePage();
+        break;
+      case 1:
+        nextPage = const DoList();
+        break;
+      case 2:
+        nextPage = Community();
+        break;
+      case 3:
+        nextPage = const MyPage();
+        break;
+      default:
+        nextPage = MyHomePage();
+    }
+    if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => nextPage));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
 }
 
 class Report {
@@ -36,11 +77,12 @@ class Report {
 }
 
 class _SewerReportState extends State<SewerReport> {
-  final TextEditingController _textController = TextEditingController();
+  final TextEditingController textController = TextEditingController();
   List<Report> reports = [];
   bool isModifying = false;
   int modifyingIndex = 0;
-  File? _image;
+  File? image;
+  int _index = 1;
 
   @override
   void initState() {
@@ -70,8 +112,8 @@ class _SewerReportState extends State<SewerReport> {
       Uri.parse('http://10.0.2.2:8000/addReport'),
     );
 
-    if (_image != null) {
-      request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+    if (image != null) {
+      request.files.add(await http.MultipartFile.fromPath('image', image!.path));
     }
 
     request.fields['work'] = report.work;
@@ -120,7 +162,7 @@ class _SewerReportState extends State<SewerReport> {
 
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        image = File(pickedFile.path);
       });
     }
   }
@@ -139,12 +181,45 @@ class _SewerReportState extends State<SewerReport> {
     );
   }
 
+  void _navigateToPage(int index) {
+    Widget nextPage;
+    switch (index) {
+      case 0:
+        nextPage = MyHomePage();
+        break;
+      case 1:
+        nextPage = const DoList();
+        break;
+      case 2:
+        nextPage = Community();
+        break;
+      case 3:
+        nextPage = const MyPage();
+        break;
+      default:
+        nextPage = MyHomePage();
+    }
+    if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => nextPage));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.title),
+    
+            appBar: AppBar(
+        title: Text(
+          ' BOGGLE',
+          style: GoogleFonts.londrinaSolid(
+              fontSize:27,
+              fontWeight: FontWeight.normal,
+              color: const Color.fromARGB(255, 196, 42, 250)
+          ),
+        ),
+      
+      
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -154,7 +229,6 @@ class _SewerReportState extends State<SewerReport> {
               SizedBox(
                 width: 390,
                 height: 652,
-               
                 child: Stack(
                   children: [
                     Positioned(
@@ -223,7 +297,7 @@ class _SewerReportState extends State<SewerReport> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: TextField(
-                            controller: _textController,
+                            controller: textController,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: '제목을 입력해주세요.',
@@ -247,11 +321,12 @@ class _SewerReportState extends State<SewerReport> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: TextField(
-                            controller: _textController,
+                            controller: textController,
                             maxLines: null,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
-                              hintText: '내용을 입력해주세요.(최대 1000자)',
+                              hintText: '장소 및 신고 내용을 정확히 입력해주세요',
+                              
                             ),
                           ),
                         ),
@@ -266,9 +341,9 @@ class _SewerReportState extends State<SewerReport> {
                           width: 54,
                           height: 54,
                           decoration: const BoxDecoration(color: Color(0xFFC4C4C4)),
-                          child: _image != null
+                          child: image != null
                               ? Image.file(
-                                  _image!,
+                                  image!,
                                   fit: BoxFit.cover,
                                 )
                               : const Center(child: Text('+')),
@@ -280,20 +355,20 @@ class _SewerReportState extends State<SewerReport> {
                       top: 457,
                       child: GestureDetector(
                         onTap: () async {
-                          if (_image != null || isModifying) {
+                          if (image != null || isModifying) {
                             if (isModifying) {
-                              await updateReportToServer(reports[modifyingIndex].id, _textController.text);
+                              await updateReportToServer(reports[modifyingIndex].id, textController.text);
                             } else {
                               var task = Report(
                                 id: 0,
-                                work: _textController.text,
+                                work: textController.text,
                                 imageUrl: '',
                               );
                               await addReportToServer(task);
                             }
                             setState(() {
-                              _textController.clear();
-                              _image = null;
+                              textController.clear();
+                              image = null;
                               isModifying = false;
                             });
                           } else {
@@ -330,8 +405,8 @@ class _SewerReportState extends State<SewerReport> {
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
-                            _textController.clear();
-                            _image = null;
+                            textController.clear();
+                            image = null;
                             isModifying = false;
                           });
                         },
@@ -384,7 +459,7 @@ class _SewerReportState extends State<SewerReport> {
                           TextButton(
                             onPressed: () {
                               setState(() {
-                                _textController.text = report.work;
+                                textController.text = report.work;
                                 isModifying = true;
                                 modifyingIndex = index;
                               });
@@ -409,6 +484,23 @@ class _SewerReportState extends State<SewerReport> {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          setState(() {
+            _index = index;
+          });
+          _navigateToPage(index);
+        },
+        currentIndex: _index,
+        selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
+        unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
+          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
+          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
+          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
+        ],
+      ),
     );
   }
 }
@@ -422,8 +514,16 @@ class ReportDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     print('Image URL: ${report.imageUrl}');
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Task Details'),
+          appBar: AppBar(
+        title: Text(
+          ' BOGGLE',
+          style: GoogleFonts.londrinaSolid(
+              fontSize:27,
+              fontWeight: FontWeight.normal,
+              color: const Color.fromARGB(255, 196, 42, 250)
+          ),
+        ),
+      
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -54,7 +54,7 @@ class _MyPageState extends State<MyPage> {
           style: GoogleFonts.londrinaSolid(
               fontSize:27,
               fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)
+              color: const Color.fromARGB(255, 196, 42, 250)
           ),
         ),
         centerTitle: false,

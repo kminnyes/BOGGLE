@@ -173,7 +173,7 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Sewer(title: '하수구 신고'),
+                                builder: (context) => const Sewer(title: '하수구 신고'),
                               ),
                             );
                           },

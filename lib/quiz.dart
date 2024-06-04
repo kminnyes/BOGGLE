@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:boggle/myhome.dart';
@@ -106,9 +107,13 @@ class _QuizState extends State<Quiz> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: const Text(
-          'BOGGLE',
-          style: TextStyle(color: Color.fromARGB(255, 147, 159, 248)),
+      title: Text(
+          ' BOGGLE',
+          style: GoogleFonts.londrinaSolid(
+              fontSize:27,
+              fontWeight: FontWeight.normal,
+              color: const Color.fromARGB(255, 196, 42, 250)
+          ),
         ),
         centerTitle: true,
       ),
@@ -136,7 +141,7 @@ class _QuizState extends State<Quiz> {
   Widget _buildQuizPage() {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('단어 퀴즈 맞추기'),
+      
       ),
       body: _quizData.isEmpty
           ? const Center(child: CircularProgressIndicator())
@@ -256,7 +261,14 @@ class CorrectAnswersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('정답 확인하기'),
+        title: Text(
+          ' BOGGLE',
+          style: GoogleFonts.londrinaSolid(
+              fontSize:27,
+              fontWeight: FontWeight.normal,
+              color: const Color.fromARGB(255, 196, 42, 250)
+          ),
+        ),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(8.0),
@@ -288,6 +300,7 @@ class CorrectAnswersPage extends StatelessWidget {
           );
         },
       ),
+      
     );
   }
 }
