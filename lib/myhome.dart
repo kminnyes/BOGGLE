@@ -60,12 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Row(
             children: [
               Text('BOGGLE', style: titleStyle),
-              Text(
-                '.',
-                style: TextStyle(
-                    color: Color.fromARGB(255, 196, 42, 250),
-                    fontWeight: FontWeight.bold),
-              ),
             ],
           ),
           centerTitle: false,
