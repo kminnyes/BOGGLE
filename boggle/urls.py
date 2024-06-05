@@ -28,6 +28,10 @@ urlpatterns = [
     path('find_user_id/', views.find_user_id, name='find_user_id'),
     path('find_user_password/', views.find_user_password, name='find_user_password'),
     path('update_password/', views.update_password, name='update_password'),
+
+    path('update_user_points/', views.update_user_points, name='user_points'),
+    path('user_points/<str:user_id>/', views.get_user_points, name='user_points'),
+
 ]
 
 

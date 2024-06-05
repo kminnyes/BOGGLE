@@ -325,3 +325,29 @@ def deleteReport(request, pk):
     return Response(status=200)
 
 
+#회원 정보에 점수 추가하기 
+
+
+from django.http import JsonResponse
+from boggle.models import Userlist
+def update_user_points(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('userId')
+        points_to_add = int(request.POST.get('pointsToAdd'))
+        user = Userlist.objects.get(pk=user_id)
+        user.point += points_to_add
+        user.save()
+        return JsonResponse({'message': 'Points updated successfully'}, status=200)
+    else:
+        return JsonResponse({'message': 'Invalid request method'}, status=400)
+
+
+from django.http import JsonResponse
+from boggle.models import Userlist
+def get_user_points(request, user_id):
+    try:
+        user = Userlist.objects.get(id=user_id)
+        user_points = user.points  # User 모델에 포인트 필드가 있다고 가정합니다. 필요에 따라 수정하세요.
+        return JsonResponse({'points': user_points})
+    except Userlist.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
