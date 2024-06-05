@@ -75,6 +75,8 @@ flutter:
 
   assets:
     - image/sewer.jpg
+    - image/sallimin.jpg
+    - image/sugarbubble.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
