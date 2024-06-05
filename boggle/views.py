@@ -6,9 +6,16 @@ from rest_framework.decorators import api_view
 from boggle.models import Task
 from boggle.models import Report
 import requests
-from django.http import JsonResponse
+from django.http import HttpResponseNotAllowed, JsonResponse
 
-
+# 회원가입
+@api_view(['POST'])
+def register_user(request):
+    if request.method == 'POST':
+        print("Request Data:", request.data)  # 요청 데이터 출력
+        return JsonResponse({'message': 'User registered successfully'})
+    else:
+        return HttpResponseNotAllowed(['POST'])
 
 ## 세제 인증하기 
 @api_view(['POST'])
@@ -205,7 +212,7 @@ def quiz_data_api(request):
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Report
-from .serializer import ReportSerializer
+from .serializer import ReportSerializer, UserlistSerializer
 
 @api_view(['POST'])
 def addReport(request):
