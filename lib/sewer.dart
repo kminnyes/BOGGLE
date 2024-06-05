@@ -9,11 +9,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Sewer extends StatefulWidget {
   final String title;
+  final String userId;
 
-  const Sewer({super.key, required this.title});
+  const Sewer({Key? key, required this.title, required this.userId}) : super(key: key);
 
   @override
-  _SewerState createState() => _SewerState();
+  State<Sewer> createState() => _SewerState();
 }
 
 class _SewerState extends State<Sewer> {
@@ -24,19 +25,19 @@ class _SewerState extends State<Sewer> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -63,13 +64,13 @@ class _SewerState extends State<Sewer> {
         child: Center(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RainGutterWidget(),
+                  RainGutterWidget(userId: widget.userId),
                 ],
               ),
             ),
@@ -98,7 +99,9 @@ class _SewerState extends State<Sewer> {
 }
 
 class RainGutterWidget extends StatelessWidget {
-  const RainGutterWidget({super.key});
+  final String userId;
+
+  const RainGutterWidget({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +220,7 @@ class RainGutterWidget extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    const SewerReport(title: '빗물받이 불편신고 접수하러 가기'),
+                    SewerReport(title: '빗물받이 불편신고 접수하러 가기', userId: userId),
               ),
             );
           },

@@ -9,10 +9,12 @@ import 'dart:convert';
 import 'quiz.dart'; // Quiz 페이지 import
 
 class StudyQuiz extends StatefulWidget {
-  const StudyQuiz({super.key});
+  final String userId;
+
+  const StudyQuiz({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _StudyQuizState createState() => _StudyQuizState();
+  State<StudyQuiz> createState() => _StudyQuizState();
 }
 
 class _StudyQuizState extends State<StudyQuiz> {
@@ -23,19 +25,19 @@ class _StudyQuizState extends State<StudyQuiz> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -82,7 +84,7 @@ class _StudyQuizState extends State<StudyQuiz> {
   void _navigateToQuizPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const Quiz()),
+      MaterialPageRoute(builder: (context) => Quiz(userId: widget.userId)),
     );
   }
 

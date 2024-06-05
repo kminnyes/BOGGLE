@@ -8,10 +8,12 @@ import 'package:boggle/community.dart';
 import 'package:boggle/mypage.dart';
 
 class Quiz extends StatefulWidget {
-  const Quiz({super.key});
+  final String userId;
+
+  const Quiz({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _QuizState createState() => _QuizState();
+  State<Quiz> createState() => _QuizState();
 }
 
 class _QuizState extends State<Quiz> {
@@ -79,19 +81,19 @@ class _QuizState extends State<Quiz> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage =  const DoList();
+        nextPage =  DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(

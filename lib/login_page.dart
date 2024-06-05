@@ -1,30 +1,90 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:boggle/find_id_page.dart';
 import 'package:boggle/find_pw_page.dart';
-import 'package:boggle/register_page.dart';
-import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
+import 'package:boggle/mypage.dart';
+import 'package:boggle/register_page.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
+  void _login() async {
     final String id = _idController.text;
     final String password = _passwordController.text;
 
     if (id.isNotEmpty && password.isNotEmpty) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        return MyHomePage();
-      }));
+      try {
+        final response = await http.post(
+          Uri.parse('http://10.0.2.2:8000/login_view/'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: json.encode({
+            'id': id,
+            'password': password,
+          }),
+        );
+        if (response.statusCode == 200) {
+          // 로그인 성공 시 처리
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            // 성공 시 페이지 이동
+            // return MyHomePage(userId: id);
+            return MyPage(userId: id);
+          }));
+        } else {
+          // 로그인 실패 시 처리
+          final responseBody = json.decode(response.body);
+          final errorMessage = responseBody['error'] ?? '알 수 없는 오류가 발생했습니다.';
+          print('Login error: $errorMessage');
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text(errorMessage),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("확인"),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } catch (e) {
+        // 오류 발생 시 처리
+        print('Error during login: $e');
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text('로그인 중 오류가 발생했습니다.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("확인"),
+                ),
+              ],
+            );
+          },
+        );
+      }
     } else {
+      // ID 또는 비밀번호 누락 시 처리
       showDialog(
         context: context,
         builder: (context) {
@@ -69,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             SizedBox(
               width: 300,
               child: TextField(
@@ -94,18 +154,10 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const DoList()),
-                  );
-                },
-                //페이지 연결 확인을 위한 임시 코드
-                //onPressed: _login,
+                onPressed: _login,
                 child: const Text('로그인'),
               ),
             ),
-            const SizedBox(height: 20),
             SizedBox(
               width: 300,
               child: Row(

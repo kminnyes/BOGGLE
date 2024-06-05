@@ -7,8 +7,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 
 class MyHomePage extends StatefulWidget {
+  final String userId;
+
+  const MyHomePage({Key? key, required this.userId}) : super(key: key);
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -45,19 +49,19 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyPage();
+        nextPage = MyPage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name !=
         nextPage.runtimeType.toString()) {

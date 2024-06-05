@@ -5,7 +5,6 @@ from boggle import views
 from django.urls import path
 
 
-
 app_name = 'boggle'
 
 urlpatterns = [
@@ -28,6 +27,7 @@ urlpatterns = [
     path('find_user_id/', views.find_user_id, name='find_user_id'),
     path('find_user_password/', views.find_user_password, name='find_user_password'),
     path('update_password/', views.update_password, name='update_password'),
+    path('login_view/', views.login_view, name='login_view'),
 ]
 
 
