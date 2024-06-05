@@ -23,6 +23,7 @@ urlpatterns = [
     path('updateReport/<int:pk>/', views.updateReport, name='updateReport'),
     path('deleteReport/<int:pk>/', views.deleteReport, name='deleteReport'),
 
+    path('register_user/', views.register_user, name='register_user'), 
 ]
 
 
