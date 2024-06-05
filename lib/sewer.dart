@@ -6,6 +6,7 @@ import 'package:boggle/sewer_report.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 class Sewer extends StatefulWidget {
   final String title;
 
@@ -129,28 +130,29 @@ class RainGutterWidget extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.all(10.0),
-          width: 340,
-          height: 169,
-          decoration: ShapeDecoration(
-            image: const DecorationImage(
-              image: NetworkImage(
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY8RCmu3H6vCucl66nNTJiBq2wVJuqm-kGzQ&s"),
-              fit: BoxFit.fill,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            shadows: const [
-              BoxShadow(
-                color: Color(0x3F000000),
-                blurRadius: 4,
-                offset: Offset(0, 4),
-                spreadRadius: 0,
-              )
-            ],
-          ),
-        ),
+  margin: const EdgeInsets.all(10.0),
+  width: 340,
+  height: 169,
+  decoration: ShapeDecoration(
+    image: const DecorationImage(
+      image: AssetImage("image/sewer.jpg"),
+      fit: BoxFit.fill,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(15),
+    ),
+    shadows: const [
+      BoxShadow(
+        color: Color(0x3F000000),
+        blurRadius: 4,
+        offset: Offset(0, 4),
+        spreadRadius: 0,
+      )
+    ],
+  ),
+),
+
+
         const SizedBox(
           width: 340,
           height: 70,

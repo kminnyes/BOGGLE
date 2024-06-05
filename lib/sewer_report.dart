@@ -68,7 +68,7 @@ class Report {
   });
 
   factory Report.fromJson(Map<String, dynamic> json) {
-    String baseUrl = 'http://10.0.2.2:8000'; // Base URL of your Django server
+    String baseUrl = 'http://10.0.2.2:8000'; 
     return Report(
       id: json['id'],
       work: json['work'],
