@@ -6,12 +6,12 @@ import 'package:boggle/sewer_report.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class Sewer extends StatefulWidget {
   final String title;
   final String userId;
 
-  const Sewer({Key? key, required this.title, required this.userId}) : super(key: key);
+  const Sewer({Key? key, required this.title, required this.userId})
+      : super(key: key);
 
   @override
   State<Sewer> createState() => _SewerState();
@@ -77,7 +77,7 @@ class _SewerState extends State<Sewer> {
           ),
         ),
       ),
-        bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
             _index = index;
@@ -89,9 +89,12 @@ class _SewerState extends State<Sewer> {
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );
@@ -133,29 +136,27 @@ class RainGutterWidget extends StatelessWidget {
           ),
         ),
         Container(
-  margin: const EdgeInsets.all(10.0),
-  width: 340,
-  height: 169,
-  decoration: ShapeDecoration(
-    image: const DecorationImage(
-      image: AssetImage("image/sewer.jpg"),
-      fit: BoxFit.fill,
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(15),
-    ),
-    shadows: const [
-      BoxShadow(
-        color: Color(0x3F000000),
-        blurRadius: 4,
-        offset: Offset(0, 4),
-        spreadRadius: 0,
-      )
-    ],
-  ),
-),
-
-
+          margin: const EdgeInsets.all(10.0),
+          width: 340,
+          height: 169,
+          decoration: ShapeDecoration(
+            image: const DecorationImage(
+              image: AssetImage("image/sewer.jpg"),
+              fit: BoxFit.fill,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            shadows: const [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 4,
+                offset: Offset(0, 4),
+                spreadRadius: 0,
+              )
+            ],
+          ),
+        ),
         const SizedBox(
           width: 340,
           height: 70,

@@ -55,23 +55,25 @@ class _QuizlistState extends State<Quizlist> {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)
-          ),
+              color: Color.fromARGB(255, 196, 42, 250)),
         ),
         centerTitle: false,
-        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor:const Color.fromARGB(255, 235, 181, 253), // Button color
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                minimumSize: const Size(200, 60), 
-                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                backgroundColor:
+                    const Color.fromARGB(255, 235, 181, 253), // Button color
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                minimumSize: const Size(200, 60),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -81,7 +83,8 @@ class _QuizlistState extends State<Quizlist> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StudyQuiz(userId: widget.userId)),
+                  MaterialPageRoute(
+                      builder: (context) => StudyQuiz(userId: widget.userId)),
                 );
               },
               child: const Text('퀴즈 공부하기'),
@@ -89,10 +92,13 @@ class _QuizlistState extends State<Quizlist> {
             const SizedBox(height: 20), // Add space between buttons
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 235, 181, 253), // Button color
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor:
+                    const Color.fromARGB(255, 235, 181, 253), // Button color
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 minimumSize: const Size(200, 60), // Button size
-                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -102,7 +108,8 @@ class _QuizlistState extends State<Quizlist> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Quiz(userId: widget.userId)),
+                  MaterialPageRoute(
+                      builder: (context) => Quiz(userId: widget.userId)),
                 );
               },
               child: const Text('퀴즈 맞추기'),
@@ -122,9 +129,12 @@ class _QuizlistState extends State<Quizlist> {
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.checklist)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.people)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person)),
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );

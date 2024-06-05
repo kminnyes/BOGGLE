@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             // 성공 시 페이지 이동
             // return MyHomePage(userId: id);
-            return MyPage(userId: id);
+            return MyHomePage(userId: id);
           }));
         } else {
           // 로그인 실패 시 처리

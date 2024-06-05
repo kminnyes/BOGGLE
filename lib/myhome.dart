@@ -20,7 +20,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String _nickname = '';
   int _points = 0;
   int _rank = 0;
-  String _location = '';
+  String? _location; // 초기값을 null로 설정
+  late String _userId = widget.userId; // userId 할당
 
   @override
   void initState() {
@@ -30,17 +31,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _fetchUserInfo() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8000/user_info/1'));
+        await http.get(Uri.parse('http://10.0.2.2:8000/user_info/$_userId'));
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
+      final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
       setState(() {
-        _nickname = data['nickname'];
-        _points = data['point'];
-        _rank = data['rank'];
-        _location = data['location'];
+        _nickname = data['nickname'] ?? ''; // null 체크 및 기본값 설정
+        _points = data['point'] ?? 0;
+        _rank = data['rank'] ?? 0;
+        _location = data['location'] ?? 'Unknown';
       });
     } else {
       // 에러 처리
+      print('Failed to load user info');
     }
   }
 
@@ -123,12 +125,14 @@ class _MyHomePageState extends State<MyHomePage> {
           currentIndex: _index,
           selectedItemColor: Color.fromARGB(255, 196, 42, 250),
           unselectedItemColor: Color.fromARGB(255, 235, 181, 253),
-          items: <BottomNavigationBarItem>[
+          items: [
             BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
             BottomNavigationBarItem(
-                label: '실천', icon: Icon(Icons.check_circle)),
-            BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-            BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person)),
+                label: '실천', icon: Icon(Icons.volunteer_activism)),
+            BottomNavigationBarItem(
+                label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+            BottomNavigationBarItem(
+                label: 'MY', icon: Icon(Icons.account_circle)),
           ],
         ),
       ),
@@ -156,16 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('이달의 수질', style: indicatorTextStyle),
-                DropdownButton<String>(
-                  value: '$_location',
-                  items: <String>['복대동'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (_) {},
-                ),
+                Text(_location ?? 'Unknown'),
               ],
             ),
           ),
@@ -197,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Text('3'),
                     Text('5'),
                     Text('8'),
-                    Text('10<'),
+                    Text('10'),
                   ],
                 ),
               ],
@@ -233,22 +228,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     '$_points P',
                     style: TextStyle(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 196, 42, 250)),
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 196, 42, 250),
+                    ),
                   ),
                   SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 8, 8, 8), // 배경 색상
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 192, 52, 243),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      '뽑기 바로 진행하러 가기',
-                      style: TextStyle(color: Colors.white),
+                      child: Text(
+                        '뽑기 바로 진행하러 가기',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],
@@ -259,14 +257,19 @@ class _MyHomePageState extends State<MyHomePage> {
               '포인트 리포트',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+            Text(
+              '나의 포인트를 비교하고 분석해보세요',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal),
+            ),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end, // 그래프를 아래쪽에 정렬
               children: [
                 _buildPointsColumn(
                     '1,136 P', Colors.grey, '전체 사용자 평균 포인트', 100),
                 _buildPointsColumn('$_points P',
-                    Color.fromARGB(255, 196, 42, 250), '나의 포인트', 60),
+                    Color.fromARGB(255, 196, 42, 250), '나의 포인트', _points),
               ],
             ),
             SizedBox(height: 20),
@@ -274,34 +277,42 @@ class _MyHomePageState extends State<MyHomePage> {
               '나의 순위',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+            Text(
+              '나는 상위 몇 프로?',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal),
+            ),
+            Text(
+              '나의 포인트 순위를 알려드립니다.',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal),
+            ),
             SizedBox(height: 10),
             Center(
               child: Column(
                 children: [
                   SizedBox(
-                    width: 200,
-                    height: 200,
+                    width: 300, // 크기를 더 크게 설정
+                    height: 300, // 크기를 더 크게 설정
                     child: Stack(
                       children: [
                         Center(
-                          child: Container(
-                            width: 200,
-                            height: 200,
-                            child: CircularProgressIndicator(
-                              value: 0.7,
-                              strokeWidth: 20,
-                              color: Color.fromARGB(255, 196, 42, 250),
-                              backgroundColor: Colors.grey[200],
-                            ),
+                            child: Container(
+                          width: 200,
+                          height: 200,
+                          child: CircularProgressIndicator(
+                            value: 0.7,
+                            strokeWidth: 10, // 원의 두께를 더 두껍게 설정
+                            color: Color.fromARGB(255, 196, 42, 250),
+                            backgroundColor: Colors.grey[200],
                           ),
-                        ),
+                        )),
                         Center(
                           child: Text(
                             '상위 70%',
                             style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 196, 42, 250)),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 196, 42, 250),
+                            ),
                           ),
                         ),
                       ],
@@ -316,7 +327,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       Text(
                         '$_nickname 님은 $_rank등 입니다.',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -330,18 +343,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildPointsColumn(
-      String points, Color color, String label, double height) {
+      String points, Color color, String label, int height) {
     return Column(
       children: [
         Text(
           points,
           style: TextStyle(
-              fontSize: 24, fontWeight: FontWeight.bold, color: color),
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
         ),
         SizedBox(height: 10),
         Container(
           width: 50,
-          height: height,
+          height: height.toDouble(),
           color: color,
         ),
         SizedBox(height: 10),
@@ -362,24 +378,25 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           SizedBox(height: 10),
           _buildWaterQualityRow(
-              Icons.water, Colors.blue, '매우 좋음', '간단한 정수 후 마실 수 있음'),
+              Icons.water_drop, Colors.blue, '매우 좋음', '간단한 정수 후 마실 수 있음'),
           SizedBox(height: 10),
           _buildWaterQualityRow(
-              Icons.water, Colors.lightBlue, '좋음', '일반 정수 처리 후 마실 수 있음'),
+              Icons.water_drop, Colors.lightBlue, '좋음', '일반 정수 처리 후 마실 수 있음'),
           SizedBox(height: 10),
-          _buildWaterQualityRow(Icons.water, Color.fromARGB(255, 34, 192, 81),
-              '약간 좋음', '일반 정수 처리 후 마실 수 있음'),
+          _buildWaterQualityRow(Icons.water_drop,
+              Color.fromARGB(255, 34, 192, 81), '약간 좋음', '일반 정수 처리 후 마실 수 있음'),
           SizedBox(height: 10),
-          _buildWaterQualityRow(Icons.water, Color.fromARGB(255, 148, 147, 147),
-              '보통', '일반 정수 후 공업용수로 사용 가능'),
+          _buildWaterQualityRow(Icons.water_drop,
+              Color.fromARGB(255, 148, 147, 147), '보통', '일반 정수 후 공업용수로 사용 가능'),
           SizedBox(height: 10),
-          _buildWaterQualityRow(Icons.water,
-              const Color.fromARGB(255, 125, 115, 28), '약간 나쁨', '농업용수로 사용 가능'),
+          _buildWaterQualityRow(Icons.water_drop,
+              Color.fromARGB(255, 125, 115, 28), '약간 나쁨', '농업용수로 사용 가능'),
           SizedBox(height: 10),
           _buildWaterQualityRow(
-              Icons.water, Colors.orange, '나쁨', '특수처리 후 공업용수로 사용 가능'),
+              Icons.water_drop, Colors.orange, '나쁨', '특수처리 후 공업용수로 사용 가능'),
           SizedBox(height: 10),
-          _buildWaterQualityRow(Icons.water, Colors.red, '매우 나쁨', '이용 불가능'),
+          _buildWaterQualityRow(
+              Icons.water_drop, Colors.red, '매우 나쁨', '이용 불가능'),
         ],
       ),
     );
@@ -394,7 +411,10 @@ class _MyHomePageState extends State<MyHomePage> {
         Text(
           title,
           style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: color),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
         ),
         SizedBox(width: 8),
         Text(subtitle),

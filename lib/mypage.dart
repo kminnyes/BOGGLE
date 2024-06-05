@@ -54,10 +54,9 @@ class _MyPageState extends State<MyPage> {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
-              color: const Color.fromARGB(255, 196, 42, 250)
-          ),
+              color: const Color.fromARGB(255, 196, 42, 250)),
         ),
         centerTitle: false,
       ),
@@ -75,7 +74,8 @@ class _MyPageState extends State<MyPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserInfo(userId: widget.userId)),
+                  MaterialPageRoute(
+                      builder: (context) => UserInfo(userId: widget.userId)),
                 );
               },
               child: const Text('회원정보 수정'),
@@ -92,7 +92,8 @@ class _MyPageState extends State<MyPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChangePW(userId: widget.userId)),
+                  MaterialPageRoute(
+                      builder: (context) => ChangePW(userId: widget.userId)),
                 );
               },
               child: const Text('비밀번호 수정'),
@@ -112,9 +113,12 @@ class _MyPageState extends State<MyPage> {
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );
