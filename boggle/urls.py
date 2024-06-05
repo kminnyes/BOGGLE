@@ -24,6 +24,8 @@ urlpatterns = [
     path('deleteReport/<int:pk>/', views.deleteReport, name='deleteReport'),
 
     path('register/', views.register_user, name='register_user'), 
+    path('find_user_id/', views.find_user_id, name='find_user_id'),
+     
 ]
 
 

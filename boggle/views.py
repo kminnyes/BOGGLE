@@ -34,6 +34,21 @@ def register_user(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# 아이디 찾기
+@api_view(['POST'])
+def find_user_id(request):
+    if request.method == 'POST':
+        email = request.data.get('email', None)
+        if email:
+            try:
+                user = Userlist.objects.get(email=email)
+                serializer = UserlistSerializer(user)
+                return Response(serializer.data, status=200)
+            except Userlist.DoesNotExist:
+                return Response({"message": "일치하는 사용자가 없습니다."}, status=400)
+        else:
+            return Response({"message": "이메일을 제공해주세요."}, status=400)
+
 ## 세제 인증하기 
 @api_view(['POST'])
 def addTask(request):
