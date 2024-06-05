@@ -13,6 +13,21 @@ from rest_framework import status
 @api_view(['POST'])
 def register_user(request):
     if request.method == 'POST':
+        # 요청 데이터에서 id, 닉네임, 이메일을 가져옴
+        user_id = request.data.get('id', '')
+        nickname = request.data.get('nickname', '')
+        email = request.data.get('email', '')
+        
+        # id, 닉네임, 이메일이 중복되는지 확인
+        if Userlist.objects.filter(nickname=nickname).exists():
+            return Response({'message': '이미 사용중인 닉네임입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if Userlist.objects.filter(id=user_id).exists():
+            return Response({'message': '이미 사용중인 ID입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if Userlist.objects.filter(email=email).exists():
+            return Response({'message': '가입된 이메일이 존재합니다.'}, status=status.HTTP_400_BAD_REQUEST)
+        
         serializer = UserlistSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -160,7 +175,7 @@ if __name__ == "__main__":
     save_to_django()
 
 from django.http import JsonResponse
-from .models import Dictionary
+from .models import Dictionary, Userlist
 from django.views.decorators.csrf import csrf_exempt
 import json
 

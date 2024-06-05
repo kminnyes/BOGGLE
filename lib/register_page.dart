@@ -48,8 +48,9 @@ class _RegisterPageState extends State<RegisterPage> {
       }));
     } else {
       // 회원가입 실패 시 에러 메시지 표시
-      final responseBody = jsonDecode(registerResponse.body);
-      _showErrorDialog(responseBody['detail'] ?? 'Unknown error');
+      final responseBody = jsonDecode(utf8.decode(registerResponse.bodyBytes, allowMalformed: true));
+
+      _showErrorDialog(responseBody['message'] ?? 'Unknown error');
     }
   }
 
