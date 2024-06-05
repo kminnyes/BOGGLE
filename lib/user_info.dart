@@ -5,8 +5,11 @@ import 'package:boggle/mypage.dart';
 import 'package:boggle/community.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class UserInfo extends StatefulWidget {
+  final String userId;
+
+  const UserInfo({Key? key, required this.userId}) : super(key: key);
+
   @override
   State<UserInfo> createState() => _UserInfoState();
 }
@@ -17,6 +20,12 @@ class _UserInfoState extends State<UserInfo> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    // userId 값을 _idController에 설정하여 ID 창에 자동으로 입력되도록 함
+    _idController.text = widget.userId;
+  }
 
   @override
   var _index = 3; // 페이지 인덱스 0,1,2,3
@@ -26,19 +35,19 @@ class _UserInfoState extends State<UserInfo> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -129,8 +138,8 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
             ],
+          ),
         ),
-      ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {

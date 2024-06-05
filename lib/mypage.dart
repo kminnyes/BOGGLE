@@ -8,7 +8,9 @@ import 'package:boggle/user_info.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyPage extends StatefulWidget {
-  const MyPage({super.key});
+  final String userId;
+
+  const MyPage({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<MyPage> createState() => _MyPageState();
@@ -23,19 +25,19 @@ class _MyPageState extends State<MyPage> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -73,7 +75,7 @@ class _MyPageState extends State<MyPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserInfo()),
+                  MaterialPageRoute(builder: (context) => UserInfo(userId: widget.userId)),
                 );
               },
               child: const Text('회원정보 수정'),
@@ -90,7 +92,7 @@ class _MyPageState extends State<MyPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChangePW()),
+                  MaterialPageRoute(builder: (context) => ChangePW(userId: widget.userId)),
                 );
               },
               child: const Text('비밀번호 수정'),

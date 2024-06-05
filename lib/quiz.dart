@@ -8,10 +8,12 @@ import 'package:boggle/community.dart';
 import 'package:boggle/mypage.dart';
 
 class Quiz extends StatefulWidget {
-  const Quiz({super.key});
+  final String userId;
+
+  const Quiz({super.key, required this.userId});
 
   @override
-  _QuizState createState() => _QuizState();
+  State<Quiz> createState() => _QuizState();
 }
 
 class _QuizState extends State<Quiz> {
@@ -22,13 +24,14 @@ class _QuizState extends State<Quiz> {
   bool _isQuizCompleted = false;
   int _selectedIndex = 1;
   String _selectedAnswer = '';
-  final String _userId = '';
+  late String _userId;
   final int _pointsToAdd = 10;
   String _userPoints = '0';
 
   @override
   void initState() {
     super.initState();
+    _userId = widget.userId; // userId 할당
     _fetchQuizData();
     _fetchUserPoints();
   }
@@ -56,81 +59,83 @@ class _QuizState extends State<Quiz> {
     }
   }
 
-Future<void> _checkAnswer(String question, String selectedAnswer) async {
-  final response = await http.post(
-    Uri.parse('http://10.0.2.2:8000/check_answer/'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'question': question,
-      'answer': selectedAnswer,
-    }),
-  );
+  Future<void> _checkAnswer(String question, String selectedAnswer) async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:8000/check_answer/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'question': question,
+        'answer': selectedAnswer,
+      }),
+    );
 
-  if (response.statusCode == 200) {
-    final result = json.decode(response.body);
-    setState(() {
-      if (result['result'] == 'correct') {
-        _resultMessage = 'Correct!';
-        _correctAnswers++;
-        _updateUserPoints(_userId, 3); // Update points here
-      } else {
-        _resultMessage = 'Incorrect!';
-      }
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      setState(() {
+        if (result['result'] == 'correct') {
+          _resultMessage = 'Correct!';
+          _correctAnswers++;
+          _updateUserPoints(_userId, 3); // Update points here
+        } else {
+          _resultMessage = 'Incorrect!';
+        }
 
-      if (_currentQuizIndex < _quizData.length - 1) {
-        _currentQuizIndex++;
-      } else {
-        _isQuizCompleted = true;
-        _resultMessage +=
-            '\n\nQuiz completed! You got $_correctAnswers out of ${_quizData.length} correct.';
-      }
-      _selectedAnswer = '';
-    });
-  } else {
-    throw Exception('Failed to check answer');
+        if (_currentQuizIndex < _quizData.length - 1) {
+          _currentQuizIndex++;
+        } else {
+          _isQuizCompleted = true;
+          _resultMessage +=
+              '\n\nQuiz completed! You got $_correctAnswers out of ${_quizData.length} correct.';
+        }
+        _selectedAnswer = '';
+      });
+    } else {
+      throw Exception('Failed to check answer');
+    }
   }
-}
 
-Future<void> _updateUserPoints(String userId, int pointsToAdd) async {
-  final response = await http.post(
-    Uri.parse('http://10.0.2.2:8000/update_user_points/'), // 수정된 URL
-    headers: <String, String>{
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: {
-      'userId': userId,
-      'pointsToAdd': pointsToAdd.toString(),
-    },
-  );
+  Future<void> _updateUserPoints(String userId, int pointsToAdd) async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:8000/update_user_points/'), // 슬래시 추가
+      headers: <String, String>{
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        'userId': userId,
+        'pointsToAdd': pointsToAdd.toString(),
+      },
+    );
 
-  if (response.statusCode == 200) {
-    print('Points updated successfully');
-    _fetchUserPoints(); // Update user points after adding points
-  } else {
-    throw Exception('Failed to update points');
+    if (response.statusCode == 200) {
+      print('Points updated successfully');
+      _fetchUserPoints(); // Update user points after adding points
+    } else {
+      throw Exception('Failed to update points');
+    }
   }
-}
-
 
   void _navigateToPage(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -160,7 +165,7 @@ Future<void> _updateUserPoints(String userId, int pointsToAdd) async {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
-            _selectedIndex = 1;
+            _selectedIndex = index;
           });
           _navigateToPage(_selectedIndex);
         },
@@ -182,48 +187,50 @@ Future<void> _updateUserPoints(String userId, int pointsToAdd) async {
       appBar: AppBar(),
       body: _quizData.isEmpty
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
+          : ListView(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _quizData[_currentQuizIndex]['explain'],
-                    style: const TextStyle(fontSize: 15.0),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  ..._buildChoiceButtons(_quizData[_currentQuizIndex]),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () => _checkAnswer(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
                       _quizData[_currentQuizIndex]['explain'],
-                      _selectedAnswer,
+                      style: const TextStyle(fontSize: 15.0),
+                      textAlign: TextAlign.center,
                     ),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                      backgroundColor: Colors.purple,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                    const SizedBox(height: 20),
+                    ..._buildChoiceButtons(_quizData[_currentQuizIndex]),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => _checkAnswer(
+                        _quizData[_currentQuizIndex]['explain'],
+                        _selectedAnswer,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                        backgroundColor: Colors.purple,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        '확인하기',
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
-                    child: const Text(
-                      '확인하기',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    const SizedBox(height: 20),
+                    Text(
+                      _resultMessage,
+                      style: const TextStyle(fontSize: 16),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    _resultMessage,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    '포인트: $_userPoints',
-                    style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '포인트: $_userPoints',
+                      style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
             ),
     );
   }

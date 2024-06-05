@@ -9,7 +9,44 @@ from boggle.serializer import UserlistSerializer
 import requests
 from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import status
+from django.contrib.auth import authenticate, login
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
+import json
 
+from django.contrib.auth.hashers import make_password
+
+# # 회원가입
+# @api_view(['POST'])
+# def register_user(request):
+#     if request.method == 'POST':
+#         # 요청 데이터에서 id, 닉네임, 이메일, 비밀번호를 가져옴
+#         user_id = request.data.get('id', '')
+#         nickname = request.data.get('nickname', '')
+#         email = request.data.get('email', '')
+#         password = request.data.get('password', '')  # 비밀번호 추가
+        
+#         # id, 닉네임, 이메일이 중복되는지 확인
+#         if Userlist.objects.filter(nickname=nickname).exists():
+#             return Response({'message': '이미 사용중인 닉네임입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+#         if Userlist.objects.filter(id=user_id).exists():
+#             return Response({'message': '이미 사용중인 ID입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         if Userlist.objects.filter(email=email).exists():
+#             return Response({'message': '가입된 이메일이 존재합니다.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+#         # 비밀번호를 해싱하여 저장
+#         hashed_password = make_password(password)
+        
+#         # 사용자 생성
+#         serializer = UserlistSerializer(data=request.data)
+#         if serializer.is_valid():
+#             # 비밀번호 필드를 해싱된 비밀번호로 변경
+#             serializer.validated_data['password'] = hashed_password
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # 회원가입
 @api_view(['POST'])
@@ -35,6 +72,7 @@ def register_user(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # 아이디 찾기
 @api_view(['POST'])
@@ -84,6 +122,46 @@ def update_password(request):
                 return Response({"message": "일치하는 사용자가 없습니다."}, status=400)
         else:
             return Response({"message": "ID와 새로운 비밀번호를 모두 제공해주세요."}, status=400)
+
+# 로그인 로직
+import json
+from django.http import JsonResponse
+from .models import Userlist
+
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            id = data.get('id')
+            password = data.get('password')
+
+            print(f"Received login request: ID={id}, Password={password}")
+
+            # 사용자 모델에서 해당 ID로 사용자 찾기
+            try:
+                user = Userlist.objects.get(id=id)
+            except Userlist.DoesNotExist:
+                user = None
+
+            # 사용자가 존재하고, 비밀번호가 일치하는지 확인
+            if user is not None:
+                if user.password == password:
+                    # 인증 성공
+                    return JsonResponse({'message': '로그인 성공'}, status=200)
+                else:
+                    # 인증 실패
+                    return JsonResponse({'error': 'ID나 비밀번호가 일치하지 않습니다.'}, status=400)
+            else:
+                # 사용자가 존재하지 않음
+                return JsonResponse({'error': 'ID나 비밀번호가 일치하지 않습니다.'}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': '잘못된 JSON 형식입니다.'}, status=400)
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+            return JsonResponse({'error': '서버 오류가 발생했습니다.'}, status=500)
+    else:
+        return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
 
 #닉네임 얻어오기
 @api_view(['GET'])
@@ -326,28 +404,37 @@ def deleteReport(request, pk):
 
 
 #회원 정보에 점수 추가하기 
-
-
 from django.http import JsonResponse
 from boggle.models import Userlist
+
 def update_user_points(request):
     if request.method == 'POST':
         user_id = request.POST.get('userId')
         points_to_add = int(request.POST.get('pointsToAdd'))
-        user = Userlist.objects.get(pk=user_id)
-        user.point += points_to_add
-        user.save()
-        return JsonResponse({'message': 'Points updated successfully'}, status=200)
+        
+        try:
+            user = Userlist.objects.get(pk=user_id)
+            user.point += points_to_add
+            user.save()
+            return JsonResponse({'message': 'Points updated successfully'}, status=200)
+        except Userlist.DoesNotExist:
+            return JsonResponse({'message': 'User not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=500)
     else:
         return JsonResponse({'message': 'Invalid request method'}, status=400)
 
-
 from django.http import JsonResponse
 from boggle.models import Userlist
-def get_user_points(request, user_id):
-    try:
-        user = Userlist.objects.get(id=user_id)
-        user_points = user.points  # User 모델에 포인트 필드가 있다고 가정합니다. 필요에 따라 수정하세요.
-        return JsonResponse({'points': user_points})
-    except Userlist.DoesNotExist:
-        return JsonResponse({'error': 'User not found'}, status=404)
+
+def get_user_points(request, user_id):  # user_id 매개변수 추가
+    if request.method == 'GET':
+        try:
+            user = Userlist.objects.get(pk=user_id)
+            return JsonResponse({'points': user.point}, status=200)
+        except Userlist.DoesNotExist:
+            return JsonResponse({'message': 'User not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'message': 'Invalid request method'}, status=400)

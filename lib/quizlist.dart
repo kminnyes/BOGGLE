@@ -10,10 +10,12 @@ import 'package:boggle/quiz.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Quizlist extends StatefulWidget {
-  const Quizlist({super.key});
+  final String userId;
+
+  const Quizlist({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _QuizlistState createState() => _QuizlistState();
+  State<Quizlist> createState() => _QuizlistState();
 }
 
 class _QuizlistState extends State<Quizlist> {
@@ -24,19 +26,19 @@ class _QuizlistState extends State<Quizlist> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -79,7 +81,7 @@ class _QuizlistState extends State<Quizlist> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const StudyQuiz()),
+                  MaterialPageRoute(builder: (context) => StudyQuiz(userId: widget.userId)),
                 );
               },
               child: const Text('퀴즈 공부하기'),
@@ -100,7 +102,7 @@ class _QuizlistState extends State<Quizlist> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Quiz()),
+                  MaterialPageRoute(builder: (context) => Quiz(userId: widget.userId)),
                 );
               },
               child: const Text('퀴즈 맞추기'),

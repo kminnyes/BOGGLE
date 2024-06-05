@@ -14,10 +14,12 @@ import 'package:boggle/sewer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DoList extends StatefulWidget {
-  const DoList({super.key});
+  final String userId;
+
+  const DoList({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _DoListState createState() => _DoListState();
+  State<DoList> createState() => _DoListState();
 }
 
 class _DoListState extends State<DoList> {
@@ -27,19 +29,19 @@ class _DoListState extends State<DoList> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -173,7 +175,7 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Sewer(title: '하수구 신고'),
+                                builder: (context) => Sewer(title: '하수구 신고', userId: widget.userId),
                               ),
                             );
                           },
@@ -214,7 +216,7 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Quizlist(),
+                                builder: (context) => Quizlist(userId: widget.userId),
                               ),
                             );
                           },

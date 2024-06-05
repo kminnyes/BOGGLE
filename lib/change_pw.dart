@@ -7,6 +7,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 class ChangePW extends StatefulWidget {
+  final String userId;
+
+  const ChangePW({Key? key, required this.userId}) : super(key: key);
+
   @override
   State<ChangePW> createState() => _ChangePWState();
 }
@@ -26,19 +30,19 @@ class _ChangePWState extends State<ChangePW> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(

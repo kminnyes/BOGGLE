@@ -126,8 +126,11 @@ class _RegisterPageState extends State<RegisterPage> {
             const SizedBox(height: 20.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromRGBO(199, 166, 233, 1),
+                backgroundColor: const Color(0xFFC42AFA),
                 foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                ),
               ),
               onPressed: _register,
               child: const Text('회원가입'),
