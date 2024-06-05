@@ -1,17 +1,19 @@
-# boggle
+# BOGGLE
 
-A new Flutter project.
+The New way to save the ENVIRONMENT. (especially, Water Pollution!)
 
-## Getting Started
+Name 'BOGGLE' is the onomatopoeia that explan bubble's shape in Korean.
 
-This project is a starting point for a Flutter application.
+## What we use?
 
-A few resources to get you started if this is your first Flutter project:
+This project use Flutter to implement and make entire UI & Logic
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+and use django to make DB system
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-=======
+## What is this app?
+
+This is the app that make you move to save water from the water pollution!
+
+you can certify your detergent and sewer to get points!
+
+and make your own BOGGLE!
