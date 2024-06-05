@@ -13,6 +13,7 @@ urlpatterns = [
     path('addTask', views.addTask, name='addTask'),
     path('updateTask/<int:pk>/<str:work>', views.updateTask, name='updateTask'),
     path("deleteTask/<int:pk>", views.deleteTask, name='deleteTask'),
+    path('user_info/<int:user_id>/', views.get_user_info, name='get_user_info'),
 
     path('quiz_data_api', views.quiz_data_api, name='quiz_data_api'),
     path('check_answer/', views.check_answer, name='check_answer'),

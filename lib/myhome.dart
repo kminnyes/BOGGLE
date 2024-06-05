@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:boggle/do_list.dart';
 import 'package:boggle/mypage.dart';
 import 'package:boggle/community.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:convert';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -11,6 +13,32 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var _index = 0; // 페이지 인덱스 0,1,2,3
+  String _nickname = '';
+  int _points = 0;
+  int _rank = 0;
+  String _location = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserInfo();
+  }
+
+  void _fetchUserInfo() async {
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8000/user_info/1'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        _nickname = data['nickname'];
+        _points = data['point'];
+        _rank = data['rank'];
+        _location = data['location'];
+      });
+    } else {
+      // 에러 처리
+    }
+  }
 
   // 페이지 이동 함수
   void _navigateToPage(int index) {
@@ -125,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Text('이달의 수질', style: indicatorTextStyle),
                 DropdownButton<String>(
-                  value: '복대동',
+                  value: '$_location',
                   items: <String>['복대동'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -185,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '홍길동 님의 포인트',
+              '$_nickname 님의 포인트',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
@@ -199,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '655 P',
+                    '$_points P',
                     style: TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
@@ -233,8 +261,8 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 _buildPointsColumn(
                     '1,136 P', Colors.grey, '전체 사용자 평균 포인트', 100),
-                _buildPointsColumn(
-                    '655 P', Color.fromARGB(255, 196, 42, 250), '나의 포인트', 60),
+                _buildPointsColumn('$_points P',
+                    Color.fromARGB(255, 196, 42, 250), '나의 포인트', 60),
               ],
             ),
             SizedBox(height: 20),
@@ -282,7 +310,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Icon(Icons.emoji_events, color: Colors.amber, size: 32),
                       SizedBox(width: 10),
                       Text(
-                        '홍길동 님은 6950등 입니다.',
+                        '$_nickname 님은 $_rank등 입니다.',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),

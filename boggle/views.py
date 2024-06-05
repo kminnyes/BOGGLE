@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from boggle.models import Task
 from boggle.models import Report
+from boggle.models import Userlist
+from boggle.serializer import UserlistSerializer
 import requests
 from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import status
@@ -82,6 +84,16 @@ def update_password(request):
                 return Response({"message": "일치하는 사용자가 없습니다."}, status=400)
         else:
             return Response({"message": "ID와 새로운 비밀번호를 모두 제공해주세요."}, status=400)
+
+#닉네임 얻어오기
+@api_view(['GET'])
+def get_user_info(request, user_id):
+    try:
+        user = Userlist.objects.get(id=user_id)
+        serializer = UserlistSerializer(user)
+        return Response(serializer.data, status=200)
+    except Userlist.DoesNotExist:
+        return Response({"message": "사용자를 찾을 수 없음"}, status=404)
 
 ## 세제 인증하기 
 @api_view(['POST'])
