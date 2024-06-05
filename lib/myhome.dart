@@ -125,8 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Text('이달의 수질', style: indicatorTextStyle),
                 DropdownButton<String>(
-                  value: '북대동',
-                  items: <String>['북대동', '남대동'].map((String value) {
+                  value: '복대동',
+                  items: <String>['복대동'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
