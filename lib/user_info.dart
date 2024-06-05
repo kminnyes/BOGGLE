@@ -64,10 +64,9 @@ class _UserInfoState extends State<UserInfo> {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)
-          ),
+              color: Color.fromARGB(255, 196, 42, 250)),
         ),
         centerTitle: false,
       ),
@@ -87,7 +86,8 @@ class _UserInfoState extends State<UserInfo> {
                     border: OutlineInputBorder(),
                     labelText: 'ID',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -99,7 +99,8 @@ class _UserInfoState extends State<UserInfo> {
                     border: OutlineInputBorder(),
                     labelText: '닉네임',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -111,7 +112,8 @@ class _UserInfoState extends State<UserInfo> {
                     border: OutlineInputBorder(),
                     labelText: '지역',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -121,9 +123,10 @@ class _UserInfoState extends State<UserInfo> {
                   decoration: const InputDecoration(
                     filled: true,
                     border: OutlineInputBorder(),
-                    labelText: 'emaiil',
+                    labelText: 'email',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               SizedBox(
@@ -153,9 +156,12 @@ class _UserInfoState extends State<UserInfo> {
         unselectedItemColor: Color.fromARGB(255, 235, 181, 253),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.home))
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );

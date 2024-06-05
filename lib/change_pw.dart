@@ -5,7 +5,6 @@ import 'package:boggle/mypage.dart';
 import 'package:boggle/community.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class ChangePW extends StatefulWidget {
   final String userId;
 
@@ -19,8 +18,6 @@ class _ChangePWState extends State<ChangePW> {
   final TextEditingController _pwController = TextEditingController();
   final TextEditingController _newPWController = TextEditingController();
   final TextEditingController _confirmPWController = TextEditingController();
-
-
 
   @override
   var _index = 3; // 페이지 인덱스 0,1,2,3
@@ -59,10 +56,9 @@ class _ChangePWState extends State<ChangePW> {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)
-          ),
+              color: Color.fromARGB(255, 196, 42, 250)),
         ),
         centerTitle: false,
       ),
@@ -81,7 +77,8 @@ class _ChangePWState extends State<ChangePW> {
                     border: OutlineInputBorder(),
                     labelText: '현재 비밀번호',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -93,7 +90,8 @@ class _ChangePWState extends State<ChangePW> {
                     border: OutlineInputBorder(),
                     labelText: '변경할 비밀번호',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -105,7 +103,8 @@ class _ChangePWState extends State<ChangePW> {
                     border: OutlineInputBorder(),
                     labelText: '변경할 비밀번호 재입력',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               SizedBox(
@@ -120,8 +119,8 @@ class _ChangePWState extends State<ChangePW> {
                 ),
               ),
             ],
+          ),
         ),
-      ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
@@ -135,12 +134,14 @@ class _ChangePWState extends State<ChangePW> {
         unselectedItemColor: Color.fromARGB(255, 235, 181, 253),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.home))
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );
   }
 }
-

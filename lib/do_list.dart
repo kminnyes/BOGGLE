@@ -54,9 +54,9 @@ class _DoListState extends State<DoList> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        textTheme: GoogleFonts.londrinaSolidTextTheme()// 구글 폰트 적용
-      ),
+      theme:
+          ThemeData(textTheme: GoogleFonts.londrinaSolidTextTheme() // 구글 폰트 적용
+              ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.white,
@@ -133,8 +133,8 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const cleanserCertificationList(
-                                ),
+                                builder: (context) =>
+                                    const cleanserCertificationList(),
                               ),
                             );
                           },
@@ -175,7 +175,8 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Sewer(title: '하수구 신고', userId: widget.userId),
+                                builder: (context) => Sewer(
+                                    title: '하수구 신고', userId: widget.userId),
                               ),
                             );
                           },
@@ -216,7 +217,8 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Quizlist(userId: widget.userId),
+                                builder: (context) =>
+                                    Quizlist(userId: widget.userId),
                               ),
                             );
                           },
@@ -271,9 +273,12 @@ class _DoListState extends State<DoList> {
           unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-            BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-            BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person)),
+            BottomNavigationBarItem(
+                label: '실천', icon: Icon(Icons.volunteer_activism)),
+            BottomNavigationBarItem(
+                label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+            BottomNavigationBarItem(
+                label: 'MY', icon: Icon(Icons.account_circle)),
           ],
         ),
       ),

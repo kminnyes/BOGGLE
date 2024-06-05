@@ -14,7 +14,8 @@ class SewerReport extends StatefulWidget {
   final String title;
   final String userId;
 
-  const SewerReport({Key? key, required this.title, required this.userId}) : super(key: key);
+  const SewerReport({Key? key, required this.title, required this.userId})
+      : super(key: key);
 
   @override
   State<SewerReport> createState() => _SewerReportState();
@@ -64,12 +65,12 @@ class Report {
   Report({
     required this.id,
     required this.work,
-    required this.imageUrl, 
-    required  this.title,
+    required this.imageUrl,
+    required this.title,
   });
 
   factory Report.fromJson(Map<String, dynamic> json) {
-    String baseUrl = 'http://10.0.2.2:8000'; 
+    String baseUrl = 'http://10.0.2.2:8000';
     return Report(
       id: json['id'],
       work: json['work'],
@@ -81,7 +82,7 @@ class Report {
 
 class _SewerReportState extends State<SewerReport> {
   final TextEditingController textController = TextEditingController();
-  final TextEditingController  titleController = TextEditingController ();
+  final TextEditingController titleController = TextEditingController();
   List<Report> reports = [];
   bool isModifying = false;
   int modifyingIndex = 0;
@@ -95,17 +96,20 @@ class _SewerReportState extends State<SewerReport> {
   }
 
   Future<void> getReportFromServer() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8000/getReportList'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8000/getReportList'));
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
       List<dynamic> jsonList = json.decode(responseBody);
-      List<Report> list = jsonList.map<Report>((json) => Report.fromJson(json)).toList();
+      List<Report> list =
+          jsonList.map<Report>((json) => Report.fromJson(json)).toList();
       print("Loaded tasks: ${list.length}");
       setState(() {
         reports = list;
       });
     } else {
-      print("Failed to load tasks from server. Status code: ${response.statusCode}");
+      print(
+          "Failed to load tasks from server. Status code: ${response.statusCode}");
       print("Response body: ${response.body}");
     }
   }
@@ -117,7 +121,8 @@ class _SewerReportState extends State<SewerReport> {
     );
 
     if (image != null) {
-      request.files.add(await http.MultipartFile.fromPath('image', image!.path));
+      request.files
+          .add(await http.MultipartFile.fromPath('image', image!.path));
     }
 
     request.fields['work'] = report.work;
@@ -154,7 +159,8 @@ class _SewerReportState extends State<SewerReport> {
   }
 
   Future<void> deleteReportToServer(int id) async {
-    final response = await http.delete(Uri.parse('http://10.0.2.2:8000/deleteReport/$id/'));
+    final response =
+        await http.delete(Uri.parse('http://10.0.2.2:8000/deleteReport/$id/'));
     if (response.statusCode == 200) {
       getReportFromServer();
     } else {
@@ -164,7 +170,8 @@ class _SewerReportState extends State<SewerReport> {
 
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -218,9 +225,9 @@ class _SewerReportState extends State<SewerReport> {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize: 27,
-              fontWeight: FontWeight.normal,
-              color: const Color.fromARGB(255, 196, 42, 250),
+            fontSize: 27,
+            fontWeight: FontWeight.normal,
+            color: const Color.fromARGB(255, 196, 42, 250),
           ),
         ),
       ),
@@ -294,7 +301,8 @@ class _SewerReportState extends State<SewerReport> {
                         decoration: const ShapeDecoration(
                           color: Colors.white,
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 0.50, color: Color(0xFFBABABA)),
+                            side: BorderSide(
+                                width: 0.50, color: Color(0xFFBABABA)),
                           ),
                         ),
                         child: Padding(
@@ -318,7 +326,8 @@ class _SewerReportState extends State<SewerReport> {
                         decoration: const ShapeDecoration(
                           color: Colors.white,
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 0.50, color: Color(0xFFBABABA)),
+                            side: BorderSide(
+                                width: 0.50, color: Color(0xFFBABABA)),
                           ),
                         ),
                         child: Padding(
@@ -342,7 +351,8 @@ class _SewerReportState extends State<SewerReport> {
                         child: Container(
                           width: 54,
                           height: 54,
-                          decoration: const BoxDecoration(color: Color(0xFFC4C4C4)),
+                          decoration:
+                              const BoxDecoration(color: Color(0xFFC4C4C4)),
                           child: image != null
                               ? Image.file(
                                   image!,
@@ -359,7 +369,10 @@ class _SewerReportState extends State<SewerReport> {
                         onTap: () async {
                           if (image != null || isModifying) {
                             if (isModifying) {
-                              await updateReportToServer(reports[modifyingIndex].id, titleController.text, textController.text);
+                              await updateReportToServer(
+                                  reports[modifyingIndex].id,
+                                  titleController.text,
+                                  textController.text);
                             } else {
                               var task = Report(
                                 id: 0,
@@ -502,9 +515,11 @@ class _SewerReportState extends State<SewerReport> {
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.account_circle))
         ],
       ),
     );
@@ -524,9 +539,9 @@ class ReportDetailPage extends StatelessWidget {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize: 27,
-              fontWeight: FontWeight.normal,
-              color: const Color.fromARGB(255, 196, 42, 250),
+            fontSize: 27,
+            fontWeight: FontWeight.normal,
+            color: const Color.fromARGB(255, 196, 42, 250),
           ),
         ),
       ),
