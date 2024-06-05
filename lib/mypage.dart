@@ -79,6 +79,7 @@ class _MyPageState extends State<MyPage> {
               child: const Text('회원정보 수정'),
             ),
           ),
+          const SizedBox(height: 10),
           SizedBox(
             width: 300,
             child: ElevatedButton(
