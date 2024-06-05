@@ -334,6 +334,20 @@ class _MyHomePageState extends State<MyHomePage> {
           SizedBox(height: 10),
           _buildWaterQualityRow(
               Icons.water, Colors.lightBlue, '좋음', '일반 정수 처리 후 마실 수 있음'),
+          SizedBox(height: 10),
+          _buildWaterQualityRow(Icons.water, Color.fromARGB(255, 34, 192, 81),
+              '약간 좋음', '일반 정수 처리 후 마실 수 있음'),
+          SizedBox(height: 10),
+          _buildWaterQualityRow(Icons.water, Color.fromARGB(255, 148, 147, 147),
+              '보통', '일반 정수 후 공업용수로 사용 가능'),
+          SizedBox(height: 10),
+          _buildWaterQualityRow(Icons.water,
+              const Color.fromARGB(255, 125, 115, 28), '약간 나쁨', '농업용수로 사용 가능'),
+          SizedBox(height: 10),
+          _buildWaterQualityRow(
+              Icons.water, Colors.orange, '나쁨', '특수처리 후 공업용수로 사용 가능'),
+          SizedBox(height: 10),
+          _buildWaterQualityRow(Icons.water, Colors.red, '매우 나쁨', '이용 불가능'),
         ],
       ),
     );
