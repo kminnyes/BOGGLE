@@ -37,3 +37,4 @@ class Userlist(models.Model):
     password = models.CharField(null=False, max_length=128) 
     location = models.CharField(null=False, max_length=100) 
     email = models.EmailField(null=False, unique=True, max_length=254)  
+    point = models.BigIntegerField(default=0)

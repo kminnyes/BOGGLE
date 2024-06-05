@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:boggle/login_page.dart';
+import 'package:boggle/services/user_api_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -12,12 +14,11 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  void _register() {
+  void _register() async {
     final String nickname = _nicknameController.text;
     final String id = _idController.text;
     final String password = _passwordController.text;
@@ -25,20 +26,57 @@ class _RegisterPageState extends State<RegisterPage> {
     final String location = _locationController.text;
     final String email = _emailController.text;
 
-    // 회원가입 로직 추가하기
-    // 여기에 필요한 유효성 검사 등을 포함할 수 있습니다.
+    // 이메일 형식 확인
+    if (!_isValidEmail(email)) {
+      _showErrorDialog('올바른 이메일 형식이 아닙니다.');
+      return;
+    }
 
-    print('Nickname: $nickname');
-    print('ID: $id');
-    print('Password: $password');
-    print('Confirm Password: $confirmPassword');
-    print('Location: $location');
-    print('Email: $email');
+    // 비밀번호 일치 확인
+    if (password != confirmPassword) {
+      _showErrorDialog('비밀번호가 일치하지 않습니다.');
+      return;
+    }
 
-    // 회원가입 성공 후 로그인 페이지로 이동
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-      return LoginPage();
-    }));
+    // 서버로 회원가입 요청 보내기
+    final registerResponse = await ApiService.registerUser(id, nickname, password, location, email);
+
+    if (registerResponse.statusCode == 201) {
+      // 회원가입 성공 시 로그인 페이지로 이동
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
+        return LoginPage();
+      }));
+    } else {
+      // 회원가입 실패 시 에러 메시지 표시
+      final responseBody = jsonDecode(registerResponse.body);
+      _showErrorDialog(responseBody['detail'] ?? 'Unknown error');
+    }
+  }
+
+  bool _isValidEmail(String email) {
+    // 이메일 형식 확인하는 정규식
+    final RegExp emailRegex = RegExp(r'^[\w-.]+@([\w-]+.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

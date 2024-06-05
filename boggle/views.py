@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from boggle.serializer import ReportSerializer, TaskSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -7,15 +6,18 @@ from boggle.models import Task
 from boggle.models import Report
 import requests
 from django.http import HttpResponseNotAllowed, JsonResponse
+from rest_framework import status
+
 
 # 회원가입
 @api_view(['POST'])
 def register_user(request):
     if request.method == 'POST':
-        print("Request Data:", request.data)  # 요청 데이터 출력
-        return JsonResponse({'message': 'User registered successfully'})
-    else:
-        return HttpResponseNotAllowed(['POST'])
+        serializer = UserlistSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 ## 세제 인증하기 
 @api_view(['POST'])
