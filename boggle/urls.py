@@ -25,7 +25,8 @@ urlpatterns = [
 
     path('register/', views.register_user, name='register_user'), 
     path('find_user_id/', views.find_user_id, name='find_user_id'),
-     
+    path('find_user_password/', views.find_user_password, name='find_user_password'),
+    path('update_password/', views.update_password, name='update_password'),
 ]
 
 

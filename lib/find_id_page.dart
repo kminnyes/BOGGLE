@@ -13,26 +13,39 @@ class _FindIDPageState extends State<FindIDPage> {
   final TextEditingController _emailController = TextEditingController();
   String? _foundID;
 
-  Future<void> _findID() async {
-    final String email = _emailController.text;
-    final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/find_user_id/'), // Django의 API 엔드포인트
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{'email': email}),
-    );
-
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-      setState(() {
-        _foundID = responseBody['id'];
-      });
-      _showDialog('ID 찾기 성공', 'ID: $_foundID');
-    } else {
-      _showDialog('ID 찾기 실패', '일치하는 가입정보가 없습니다.');
-    }
+  bool _isValidEmail(String email) {
+    // 이메일 형식을 검사하는 정규 표현식
+    final RegExp emailRegExp =
+        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegExp.hasMatch(email);
   }
+
+  Future<void> _findID() async {
+  final String email = _emailController.text;
+
+  if (!_isValidEmail(email)) {
+    _showDialog('이메일 입력', '올바른 이메일 주소를 입력하세요.\n(예: exam123@example.com)');
+    return;
+  }
+
+  final response = await http.post(
+    Uri.parse('http://10.0.2.2:8000/find_user_id/'), // Django의 API 엔드포인트
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{'email': email}),
+  );
+
+  if (response.statusCode == 200) {
+    final responseBody = jsonDecode(response.body);
+    setState(() {
+      _foundID = responseBody['id'];
+    });
+    _showDialog('ID 찾기 성공', 'ID: $_foundID');
+  } else {
+    _showDialog('ID 찾기 실패', '일치하는 가입정보가 없습니다.');
+  }
+}
 
   void _showDialog(String title, String message) {
     showDialog(
@@ -82,8 +95,11 @@ class _FindIDPageState extends State<FindIDPage> {
               width: 300,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                  backgroundColor: const Color(0xFFC42AFA),
                   foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 onPressed: _findID,
                 child: const Text('ID 찾기'),

@@ -47,7 +47,41 @@ def find_user_id(request):
             except Userlist.DoesNotExist:
                 return Response({"message": "일치하는 사용자가 없습니다."}, status=400)
         else:
-            return Response({"message": "이메일을 제공해주세요."}, status=400)
+            return Response({"message": "이메일을 입력해주세요."}, status=400)
+
+# 비밀번호 찾기
+@api_view(['POST'])
+def find_user_password(request):
+    if request.method == 'POST':
+        user_id = request.data.get('id', None)
+        email = request.data.get('email', None)
+        if user_id and email:
+            try:
+                user = Userlist.objects.get(id=user_id, email=email)
+                serializer = UserlistSerializer(user)
+                return Response(serializer.data, status=200)
+            except Userlist.DoesNotExist:
+                return Response({"message": "일치하는 정보가 없습니다."}, status=400)
+        else:
+            return Response({"message": "ID와 이메일을 입력해주세요."}, status=400)
+
+
+# 비밀번호 업데이트 
+@api_view(['PUT'])
+def update_password(request):
+    if request.method == 'PUT':
+        user_id = request.data.get('id', None)
+        new_password = request.data.get('password', None)
+        if user_id and new_password:
+            try:
+                user = Userlist.objects.get(id=user_id)
+                user.password = new_password
+                user.save()
+                return Response({"message": "비밀번호가 성공적으로 업데이트되었습니다."}, status=200)
+            except Userlist.DoesNotExist:
+                return Response({"message": "일치하는 사용자가 없습니다."}, status=400)
+        else:
+            return Response({"message": "ID와 새로운 비밀번호를 모두 제공해주세요."}, status=400)
 
 ## 세제 인증하기 
 @api_view(['POST'])

@@ -47,9 +47,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Login"),
         centerTitle: true,
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: Column(
@@ -86,8 +88,11 @@ class _LoginPageState extends State<LoginPage> {
               width: 300,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                  backgroundColor: const Color(0xFFC42AFA),
                   foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 onPressed: () {
                   Navigator.push(
