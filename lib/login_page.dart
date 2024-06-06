@@ -117,28 +117,60 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '아이디',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             SizedBox(
               width: 300,
               child: TextField(
                 controller: _idController,
                 decoration: const InputDecoration(
-                  filled: true,
+                  filled: true, 
+                  fillColor: Colors.white,  
                   border: OutlineInputBorder(),
-                  labelText: 'ID',
+                  hintText: '아이디를 입력해주세요',
                   contentPadding: EdgeInsets.all(8),
                 ),
               ),
             ),
             const SizedBox(height: 10),
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '비밀번호',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             SizedBox(
               width: 300,
               child: TextField(
                 controller: _passwordController,
                 obscureText: true,
                 decoration: const InputDecoration(
-                  filled: true,
+                  filled: true, 
+                  fillColor: Colors.white,  
                   border: OutlineInputBorder(),
-                  labelText: 'PW',
+                  hintText: '비밀번호를 입력해주세요',
                   contentPadding: EdgeInsets.all(8),
                 ),
               ),
