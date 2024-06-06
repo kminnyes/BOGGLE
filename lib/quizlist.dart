@@ -10,10 +10,12 @@ import 'package:boggle/quiz.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Quizlist extends StatefulWidget {
-  const Quizlist({super.key});
+  final String userId;
+
+  const Quizlist({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _QuizlistState createState() => _QuizlistState();
+  State<Quizlist> createState() => _QuizlistState();
 }
 
 class _QuizlistState extends State<Quizlist> {
@@ -24,19 +26,19 @@ class _QuizlistState extends State<Quizlist> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -53,23 +55,25 @@ class _QuizlistState extends State<Quizlist> {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)
-          ),
+              color: Color.fromARGB(255, 196, 42, 250)),
         ),
         centerTitle: false,
-        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor:const Color.fromARGB(255, 235, 181, 253), // Button color
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                minimumSize: const Size(200, 60), 
-                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                backgroundColor:
+                    const Color.fromARGB(255, 235, 181, 253), // Button color
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                minimumSize: const Size(200, 60),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -79,7 +83,8 @@ class _QuizlistState extends State<Quizlist> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const StudyQuiz()),
+                  MaterialPageRoute(
+                      builder: (context) => StudyQuiz(userId: widget.userId)),
                 );
               },
               child: const Text('퀴즈 공부하기'),
@@ -87,10 +92,13 @@ class _QuizlistState extends State<Quizlist> {
             const SizedBox(height: 20), // Add space between buttons
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 235, 181, 253), // Button color
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor:
+                    const Color.fromARGB(255, 235, 181, 253), // Button color
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 minimumSize: const Size(200, 60), // Button size
-                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -100,7 +108,8 @@ class _QuizlistState extends State<Quizlist> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Quiz()),
+                  MaterialPageRoute(
+                      builder: (context) => Quiz(userId: widget.userId)),
                 );
               },
               child: const Text('퀴즈 맞추기'),
@@ -120,9 +129,12 @@ class _QuizlistState extends State<Quizlist> {
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.checklist)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.people)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person)),
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );

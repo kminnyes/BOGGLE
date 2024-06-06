@@ -30,3 +30,12 @@ class Report(models.Model):
     work = models.CharField(max_length=400, default='null')
     title = models.CharField(max_length=400, default='null')
     image = models.ImageField(upload_to='task_images_2/', null=True, blank=True)
+
+class Userlist(models.Model):
+    id = models.CharField(primary_key=True, unique=True, max_length=50)
+    nickname = models.CharField(null=False, max_length=30)  
+    password = models.CharField(null=False, max_length=128) 
+    location = models.CharField(null=False, max_length=100) 
+    email = models.EmailField(null=False, unique=True, max_length=254)  
+    point = models.BigIntegerField(default=0)
+    rank = models.BigIntegerField(default = 1)

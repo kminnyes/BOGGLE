@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task
+from .models import Task, Userlist
 from .models import Quiz
 from .models import Report
 
@@ -20,3 +20,8 @@ class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = ('id', 'work','title','image')
+
+class UserlistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Userlist
+        fields = ('id', 'nickname','password','location', 'email', 'point')

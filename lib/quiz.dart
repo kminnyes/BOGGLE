@@ -8,10 +8,12 @@ import 'package:boggle/community.dart';
 import 'package:boggle/mypage.dart';
 
 class Quiz extends StatefulWidget {
-  const Quiz({super.key});
+  final String userId;
+
+  const Quiz({super.key, required this.userId});
 
   @override
-  _QuizState createState() => _QuizState();
+  State<Quiz> createState() => _QuizState();
 }
 
 class _QuizState extends State<Quiz> {
@@ -22,21 +24,40 @@ class _QuizState extends State<Quiz> {
   bool _isQuizCompleted = false;
   int _selectedIndex = 1;
   String _selectedAnswer = '';
+  late String _userId;
+  final int _pointsToAdd = 10;
+  String _userPoints = '0';
 
   @override
   void initState() {
     super.initState();
+    _userId = widget.userId; // userId 할당
     _fetchQuizData();
+    _fetchUserPoints();
   }
 
   Future<void> _fetchQuizData() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8000/quiz_data_api'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8000/quiz_data_api'));
     if (response.statusCode == 200) {
       setState(() {
         _quizData = json.decode(response.body);
       });
     } else {
       throw Exception('Failed to load quiz data');
+    }
+  }
+
+  Future<void> _fetchUserPoints() async {
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8000/user_points/$_userId'));
+    if (response.statusCode == 200) {
+      final userPoints = json.decode(response.body)['points'];
+      setState(() {
+        _userPoints = userPoints.toString();
+      });
+    } else {
+      throw Exception('Failed to load user points');
     }
   }
 
@@ -58,6 +79,7 @@ class _QuizState extends State<Quiz> {
         if (result['result'] == 'correct') {
           _resultMessage = 'Correct!';
           _correctAnswers++;
+          _updateUserPoints(_userId, 3); // Update points here
         } else {
           _resultMessage = 'Incorrect!';
         }
@@ -66,7 +88,8 @@ class _QuizState extends State<Quiz> {
           _currentQuizIndex++;
         } else {
           _isQuizCompleted = true;
-          _resultMessage += '\n\nQuiz completed! You got $_correctAnswers out of ${_quizData.length} correct.';
+          _resultMessage +=
+              '\n\nQuiz completed! You got $_correctAnswers out of ${_quizData.length} correct.';
         }
         _selectedAnswer = '';
       });
@@ -75,23 +98,46 @@ class _QuizState extends State<Quiz> {
     }
   }
 
+  Future<void> _updateUserPoints(String userId, int pointsToAdd) async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:8000/update_user_points/'), // 슬래시 추가
+      headers: <String, String>{
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        'userId': userId,
+        'pointsToAdd': pointsToAdd.toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print('Points updated successfully');
+      _fetchUserPoints(); // Update user points after adding points
+    } else {
+      throw Exception('Failed to update points');
+    }
+  }
+
   void _navigateToPage(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage =  const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -107,12 +153,12 @@ class _QuizState extends State<Quiz> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-      title: Text(
+        title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
-              fontWeight: FontWeight.normal,
-              color: const Color.fromARGB(255, 196, 42, 250)
+            fontSize: 27,
+            fontWeight: FontWeight.normal,
+            color: const Color.fromARGB(255, 196, 42, 250),
           ),
         ),
         centerTitle: true,
@@ -121,7 +167,7 @@ class _QuizState extends State<Quiz> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
-            _selectedIndex = 1;
+            _selectedIndex = index;
           });
           _navigateToPage(_selectedIndex);
         },
@@ -130,9 +176,12 @@ class _QuizState extends State<Quiz> {
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-            BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-            BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person)),
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );
@@ -140,49 +189,56 @@ class _QuizState extends State<Quiz> {
 
   Widget _buildQuizPage() {
     return Scaffold(
-      appBar: AppBar(
-      
-      ),
+      appBar: AppBar(),
       body: _quizData.isEmpty
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _quizData[_currentQuizIndex]['explain'],
-              style: const TextStyle(fontSize: 15.0),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ..._buildChoiceButtons(_quizData[_currentQuizIndex]),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _checkAnswer(
-                _quizData[_currentQuizIndex]['explain'],
-                _selectedAnswer,
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                backgroundColor: Colors.purple,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+          : ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _quizData[_currentQuizIndex]['explain'],
+                      style: const TextStyle(fontSize: 15.0),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    ..._buildChoiceButtons(_quizData[_currentQuizIndex]),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => _checkAnswer(
+                        _quizData[_currentQuizIndex]['explain'],
+                        _selectedAnswer,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 24),
+                        backgroundColor: Colors.purple,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        '확인하기',
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      _resultMessage,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '포인트: $_userPoints',
+                      style: const TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-              ),
-              child: const Text(
-                '확인하기',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
+              ],
             ),
-            const SizedBox(height: 20),
-            Text(
-              _resultMessage,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -264,9 +320,9 @@ class CorrectAnswersPage extends StatelessWidget {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
-              fontWeight: FontWeight.normal,
-              color: const Color.fromARGB(255, 196, 42, 250)
+            fontSize: 27,
+            fontWeight: FontWeight.normal,
+            color: const Color.fromARGB(255, 196, 42, 250),
           ),
         ),
       ),
@@ -276,9 +332,9 @@ class CorrectAnswersPage extends StatelessWidget {
         itemBuilder: (context, index) {
           return Card(
             margin: const EdgeInsets.symmetric(vertical: 8.0),
-            elevation: 4, // Add elevation for a shadow effect
+            elevation: 4,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0), // Rounded corners
+              borderRadius: BorderRadius.circular(12.0),
             ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -287,12 +343,14 @@ class CorrectAnswersPage extends StatelessWidget {
                 children: [
                   Text(
                     quizData[index]['explain'],
-                    style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18.0, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8.0),
                   Text(
                     '정답: ${quizData[index]['hNm']}',
-                    style: const TextStyle(fontSize: 16.0, color: Colors.black54),
+                    style:
+                        const TextStyle(fontSize: 16.0, color: Colors.black54),
                   ),
                 ],
               ),
@@ -300,7 +358,6 @@ class CorrectAnswersPage extends StatelessWidget {
           );
         },
       ),
-      
     );
   }
 }
