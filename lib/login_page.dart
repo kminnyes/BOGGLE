@@ -17,6 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _showPassword = false; // 비밀번호 보이기 여부
 
   void _login() async {
     final String id = _idController.text;
@@ -165,13 +166,21 @@ class _LoginPageState extends State<LoginPage> {
               width: 300,
               child: TextField(
                 controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: !_showPassword, // 비밀번호 가리기/보이기 제어
+                decoration:  InputDecoration(
                   filled: true, 
                   fillColor: Colors.white,  
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   hintText: '비밀번호를 입력해주세요',
-                  contentPadding: EdgeInsets.all(8),
+                  contentPadding: const EdgeInsets.all(8),
+                  suffixIcon: IconButton(
+                  icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      _showPassword = !_showPassword; // 상태 변경
+                    });
+                  },
+                ),
                 ),
               ),
             ),

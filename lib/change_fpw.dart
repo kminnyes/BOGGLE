@@ -16,6 +16,8 @@ class _ChangeFPWState extends State<ChangeFPW> {
   final TextEditingController _idController = TextEditingController(); // 아이디 입력 필드 추가
   final TextEditingController _pwController = TextEditingController();
   final TextEditingController _confirmPWController = TextEditingController();
+  bool _showPassword = false; // 비밀번호 보이기 여부
+  bool _showConfirmPassword = false; // 비밀번호 확인 보이기 여부
 
   @override
   void initState() {
@@ -84,12 +86,21 @@ class _ChangeFPWState extends State<ChangeFPW> {
               width: 300,
               child: TextField(
                 controller: _pwController,
-                decoration: const InputDecoration(
+                obscureText: !_showPassword, // 비밀번호 가리기/보이기 제어
+                decoration:  InputDecoration(
                   filled: true, 
                   fillColor: Colors.white,       
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   hintText: '새로운 비밀번호를 입력해주세요',
-                  contentPadding: EdgeInsets.all(8),
+                  contentPadding: const EdgeInsets.all(8),
+                  suffixIcon: IconButton(
+                  icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      _showPassword = !_showPassword; // 상태 변경
+                    });
+                  },
+                ),
                 ),
               ),
             ),
@@ -113,12 +124,21 @@ class _ChangeFPWState extends State<ChangeFPW> {
               width: 300,
               child: TextField(
                 controller: _confirmPWController,
-                decoration: const InputDecoration(
+                obscureText: !_showConfirmPassword, // 비밀번호 가리기/보이기 제어
+                decoration: InputDecoration(
                   filled: true, 
                   fillColor: Colors.white,       
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   hintText: '새로운 비밀번호를 한번 더 입력해주세요',
-                  contentPadding: EdgeInsets.all(8),
+                  contentPadding: const EdgeInsets.all(8),
+                  suffixIcon: IconButton(
+                  icon: Icon(_showConfirmPassword ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      _showConfirmPassword = !_showConfirmPassword; // 상태 변경
+                    });
+                  },
+                ),
                 ),
               ),
             ),

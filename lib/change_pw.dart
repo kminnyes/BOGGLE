@@ -21,6 +21,9 @@ class _ChangePWState extends State<ChangePW> {
   final TextEditingController _newPWController = TextEditingController();
   final TextEditingController _confirmPWController = TextEditingController();
   String _password = '';
+  bool _showPassword = false; // 비밀번호 보이기 여부
+  bool _showConfirmPassword = false; // 비밀번호 확인 보이기 여부
+  bool _showoriginPassword = false; // 비밀번호 보이기 여부
 
   @override
   var _index = 3; // 페이지 인덱스 0,1,2,3
@@ -262,13 +265,21 @@ class _ChangePWState extends State<ChangePW> {
                 width: 300,
                 child: TextField(
                   controller: _pwController,
-                  obscureText: true, // 비밀번호 입력 시 마스킹 처리
-                  decoration: const InputDecoration(
+                  obscureText: !_showoriginPassword, // 비밀번호 가리기/보이기 제어
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     hintText: '현재 비밀번호를 입력해주세요',
-                    contentPadding: EdgeInsets.all(8),
+                    contentPadding: const EdgeInsets.all(8),
+                    suffixIcon: IconButton(
+                    icon: Icon(_showoriginPassword ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _showoriginPassword = !_showoriginPassword; // 상태 변경
+                      });
+                    },
+                  ),
                   ),
                 ),
               ),
@@ -292,13 +303,21 @@ class _ChangePWState extends State<ChangePW> {
                 width: 300,
                 child: TextField(
                   controller: _newPWController,
-                  obscureText: true, // 비밀번호 입력 시 마스킹 처리
-                  decoration: const InputDecoration(
+                  obscureText: !_showPassword, // 비밀번호 가리기/보이기 제어
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     hintText: '새로운 비밀번호를 입력해주세요',
-                    contentPadding: EdgeInsets.all(8),
+                    contentPadding: const EdgeInsets.all(8),
+                    suffixIcon: IconButton(
+                    icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _showPassword = !_showPassword; // 상태 변경
+                      });
+                    },
+                  ),
                   ),
                 ),
               ),
@@ -322,13 +341,21 @@ class _ChangePWState extends State<ChangePW> {
                 width: 300,
                 child: TextField(
                   controller: _confirmPWController,
-                  obscureText: true, // 비밀번호 입력 시 마스킹 처리
-                  decoration: const InputDecoration(
+                  obscureText: !_showConfirmPassword, // 비밀번호 가리기/보이기 제어
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     hintText: '새로운 비밀번호를 한번 더 입력해주세요',
-                    contentPadding: EdgeInsets.all(8),
+                    contentPadding: const EdgeInsets.all(8),
+                    suffixIcon: IconButton(
+                    icon: Icon(_showConfirmPassword ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _showConfirmPassword = !_showConfirmPassword; // 상태 변경
+                      });
+                    },
+                  ),
                   ),
                 ),
               ),

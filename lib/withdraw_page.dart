@@ -21,6 +21,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
   final TextEditingController _pwController = TextEditingController();
   var _index = 3; // 페이지 인덱스 0,1,2,3
   String _password = '';
+  bool _showPassword = false; // 비밀번호 보이기 여부
 
   @override
   void initState() {
@@ -213,13 +214,21 @@ class _WithdrawPageState extends State<WithdrawPage> {
               width: 300,
               child: TextField(
                 controller: _pwController,
-                decoration: const InputDecoration(
+                obscureText: !_showPassword, // 비밀번호 가리기/보이기 제어
+                decoration: InputDecoration(
                   filled: true, // 배경을 채우도록 설정
                   fillColor: Colors.white, // 배경 색상을 하얀색으로 설정
-                  border: OutlineInputBorder(),
-                  // labelText: '비밀번호',
-                  hintText: '비밀번호',
-                  contentPadding: EdgeInsets.all(8),
+                  border: const OutlineInputBorder(),
+                  hintText: '비밀번호를 입력해주세요',
+                  contentPadding: const EdgeInsets.all(8),
+                  suffixIcon: IconButton(
+                  icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      _showPassword = !_showPassword; // 상태 변경
+                    });
+                  },
+                ),
                 ),
               ),
             ),
