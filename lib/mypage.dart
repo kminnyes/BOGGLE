@@ -115,10 +115,10 @@ class _MyPageState extends State<MyPage> {
                 width: 300,
                 height: 80,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 0.0),
+                  padding: const EdgeInsets.only(left: 0.0),
                   child: Text(
                     '안녕하세요!\n $_nickname 님',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -148,6 +148,7 @@ class _MyPageState extends State<MyPage> {
                         fontSize: 20,
                       ),
                     ),
+                    const SizedBox(height: 10),
                     const SizedBox(height: 30),
                     SizedBox(
                       width: 300,
@@ -177,6 +178,7 @@ class _MyPageState extends State<MyPage> {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: 300,
                         child: TextButton(
@@ -187,7 +189,7 @@ class _MyPageState extends State<MyPage> {
                                 builder: (context) => ChangePW(userId: widget.userId)),
                             );
                           },
-                          child: Row(
+                          child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
@@ -205,21 +207,8 @@ class _MyPageState extends State<MyPage> {
                             ),
                       ),
                     ),
-                    
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Divider(
-              height: 20,
-              color: Colors.grey[200],
-              thickness: 10, // 선의 두께 조정
-              indent: 0, // 시작 위치에서의 간격 조정
-              endIndent: 0, // 끝 위치에서의 간격 조정
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
+                    const SizedBox(height: 10),
+                    SizedBox(
                         width: 300,
                         child: TextButton(
                           onPressed: () {
@@ -229,7 +218,7 @@ class _MyPageState extends State<MyPage> {
                                 builder: (context) => WithdrawPage(userId: widget.userId)),
                             );
                           },
-                          child: Row(
+                          child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
@@ -247,7 +236,11 @@ class _MyPageState extends State<MyPage> {
                             ),
                       ),
                     ),
-
+                  ],
+                ),
+              ),
+              
+            ),
           ],
         ),
       ),

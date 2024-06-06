@@ -36,41 +36,88 @@ class _ChangeFPWState extends State<ChangeFPW> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '아이디',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             SizedBox(
               width: 300,
               child: TextField(
                 controller: _idController, // 아이디 입력 필드
                 readOnly: true, // 읽기 전용으로 설정하여 수정 불가능하게 함
                 decoration: const InputDecoration(
-                  filled: true,
+                  filled: true, 
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
-                  labelText: 'ID',
                   contentPadding: EdgeInsets.all(8),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '새로운 비밀번호',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             SizedBox(
               width: 300,
               child: TextField(
                 controller: _pwController,
                 decoration: const InputDecoration(
-                  filled: true,
+                  filled: true, 
+                  fillColor: Colors.white,       
                   border: OutlineInputBorder(),
-                  labelText: '새로운 비밀번호',
+                  hintText: '새로운 비밀번호를 입력해주세요',
                   contentPadding: EdgeInsets.all(8),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '새로운 비밀번호 확인',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             SizedBox(
               width: 300,
               child: TextField(
                 controller: _confirmPWController,
                 decoration: const InputDecoration(
-                  filled: true,
+                  filled: true, 
+                  fillColor: Colors.white,       
                   border: OutlineInputBorder(),
-                  labelText: '새로운 비밀번호 재입력',
+                  hintText: '새로운 비밀번호를 한번 더 입력해주세요',
                   contentPadding: EdgeInsets.all(8),
                 ),
               ),
@@ -80,9 +127,11 @@ class _ChangeFPWState extends State<ChangeFPW> {
               width: 300,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                  backgroundColor: const Color(0xFFC42AFA),
                   foregroundColor: Colors.white,
-                ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),),
                 onPressed: _updatePW,
                 child: const Text('비밀번호 변경하기'),
               ),

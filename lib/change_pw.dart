@@ -50,6 +50,7 @@ class _ChangePWState extends State<ChangePW> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -68,40 +69,88 @@ class _ChangePWState extends State<ChangePW> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '현재 비밀번호',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _pwController,
                   decoration: const InputDecoration(
-                    filled: true,
+                    filled: true, 
+                    fillColor: Colors.white,                   
                     border: OutlineInputBorder(),
-                    labelText: '현재 비밀번호',
+                    hintText: '현재 비밀번호를 입력해주세요',
                     contentPadding: EdgeInsets.all(8),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 30),
+              const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '새로운 비밀번호',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _newPWController,
                   decoration: const InputDecoration(
-                    filled: true,
+                    filled: true, 
+                    fillColor: Colors.white,                   
                     border: OutlineInputBorder(),
-                    labelText: '변경할 비밀번호',
+                    hintText: '새로운 비밀번호를 입력해주세요',
                     contentPadding: EdgeInsets.all(8),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
+              const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '새로운 비밀번호 확인',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _confirmPWController,
                   decoration: const InputDecoration(
-                    filled: true,
+                    filled: true, 
+                    fillColor: Colors.white,                   
                     border: OutlineInputBorder(),
-                    labelText: '변경할 비밀번호 재입력',
+                    hintText: '새로운 비밀번호를 한번 더 입력해주세요',
                     contentPadding: EdgeInsets.all(8),
                   ),
                 ),
@@ -111,9 +160,11 @@ class _ChangePWState extends State<ChangePW> {
                 width: 300,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                    backgroundColor: const Color(0xFFC42AFA),
                     foregroundColor: Colors.white,
-                  ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),),
                   onPressed: () {},
                   child: const Text('비밀번호 수정'),
                 ),
