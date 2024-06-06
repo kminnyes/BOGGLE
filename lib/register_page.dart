@@ -83,7 +83,9 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text('회원가입'),
         centerTitle: true,
       ),
@@ -92,36 +94,144 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '닉네임',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             TextField(
               controller: _nicknameController,
-              decoration: const InputDecoration(labelText: '닉네임'),
+              decoration: const InputDecoration(
+                filled: true, 
+                fillColor: Colors.white,                   
+                hintText: '닉네임을 입력해주세요'),
             ),
             const SizedBox(height: 20.0),
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '아이디',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             TextField(
               controller: _idController,
-              decoration: const InputDecoration(labelText: '아이디'),
+              decoration: const InputDecoration(
+                filled: true, 
+                fillColor: Colors.white,                   
+                hintText: '아이디를 입력해주세요'),
             ),
             const SizedBox(height: 20.0),
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '비밀번호',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: '비밀번호'),
+              decoration: const InputDecoration(
+                filled: true, 
+                fillColor: Colors.white,                   
+                hintText: '비밀번호를 입력해주세요'),
             ),
             const SizedBox(height: 20.0),
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '비밀번호 확인',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             TextField(
               controller: _confirmPasswordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: '비밀번호 확인'),
+              decoration: const InputDecoration(
+                filled: true, 
+                fillColor: Colors.white,                   
+                hintText: '비밀번호를 한번 더 입력해주세요'),
             ),
             const SizedBox(height: 20.0),
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '지역',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             TextField(
               controller: _locationController,
-              decoration: const InputDecoration(labelText: '지역'),
+              decoration: const InputDecoration(
+                filled: true, 
+                fillColor: Colors.white,                   
+                hintText: '거주 지역을 입력해주세요'),
             ),
             const SizedBox(height: 20.0),
+            const SizedBox(
+              width: 300,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '이메일',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),  
+            ),
+            const SizedBox(height: 5),
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: '이메일'),
+              decoration: const InputDecoration(
+                filled: true, 
+                fillColor: Colors.white,                   
+                hintText:'이메일을 입력해주세요'),
             ),
             const SizedBox(height: 20.0),
             ElevatedButton(

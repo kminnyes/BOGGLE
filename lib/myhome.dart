@@ -145,14 +145,14 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            color: Colors.blue,
             height: 200,
-            child: Center(
-              child: Text(
-                '어항 이미지',
-                style: TextStyle(color: Colors.white),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('image/background.png'), // 이미지 경로 설정
+                fit: BoxFit.cover,
               ),
             ),
+            child: Center(),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),

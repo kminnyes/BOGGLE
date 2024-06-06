@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:boggle/change_pw.dart';
-import 'package:boggle/login_page.dart';
+import 'package:boggle/withdraw_page.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
@@ -17,9 +19,36 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  @override
   var _index = 3; // 페이지 인덱스 0,1,2,3
+  String _nickname = ''; 
+  int _points = 0;
+  int _rank = 0;
+  String? _location; // 초기값을 null로 설정
+  late final String _userId = widget.userId; // userId 할당
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserInfo();
+  }
+
+  void _fetchUserInfo() async {
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8000/user_info/$_userId'));
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
+      setState(() {
+        _nickname = data['nickname'] ?? ''; // null 체크 및 기본값 설정
+        _points = data['point'] ?? 0;
+        _rank = data['rank'] ?? 0;
+        _location = data['location'] ?? 'Unknown';
+      });
+      print(_nickname);
+    } else {
+      // 에러 처리
+      print('Failed to load user info');
+    }
+  }
   // 페이지 이동 함수
   void _navigateToPage(int index) {
     Widget nextPage;
@@ -48,6 +77,7 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -61,46 +91,166 @@ class _MyPageState extends State<MyPage> {
         centerTitle: false,
       ),
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 300,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
-                foregroundColor: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center, // 왼쪽 정렬
+          children: [
+            const SizedBox(height: 20), // 10만큼의 간격
+            SizedBox(
+              height: 120,
+              width: 120,
+              child: CircleAvatar(
+                // 여기에 프로필 사진을 가져오는 코드를 넣으세요.
+                backgroundColor: Colors.grey[200],
+                child: Icon(
+                  Icons.account_circle,
+                  size: 70,
+                  color: Colors.grey[400],
+                ),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserInfo(userId: widget.userId)),
-                );
-              },
-              child: const Text('회원정보 수정'),
             ),
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: 300,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
-                foregroundColor: Colors.white,
+            const SizedBox(height: 10),
+            Container(
+              margin: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 300,
+                height: 80,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 0.0),
+                  child: Text(
+                    '안녕하세요!\n $_nickname 님',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ChangePW(userId: widget.userId)),
-                );
-              },
-              child: const Text('비밀번호 수정'),
             ),
-          ),
-        ],
-      )),
+            Divider(
+              height: 20,
+              color: Colors.grey[200],
+              thickness: 10, // 선의 두께 조정
+              indent: 0, // 시작 위치에서의 간격 조정
+              endIndent: 0, // 끝 위치에서의 간격 조정
+            ),
+            const SizedBox(height: 20),
+            Container(
+              margin: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 300,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // 가운데 정렬
+                  children: [
+                    const Text(
+                      '내 정보 관리',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      width: 300,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserInfo(userId: widget.userId)),
+                            );
+                          },
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '   회원정보 수정',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.black,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChangePW(userId: widget.userId)),
+                            );
+                          },
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '   비밀번호 수정',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.black,
+                                ),
+                              ],
+                            ),
+                      ),
+                    ),
+                    
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Divider(
+              height: 20,
+              color: Colors.grey[200],
+              thickness: 10, // 선의 두께 조정
+              indent: 0, // 시작 위치에서의 간격 조정
+              endIndent: 0, // 끝 위치에서의 간격 조정
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+                        width: 300,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WithdrawPage(userId: widget.userId)),
+                            );
+                          },
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '   회원탈퇴',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.black,
+                                ),
+                              ],
+                            ),
+                      ),
+                    ),
+
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
