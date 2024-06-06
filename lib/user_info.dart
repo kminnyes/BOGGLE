@@ -5,8 +5,11 @@ import 'package:boggle/mypage.dart';
 import 'package:boggle/community.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class UserInfo extends StatefulWidget {
+  final String userId;
+
+  const UserInfo({Key? key, required this.userId}) : super(key: key);
+
   @override
   State<UserInfo> createState() => _UserInfoState();
 }
@@ -17,6 +20,12 @@ class _UserInfoState extends State<UserInfo> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    // userId 값을 _idController에 설정하여 ID 창에 자동으로 입력되도록 함
+    _idController.text = widget.userId;
+  }
 
   @override
   var _index = 3; // 페이지 인덱스 0,1,2,3
@@ -26,19 +35,19 @@ class _UserInfoState extends State<UserInfo> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -55,10 +64,9 @@ class _UserInfoState extends State<UserInfo> {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)
-          ),
+              color: Color.fromARGB(255, 196, 42, 250)),
         ),
         centerTitle: false,
       ),
@@ -78,7 +86,8 @@ class _UserInfoState extends State<UserInfo> {
                     border: OutlineInputBorder(),
                     labelText: 'ID',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -90,7 +99,8 @@ class _UserInfoState extends State<UserInfo> {
                     border: OutlineInputBorder(),
                     labelText: '닉네임',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -102,7 +112,8 @@ class _UserInfoState extends State<UserInfo> {
                     border: OutlineInputBorder(),
                     labelText: '지역',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -112,9 +123,10 @@ class _UserInfoState extends State<UserInfo> {
                   decoration: const InputDecoration(
                     filled: true,
                     border: OutlineInputBorder(),
-                    labelText: 'emaiil',
+                    labelText: 'email',
                     contentPadding: EdgeInsets.all(8),
-                  ),),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               SizedBox(
@@ -129,8 +141,8 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
             ],
+          ),
         ),
-      ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
@@ -144,9 +156,12 @@ class _UserInfoState extends State<UserInfo> {
         unselectedItemColor: Color.fromARGB(255, 235, 181, 253),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.home))
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );

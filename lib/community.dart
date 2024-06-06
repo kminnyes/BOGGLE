@@ -5,6 +5,10 @@ import 'package:boggle/mypage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Community extends StatefulWidget {
+  final String userId;
+
+  const Community({Key? key, required this.userId}) : super(key: key);
+
   @override
   State<Community> createState() => _CommunityState();
 }
@@ -18,19 +22,19 @@ class _CommunityState extends State<Community> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -48,10 +52,9 @@ class _CommunityState extends State<Community> {
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-            fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)
-              ),
+              color: Color.fromARGB(255, 196, 42, 250)),
         ),
         centerTitle: false,
       ),
@@ -73,9 +76,12 @@ class _CommunityState extends State<Community> {
         unselectedItemColor: Color.fromARGB(255, 235, 181, 253),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );

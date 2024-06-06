@@ -14,10 +14,12 @@ import 'package:boggle/sewer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DoList extends StatefulWidget {
-  const DoList({super.key});
+  final String userId;
+
+  const DoList({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _DoListState createState() => _DoListState();
+  State<DoList> createState() => _DoListState();
 }
 
 class _DoListState extends State<DoList> {
@@ -27,19 +29,19 @@ class _DoListState extends State<DoList> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -52,9 +54,9 @@ class _DoListState extends State<DoList> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        textTheme: GoogleFonts.londrinaSolidTextTheme()// 구글 폰트 적용
-      ),
+      theme:
+          ThemeData(textTheme: GoogleFonts.londrinaSolidTextTheme() // 구글 폰트 적용
+              ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.white,
@@ -131,8 +133,8 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const cleanserCertificationList(
-                                ),
+                                builder: (context) =>
+                                    const cleanserCertificationList(),
                               ),
                             );
                           },
@@ -173,7 +175,8 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Sewer(title: '하수구 신고'),
+                                builder: (context) => Sewer(
+                                    title: '하수구 신고', userId: widget.userId),
                               ),
                             );
                           },
@@ -214,7 +217,8 @@ class _DoListState extends State<DoList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Quizlist(),
+                                builder: (context) =>
+                                    Quizlist(userId: widget.userId),
                               ),
                             );
                           },
@@ -269,9 +273,12 @@ class _DoListState extends State<DoList> {
           unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-            BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-            BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person)),
+            BottomNavigationBarItem(
+                label: '실천', icon: Icon(Icons.volunteer_activism)),
+            BottomNavigationBarItem(
+                label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+            BottomNavigationBarItem(
+                label: 'MY', icon: Icon(Icons.account_circle)),
           ],
         ),
       ),

@@ -8,11 +8,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Sewer extends StatefulWidget {
   final String title;
+  final String userId;
 
-  const Sewer({super.key, required this.title});
+  const Sewer({Key? key, required this.title, required this.userId})
+      : super(key: key);
 
   @override
-  _SewerState createState() => _SewerState();
+  State<Sewer> createState() => _SewerState();
 }
 
 class _SewerState extends State<Sewer> {
@@ -23,19 +25,19 @@ class _SewerState extends State<Sewer> {
     Widget nextPage;
     switch (index) {
       case 0:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
         break;
       case 1:
-        nextPage = const DoList();
+        nextPage = DoList(userId: widget.userId);
         break;
       case 2:
-        nextPage = Community();
+        nextPage = Community(userId: widget.userId);
         break;
       case 3:
-        nextPage = const MyPage();
+        nextPage = MyPage(userId: widget.userId);
         break;
       default:
-        nextPage = MyHomePage();
+        nextPage = MyHomePage(userId: widget.userId);
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
@@ -62,20 +64,20 @@ class _SewerState extends State<Sewer> {
         child: Center(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RainGutterWidget(),
+                  RainGutterWidget(userId: widget.userId),
                 ],
               ),
             ),
           ),
         ),
       ),
-        bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
             _index = index;
@@ -87,9 +89,12 @@ class _SewerState extends State<Sewer> {
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );
@@ -97,7 +102,9 @@ class _SewerState extends State<Sewer> {
 }
 
 class RainGutterWidget extends StatelessWidget {
-  const RainGutterWidget({super.key});
+  final String userId;
+
+  const RainGutterWidget({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -134,8 +141,7 @@ class RainGutterWidget extends StatelessWidget {
           height: 169,
           decoration: ShapeDecoration(
             image: const DecorationImage(
-              image: NetworkImage(
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY8RCmu3H6vCucl66nNTJiBq2wVJuqm-kGzQ&s"),
+              image: AssetImage("image/sewer.jpg"),
               fit: BoxFit.fill,
             ),
             shape: RoundedRectangleBorder(
@@ -215,7 +221,7 @@ class RainGutterWidget extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    const SewerReport(title: '빗물받이 불편신고 접수하러 가기'),
+                    SewerReport(title: '빗물받이 불편신고 접수하러 가기', userId: userId),
               ),
             );
           },
