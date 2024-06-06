@@ -4,6 +4,8 @@ import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
 import 'package:boggle/community.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class UserInfo extends StatefulWidget {
   final String userId;
@@ -15,22 +17,34 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> {
-  final TextEditingController _nicknameController = TextEditingController();
-  final TextEditingController _idController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  late final TextEditingController _nicknameController = TextEditingController();
+  late final TextEditingController _idController = TextEditingController();
+  late final TextEditingController _locationController = TextEditingController();
+  late final TextEditingController _emailController = TextEditingController();
+  var _index = 3; // 페이지 인덱스 0,1,2,3
 
   @override
   void initState() {
     super.initState();
-    // userId 값을 _idController에 설정하여 ID 창에 자동으로 입력되도록 함
-    _idController.text = widget.userId;
+    _fetchUserInfo();
   }
 
-  @override
-  var _index = 3; // 페이지 인덱스 0,1,2,3
+  void _fetchUserInfo() async {
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/user_info/${widget.userId}'));
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
+      setState(() {
+        _nicknameController.text = data['nickname'] ?? ''; // null 체크 및 기본값 설정
+        _locationController.text = data['location'] ?? 'Unknown';
+        _emailController.text = data['email'] ?? '';
+        _idController.text = widget.userId;
+      });
+    } else {
+      // 에러 처리
+      print('Failed to load user info');
+    }
+  }
 
-  // 페이지 이동 함수
   void _navigateToPage(int index) {
     Widget nextPage;
     switch (index) {
@@ -58,15 +72,16 @@ class _UserInfoState extends State<UserInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize: 27,
-              fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)),
+            fontSize: 27,
+            fontWeight: FontWeight.normal,
+            color: Color.fromARGB(255, 196, 42, 250)),
         ),
         centerTitle: false,
       ),
@@ -78,39 +93,74 @@ class _UserInfoState extends State<UserInfo> {
             children: [
               SizedBox(
                 width: 300,
+                child: Text(
+                  '아이디',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              const SizedBox(height: 5),
+              SizedBox(
+                width: 300,
                 child: TextField(
                   controller: _idController,
                   readOnly: true,
                   decoration: const InputDecoration(
                     filled: true,
                     border: OutlineInputBorder(),
-                    labelText: 'ID',
                     contentPadding: EdgeInsets.all(8),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
+              SizedBox(
+                width: 300,
+                child: Text(
+                  '닉네임',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              const SizedBox(height: 5),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _nicknameController,
                   decoration: const InputDecoration(
                     filled: true,
+                    fillColor: Colors.white,
                     border: OutlineInputBorder(),
-                    labelText: '닉네임',
                     contentPadding: EdgeInsets.all(8),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
+              SizedBox(
+                width: 300,
+                child: Text(
+                  '지역',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              const SizedBox(height: 5),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _locationController,
                   decoration: const InputDecoration(
                     filled: true,
+                    fillColor: Colors.white,
                     border: OutlineInputBorder(),
-                    labelText: '지역',
                     contentPadding: EdgeInsets.all(8),
                   ),
                 ),
@@ -118,12 +168,24 @@ class _UserInfoState extends State<UserInfo> {
               const SizedBox(height: 10),
               SizedBox(
                 width: 300,
+                child: Text(
+                  '이메일',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              const SizedBox(height: 5),
+              SizedBox(
+                width: 300,
                 child: TextField(
                   controller: _emailController,
                   decoration: const InputDecoration(
                     filled: true,
+                    fillColor: Colors.white,
                     border: OutlineInputBorder(),
-                    labelText: 'email',
                     contentPadding: EdgeInsets.all(8),
                   ),
                 ),
@@ -133,8 +195,11 @@ class _UserInfoState extends State<UserInfo> {
                 width: 300,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(199, 166, 233, 1),
+                    backgroundColor: const Color(0xFFC42AFA),
                     foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   onPressed: () {},
                   child: const Text('회원정보 수정'),

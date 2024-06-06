@@ -146,13 +146,44 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Container(
             height: 200,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('image/background.png'), // 이미지 경로 설정
-                fit: BoxFit.cover,
-              ),
+            child: Stack(
+              children: [
+                Image.asset(
+                  'image/background.png',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+                if (_points > 25)
+                  Image.asset(
+                    'image/bubble.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                if (_points > 50)
+                  Image.asset(
+                    'image/fish_far.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                if (_points > 75)
+                  Image.asset(
+                    'image/weeds.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                if (_points > 100)
+                  Image.asset(
+                    'image/fishes.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+              ],
             ),
-            child: Center(),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),

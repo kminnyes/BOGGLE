@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:boggle/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -121,6 +122,28 @@ class _FindIDPageState extends State<FindIDPage> {
                 ),
                 onPressed: _findID,
                 child: const Text('ID 찾기'),
+              ),
+            ),
+            SizedBox(
+              width: 300,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) {
+                          return const LoginPage();
+                        }),
+                      );
+                    },
+                    child: const Text("로그인 하러가기",
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),),
+                  ),
+                ],
               ),
             ),
           ],
