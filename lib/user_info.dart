@@ -3,7 +3,7 @@ import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
 import 'package:boggle/community.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart'; 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -67,6 +67,98 @@ class _UserInfoState extends State<UserInfo> {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => nextPage));
     }
+  }
+
+  void _updateUserInfo() async {
+  final String nickname = _nicknameController.text;
+  final String location = _locationController.text;
+  final String email = _emailController.text;
+
+  if (!isValidEmail(email)) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('이메일 형식 오류'),
+          content: Text('유효한 이메일을 입력하세요.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+    return;
+  }
+
+  final Map<String, String> data = {
+    'id': widget.userId,
+    'nickname': nickname,
+    'location': location,
+    'email': email,
+  };
+
+  final response = await http.post(
+    Uri.parse('http://10.0.2.2:8000/update_user_info/'),
+    body: json.encode(data),
+    headers: {'Content-Type': 'application/json'},
+  );
+
+  if (response.statusCode == 200) {
+    // 회원정보 업데이트 성공
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('성공'),
+          content: Text('회원정보가 성공적으로 수정되었습니다.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyPage(userId: widget.userId)),
+                            );
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    // 회원정보 업데이트 실패
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('오류'),
+          content: Text('회원정보를 업데이트하는 중 오류가 발생했습니다.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+
+
+  bool isValidEmail(String email) {
+    // 이메일 형식 검증 함수
+    // 여기에 필요한 이메일 형식을 정의하세요
+    return true; // 임시로 true 반환
   }
 
   @override
@@ -201,7 +293,7 @@ class _UserInfoState extends State<UserInfo> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: _updateUserInfo,
                   child: const Text('회원정보 수정'),
                 ),
               ),
@@ -232,3 +324,4 @@ class _UserInfoState extends State<UserInfo> {
     );
   }
 }
+
