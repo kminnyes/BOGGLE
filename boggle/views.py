@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate, login
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+from django.db.models import F
 from django.contrib.auth.hashers import make_password
 
 # 회원가입
@@ -41,6 +41,14 @@ def register_user(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#랭크 확인
+@api_view(['POST'])
+def update_user_ranks(request):
+    users = Userlist.objects.all().order_by('-point')
+    for idx, user in enumerate(users):
+        user.rank = idx + 1
+        user.save()
+    return Response({"message": "User ranks updated successfully"}, status=200)
 
 # 아이디 찾기
 @api_view(['POST'])
@@ -466,3 +474,29 @@ def get_user_points(request, user_id):  # user_id 매개변수 추가
             return JsonResponse({'message': str(e)}, status=500)
     else:
         return JsonResponse({'message': 'Invalid request method'}, status=400)
+
+#수질 API
+import requests
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+
+@api_view(['GET'])
+def get_water_quality(request):
+    api_key = 'y0czX2BWC7qpf3dvnFysHAkuvDXJgIAhm5e7aYphrpqdGYwkjOEiwUoWl9mU8L0591Q6trKU2TrxJjme6fb9bA%3D%3D'
+    endpoint = 'http://apis.data.go.kr/B090026/WaterqualityService/getInfo'
+    params = {
+        'serviceKey': api_key,
+        'mgtNo': 'ME2007E008',  # 실제 사업코드로 대체
+        'type': 'json'
+    }
+    
+    response = requests.get(endpoint, params=params)
+    
+    if response.status_code == 200:
+        data = response.json()
+        # 적절한 데이터 경로를 수정
+        water_quality = data['response']['body']['items'][0].get('bfeBodPlulod', 1.1)  # BOD 배출부하량으로 예시
+        return JsonResponse({'waterQuality': water_quality}, status=200)
+    else:
+        return JsonResponse({'error': 'Failed to load water quality data'}, status=response.status_code)
+

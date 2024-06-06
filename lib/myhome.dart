@@ -21,12 +21,14 @@ class _MyHomePageState extends State<MyHomePage> {
   int _points = 0;
   int _rank = 0;
   String? _location; // 초기값을 null로 설정
+  double _waterQuality = 1.1; // 수질 ppm 값
   late String _userId = widget.userId; // userId 할당
 
   @override
   void initState() {
     super.initState();
     _fetchUserInfo();
+    _fetchWaterQuality(); // 수질 데이터 가져오기 호출
   }
 
   void _fetchUserInfo() async {
@@ -43,6 +45,21 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       // 에러 처리
       print('Failed to load user info');
+    }
+  }
+
+  void _fetchWaterQuality() async {
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8000/get_water_quality/'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
+      setState(() {
+        _waterQuality = data['waterQuality'] ?? 1.1; // null 체크 및 기본값 설정
+      });
+    } else {
+      // 에러 처리
+      print('Failed to load water quality data');
     }
   }
 
@@ -201,7 +218,7 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '1.1 ppm',
+                  '${_waterQuality.toString()} ppm',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 10),
@@ -215,15 +232,26 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   }),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Stack(
                   children: [
-                    Text('1'),
-                    Text('2'),
-                    Text('3'),
-                    Text('5'),
-                    Text('8'),
-                    Text('10'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('1'),
+                        Text('2'),
+                        Text('3'),
+                        Text('5'),
+                        Text('8'),
+                        Text('10'),
+                      ],
+                    ),
+                    Positioned(
+                      left: _getArrowPosition(),
+                      child: Icon(
+                        Icons.arrow_drop_up,
+                        color: _getColorForArrow(), // 화살표 색상 적용
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -408,48 +436,68 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 10),
-          _buildWaterQualityRow(
-              Icons.water_drop, Colors.blue, '매우 좋음', '간단한 정수 후 마실 수 있음'),
+          _buildWaterQualityRow(Icons.water_drop, Colors.blue, '매우 좋음',
+              '간단한 정수 후 마실 수 있음', 1.0, 2.0),
+          SizedBox(height: 10),
+          _buildWaterQualityRow(Icons.water_drop, Colors.lightBlue, '좋음',
+              '일반 정수 처리 후 마실 수 있음', 2.0, 3.0),
           SizedBox(height: 10),
           _buildWaterQualityRow(
-              Icons.water_drop, Colors.lightBlue, '좋음', '일반 정수 처리 후 마실 수 있음'),
-          SizedBox(height: 10),
-          _buildWaterQualityRow(Icons.water_drop,
-              Color.fromARGB(255, 34, 192, 81), '약간 좋음', '일반 정수 처리 후 마실 수 있음'),
-          SizedBox(height: 10),
-          _buildWaterQualityRow(Icons.water_drop,
-              Color.fromARGB(255, 148, 147, 147), '보통', '일반 정수 후 공업용수로 사용 가능'),
-          SizedBox(height: 10),
-          _buildWaterQualityRow(Icons.water_drop,
-              Color.fromARGB(255, 125, 115, 28), '약간 나쁨', '농업용수로 사용 가능'),
+              Icons.water_drop,
+              Color.fromARGB(255, 34, 192, 81),
+              '약간 좋음',
+              '일반 정수 처리 후 마실 수 있음',
+              3.0,
+              5.0),
           SizedBox(height: 10),
           _buildWaterQualityRow(
-              Icons.water_drop, Colors.orange, '나쁨', '특수처리 후 공업용수로 사용 가능'),
+              Icons.water_drop,
+              Color.fromARGB(255, 148, 147, 147),
+              '보통',
+              '일반 정수 후 공업용수로 사용 가능',
+              5.0,
+              8.0),
           SizedBox(height: 10),
           _buildWaterQualityRow(
-              Icons.water_drop, Colors.red, '매우 나쁨', '이용 불가능'),
+              Icons.water_drop,
+              Color.fromARGB(255, 125, 115, 28),
+              '약간 나쁨',
+              '농업용수로 사용 가능',
+              8.0,
+              10.0),
+          SizedBox(height: 10),
+          _buildWaterQualityRow(Icons.water_drop, Colors.orange, '나쁨',
+              '특수처리 후 공업용수로 사용 가능', 8.0, 10.0),
+          SizedBox(height: 10),
+          _buildWaterQualityRow(
+              Icons.water_drop, Colors.red, '매우 나쁨', '이용 불가능', 8.0, 10.0),
         ],
       ),
     );
   }
 
-  Widget _buildWaterQualityRow(
-      IconData icon, Color color, String title, String subtitle) {
-    return Row(
-      children: [
-        Icon(icon, color: color),
-        SizedBox(width: 8),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: color,
+  Widget _buildWaterQualityRow(IconData icon, Color color, String title,
+      String subtitle, double min, double max) {
+    bool isHighlighted = _waterQuality >= min && _waterQuality < max;
+    return Container(
+      color: isHighlighted ? color.withOpacity(0.2) : Colors.transparent,
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Icon(icon, color: color),
+          SizedBox(width: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
           ),
-        ),
-        SizedBox(width: 8),
-        Text(subtitle),
-      ],
+          SizedBox(width: 8),
+          Text(subtitle),
+        ],
+      ),
     );
   }
 
@@ -459,5 +507,25 @@ class _MyHomePageState extends State<MyHomePage> {
     if (index < 5) return Colors.green;
     if (index < 8) return Colors.orange;
     return Colors.red;
+  }
+
+  Color _getColorForArrow() {
+    double ppm = _waterQuality;
+    if (ppm <= 2) return Colors.blue;
+    if (ppm <= 3) return Colors.lightBlue;
+    if (ppm <= 5) return Colors.green;
+    if (ppm <= 8) return Colors.orange;
+    return Colors.red;
+  }
+
+  double _getArrowPosition() {
+    double ppm = _waterQuality;
+    double maxPosition = 160.0;
+    if (ppm <= 1) return 0.0;
+    if (ppm <= 2) return 16.0;
+    if (ppm <= 3) return 32.0;
+    if (ppm <= 5) return 64.0;
+    if (ppm <= 8) return 128.0;
+    return maxPosition;
   }
 }
