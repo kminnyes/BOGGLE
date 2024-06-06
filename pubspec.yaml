@@ -1,5 +1,5 @@
 name: boggle
-description: "A new Flutter project."
+description: "BOGGLE, The new way to save the earth"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -82,6 +82,8 @@ flutter:
     - image/background.png
     - image/weeds.png
     - image/fishes.png
+    - image/fish_far.png
+    - image/bubble.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
