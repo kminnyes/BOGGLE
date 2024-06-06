@@ -16,38 +16,6 @@ import json
 
 from django.contrib.auth.hashers import make_password
 
-# # 회원가입
-# @api_view(['POST'])
-# def register_user(request):
-#     if request.method == 'POST':
-#         # 요청 데이터에서 id, 닉네임, 이메일, 비밀번호를 가져옴
-#         user_id = request.data.get('id', '')
-#         nickname = request.data.get('nickname', '')
-#         email = request.data.get('email', '')
-#         password = request.data.get('password', '')  # 비밀번호 추가
-        
-#         # id, 닉네임, 이메일이 중복되는지 확인
-#         if Userlist.objects.filter(nickname=nickname).exists():
-#             return Response({'message': '이미 사용중인 닉네임입니다.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-#         if Userlist.objects.filter(id=user_id).exists():
-#             return Response({'message': '이미 사용중인 ID입니다.'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         if Userlist.objects.filter(email=email).exists():
-#             return Response({'message': '가입된 이메일이 존재합니다.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-#         # 비밀번호를 해싱하여 저장
-#         hashed_password = make_password(password)
-        
-#         # 사용자 생성
-#         serializer = UserlistSerializer(data=request.data)
-#         if serializer.is_valid():
-#             # 비밀번호 필드를 해싱된 비밀번호로 변경
-#             serializer.validated_data['password'] = hashed_password
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 # 회원가입
 @api_view(['POST'])
 def register_user(request):
