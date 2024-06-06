@@ -1,17 +1,43 @@
+import 'package:boggle/communityInfo.dart';
+import 'package:boggle/community_post.dart';
 import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
+
+
+
 
 class Community extends StatefulWidget {
   @override
   State<Community> createState() => _CommunityState();
 }
 
+
+
 class _CommunityState extends State<Community> {
-  @override
   var _index = 2; // 페이지 인덱스 0,1,2,3
+
+
+
+  final List<CommunityPost> posts = [
+    CommunityPost(
+      '홍길동',
+      'assets/user1.png',
+      '2024-05-01 13:17',
+      '설거지 바 써보신분?',
+      '제가 액체 주방세제에서 고체 주방세제로 바꾸려고 하는데 괜찮은 설거지 바 있으면 추천 부탁드립니다.',
+    ),
+    CommunityPost(
+      '김철수',
+      'assets/user2.png',
+      '2024-05-01 13:06',
+      '주말에 플로깅 가시는 분 있나요?',
+      '이번주 무심천에서 진행하는 플로깅에 참여하고 싶은데 혹시 가시는 분 있나요?',
+    ),
+  ];
 
   // 페이지 이동 함수
   void _navigateToPage(int index) {
@@ -34,7 +60,9 @@ class _CommunityState extends State<Community> {
     }
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => nextPage));
+        context,
+        MaterialPageRoute(builder: (context) => nextPage),
+      );
     }
   }
 
@@ -46,20 +74,54 @@ class _CommunityState extends State<Community> {
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text(
-          ' BOGGLE',
+          'BOGGLE',
           style: GoogleFonts.londrinaSolid(
-            fontSize:27,
-              fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)
-              ),
+            fontSize: 27,
+            fontWeight: FontWeight.normal,
+            color: Color.fromARGB(255, 196, 42, 250),
+          ),
         ),
         centerTitle: false,
       ),
-      body: Center(
-        child: Text(
-          '커뮤니티',
-          style: TextStyle(fontSize: 40),
-        ),
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ACTIVE',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                Text('금주의 플로깅에 참여해보세요!'),
+                SizedBox(height: 16.0),
+                Image.asset('image/commu.png'), // Updated image path
+              ],
+            ),
+          ),
+          Divider(color: Colors.grey),
+          Expanded(
+            child: ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=> CommunityPostPage(communityPost: posts[index]))
+                    );
+                  },
+                  child: _buildPost(posts[index]),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
@@ -75,7 +137,64 @@ class _CommunityState extends State<Community> {
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
           BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
           BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person))
+          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.person)),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Action to add a new post
+        },
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
+        backgroundColor: Color.fromARGB(255, 196, 42, 250),
+      ),
+    );
+  }
+
+  Widget _buildPost(CommunityPost post) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage(post.userImage),
+                backgroundColor: Colors.grey,
+              ),
+              SizedBox(width: 8.0),
+              Text(post.userNickname),
+              Spacer(),
+              Text(post.postdate),
+            ],
+          ),
+          SizedBox(height: 8.0),
+          Text(post.postTitle, style: TextStyle(fontWeight: FontWeight.bold)),
+          SizedBox(height: 4.0),
+          Text(post.postContent),
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.favorite),
+                color: Colors.grey,
+                onPressed: () {
+                  // Handle like action
+                },
+              ),
+              Text('15'), // Static example, replace with dynamic data
+              SizedBox(width: 16.0),
+              IconButton(
+                icon: Icon(Icons.comment),
+                color: Colors.grey,
+                onPressed: () {
+                  // Handle comment action
+                },
+              ),
+              Text('1'), // Static example, replace with dynamic data
+            ],
+          ),
+          Divider(color: Colors.grey),
         ],
       ),
     );

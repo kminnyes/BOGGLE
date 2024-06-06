@@ -9,3 +9,4 @@ class CommunityPost{
 
   CommunityPost(this.userNickname, this.userImage, this.postdate, this.postTitle, this.postContent);
 }
+
