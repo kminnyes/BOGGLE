@@ -1,4 +1,5 @@
 import 'package:boggle/certification_page.dart';
+import 'package:boggle/detergent_certification.dart';
 import 'package:boggle/main.dart';
 import 'package:boggle/mypage.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,47 +45,88 @@ class _State extends State<cleanserCertificationList> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('세제 인증 내역'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Padding(
+          padding: EdgeInsets.all(10.10),
+          child: AppBar(
+            title: const Text('세제 인증 내역',style: TextStyle(color: Colors.black),),
+            centerTitle: true,
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+        ),
       ),
       body: ListView.builder(
           itemCount: certificationData.length,
           itemBuilder: (context, index){
-            return Card(
-              child: ListTile(
-                title: Text(
+            return Column(
+              children: [
+              Container(
+                color: Colors.white,
+                child: ListTile(
+                  title: Text(
                   certificationData[index].cleansername,
                     style: GoogleFonts.notoSans(
                       fontSize: 18,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 0, 0, 0),
                     )
                 ),
-                subtitle: Text(
-                  certificationData[index].certificationcheck,
-                  style: GoogleFonts.notoSans(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 196, 42, 250),
-                  )
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        certificationData[index].certificationcheck,
+                        style: GoogleFonts.notoSans(
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal,
+                          color: Color.fromARGB(255, 196, 42, 250),
+                        )
+                    ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                      child: Text(
+                        certificationData[index].certificationdate,
+                        style: GoogleFonts.notoSans(
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal,
+                          color: Color.fromARGB(255, 190, 190, 190),
+                        ),
+                       ),
+                      ),
+                  ],
                 ),
-                /*leading: SizeBox(
-                  height: 50,
-                  width:50.
-                  child : Image.asset(certificationData[index].(모델클래스의 이미지 정보)
-                 */
-
                 onTap: (){
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CertificationPage(certification: certificationData[index],)));
                   debugPrint(certificationData[index].cleansername);
                 },
               ),
+            ),
+            const Divider(
+              height: 1,
+              color: Color.fromARGB(255, 190, 190, 190),
+            ),
+            ],
             );
           },
       ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.all(20.0),
+          child: FloatingActionButton(
+        onPressed: (){
+            Navigator.push(context,
+                MaterialPageRoute(
+                builder: (context) => const Detergent(title: '',
+                ),
+            ));
+        },
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
+        backgroundColor: Color.fromARGB(255, 196, 42, 250),
+      ),
+      )
     );
   }
 }

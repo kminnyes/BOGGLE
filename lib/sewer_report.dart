@@ -10,52 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-class SewerReport extends StatefulWidget {
-  final String title;
-  final String userId;
-
-  const SewerReport({Key? key, required this.title, required this.userId})
-      : super(key: key);
-
-  @override
-  State<SewerReport> createState() => _SewerReportState();
-}
-
-class _SewerState extends State<SewerReport> {
-  final int _index = 1; // 페이지 인덱스 0,1,2,3
-
-  // 페이지 이동 함수
-  void _navigateToPage(int index) {
-    Widget nextPage;
-    switch (index) {
-      case 0:
-        nextPage = MyHomePage(userId: widget.userId);
-        break;
-      case 1:
-        nextPage = DoList(userId: widget.userId);
-        break;
-      case 2:
-        nextPage = Community(userId: widget.userId);
-        break;
-      case 3:
-        nextPage = MyPage(userId: widget.userId);
-        break;
-      default:
-        nextPage = MyHomePage(userId: widget.userId);
-    }
-    if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => nextPage));
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-}
-
 class Report {
   final int id;
   final String work;
@@ -79,142 +33,47 @@ class Report {
     );
   }
 }
+class SewerReport extends StatefulWidget {
+  final String title;
+  final String userId;
 
-class _SewerReportState extends State<SewerReport> {
-  final TextEditingController textController = TextEditingController();
-  final TextEditingController titleController = TextEditingController();
-  List<Report> reports = [];
-  bool isModifying = false;
-  int modifyingIndex = 0;
-  File? image;
-  int _index = 1;
+  const SewerReport({super.key, required this.title, required this.userId});
 
   @override
-  void initState() {
-    super.initState();
-    getReportFromServer();
-  }
+  State<SewerReport> createState() => _SewerReportState();
+   
+  // 
+}
 
-  Future<void> getReportFromServer() async {
+
+class _SewerReportState extends State<SewerReport> {
+      late String _userId;
+      final TextEditingController textController = TextEditingController();
+      final TextEditingController titleController = TextEditingController();
+      List<Report> reports = [];
+      bool isModifying = false;
+      int modifyingIndex = 0;
+      File? image;
+      int index = 1;
+      String _userPoints = '0';
+
+       @override
+        void initState() {
+        super.initState();
+        _userId = widget.userId;
+         _fetchUserPoints();
+        getReportFromServer();
+  }
+   Future<void> _fetchUserPoints() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8000/getReportList'));
+        await http.get(Uri.parse('http://10.0.2.2:8000/user_points/$_userId'));
     if (response.statusCode == 200) {
-      String responseBody = utf8.decode(response.bodyBytes);
-      List<dynamic> jsonList = json.decode(responseBody);
-      List<Report> list =
-          jsonList.map<Report>((json) => Report.fromJson(json)).toList();
-      print("Loaded tasks: ${list.length}");
+      final userPoints = json.decode(response.body)['points'];
       setState(() {
-        reports = list;
+        _userPoints = userPoints.toString();
       });
     } else {
-      print(
-          "Failed to load tasks from server. Status code: ${response.statusCode}");
-      print("Response body: ${response.body}");
-    }
-  }
-
-  Future<void> addReportToServer(Report report) async {
-    var request = http.MultipartRequest(
-      'POST',
-      Uri.parse('http://10.0.2.2:8000/addReport'),
-    );
-
-    if (image != null) {
-      request.files
-          .add(await http.MultipartFile.fromPath('image', image!.path));
-    }
-
-    request.fields['work'] = report.work;
-    request.fields['title'] = report.title;
-
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('신고 접수되었습니다'),
-        ),
-      );
-      getReportFromServer();
-    } else {
-      print("Failed to add report. Status code: ${response.statusCode}");
-    }
-  }
-
-  Future<void> updateReportToServer(int id, String title, String work) async {
-    var request = http.MultipartRequest(
-      'POST',
-      Uri.parse('http://10.0.2.2:8000/updateReport/$id/'),
-    );
-
-    request.fields['title'] = title;
-    request.fields['work'] = work;
-
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      getReportFromServer();
-    } else {
-      print("Failed to update report. Status code: ${response.statusCode}");
-    }
-  }
-
-  Future<void> deleteReportToServer(int id) async {
-    final response =
-        await http.delete(Uri.parse('http://10.0.2.2:8000/deleteReport/$id/'));
-    if (response.statusCode == 200) {
-      getReportFromServer();
-    } else {
-      print("Failed to delete report. Status code: ${response.statusCode}");
-    }
-  }
-
-  Future<void> pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile =
-        await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        image = File(pickedFile.path);
-      });
-    }
-  }
-
-  String getToday() {
-    DateTime now = DateTime.now();
-    return DateFormat('yyyy-MM-dd').format(now);
-  }
-
-  void navigateToDetailPage(Report report) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ReportDetailPage(report: report),
-      ),
-    );
-  }
-
-  void _navigateToPage(int index) {
-    Widget nextPage;
-    switch (index) {
-      case 0:
-        nextPage = MyHomePage(userId: widget.userId);
-        break;
-      case 1:
-        nextPage = DoList(userId: widget.userId);
-        break;
-      case 2:
-        nextPage = Community(userId: widget.userId);
-        break;
-      case 3:
-        nextPage = MyPage(userId: widget.userId);
-        break;
-      default:
-        nextPage = MyHomePage(userId: widget.userId);
-    }
-    if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => nextPage));
+      throw Exception('Failed to load user points');
     }
   }
 
@@ -257,7 +116,9 @@ class _SewerReportState extends State<SewerReport> {
                           ),
                         ),
                       ),
+                      
                     ),
+                    
                     Positioned(
                       left: 267,
                       top: 17,
@@ -455,6 +316,11 @@ class _SewerReportState extends State<SewerReport> {
                   ],
                 ),
               ),
+                Text(
+                      '포인트: $_userPoints',
+                      style: const TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.6,
                 child: ListView.builder(
@@ -506,11 +372,11 @@ class _SewerReportState extends State<SewerReport> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
-            _index = index;
+            index = index;
           });
-          _navigateToPage(index);
+          navigateToPage(index);
         },
-        currentIndex: _index,
+        currentIndex: index,
         selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
@@ -524,7 +390,150 @@ class _SewerReportState extends State<SewerReport> {
       ),
     );
   }
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        image = File(pickedFile.path);
+      });
+    }
+  }
+    void navigateToPage(int index) {
+    Widget nextPage;
+    switch (index) {
+      case 0:
+        nextPage = MyHomePage(userId: widget.userId);
+        break;
+      case 1:
+        nextPage = DoList(userId: widget.userId);
+        break;
+      case 2:
+        nextPage = Community(userId: widget.userId);
+        break;
+      case 3:
+        nextPage = MyPage(userId: widget.userId);
+        break;
+      default:
+        nextPage = MyHomePage(userId: widget.userId);
+    }
+    if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => nextPage));
+    }
+  }
+    Future<void> deleteReportToServer(int id) async {
+    final response =
+        await http.delete(Uri.parse('http://10.0.2.2:8000/deleteReport/$id/'));
+    if (response.statusCode == 200) {
+      getReportFromServer();
+    } else {
+      print("Failed to delete report. Status code: ${response.statusCode}");
+    }
+  }
+    Future<void> addReportToServer(Report report) async {
+    
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('http://10.0.2.2:8000/addReport'),
+    );
+
+    if (image != null) {
+      request.files
+          .add(await http.MultipartFile.fromPath('image', image!.path));
+    }
+
+    request.fields['work'] = report.work;
+    request.fields['title'] = report.title;
+
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('신고 접수되었습니다'),
+          
+          
+        ),
+      );
+      _updateUserPoints(_userId, 30);
+      getReportFromServer();
+    } else {
+      print("Failed to add report. Status code: ${response.statusCode}");
+    }
+  }
+
+   Future<void> _updateUserPoints(String userId, int pointsToAdd) async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:8000/update_user_points/'), // 슬래시 추가
+      headers: <String, String>{
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        'userId': userId,
+        'pointsToAdd': pointsToAdd.toString(),
+      },
+    );
+  if (response.statusCode == 200) {
+      print('Points updated successfully');
+      _fetchUserPoints(); // Update user points after adding points
+    } else {
+      throw Exception('Failed to update points');
+    }
+  }
+   Future<void> updateReportToServer(int id, String title, String work) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('http://10.0.2.2:8000/updateReport/$id/'),
+    );
+
+    request.fields['title'] = title;
+    request.fields['work'] = work;
+
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      getReportFromServer();
+    } else {
+      print("Failed to update report. Status code: ${response.statusCode}");
+    }
+  }
+   String getToday() {
+    DateTime now = DateTime.now();
+    return DateFormat('yyyy-MM-dd').format(now);
+  }
+      Future<void> getReportFromServer() async {
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8000/getReportList'));
+    if (response.statusCode == 200) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      List<dynamic> jsonList = json.decode(responseBody);
+      List<Report> list =
+          jsonList.map<Report>((json) => Report.fromJson(json)).toList();
+      print("Loaded tasks: ${list.length}");
+      setState(() {
+        reports = list;
+      });
+    } else {
+      print(
+          "Failed to load tasks from server. Status code: ${response.statusCode}");
+      print("Response body: ${response.body}");
+    }
+  }
+
+
+
+  void navigateToDetailPage(Report report) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ReportDetailPage(report: report),
+      ),
+    );
+  }
+
 }
+
 
 class ReportDetailPage extends StatelessWidget {
   final Report report;
@@ -574,3 +583,13 @@ class ReportDetailPage extends StatelessWidget {
     );
   }
 }
+  
+
+
+ 
+
+
+
+
+
+
