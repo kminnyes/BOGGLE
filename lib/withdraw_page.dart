@@ -1,13 +1,12 @@
-import 'package:boggle/community.dart';
+import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/login_page.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
-import 'package:flutter/material.dart';
+import 'package:boggle/community.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class WithdrawPage extends StatefulWidget {
   final String userId;
@@ -21,6 +20,27 @@ class WithdrawPage extends StatefulWidget {
 class _WithdrawPageState extends State<WithdrawPage> {
   final TextEditingController _pwController = TextEditingController();
   var _index = 3; // 페이지 인덱스 0,1,2,3
+  String _password = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserInfo();
+  }
+
+  void _fetchUserInfo() async {
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/user_info/${widget.userId}'));
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
+      setState(() {
+        _password = data['password'] ?? ''; // null 체크 및 기본값 설정
+        widget.userId;
+      });
+    } else {
+      // 에러 처리
+      print('Failed to load user info');
+    }
+  }
 
   // 페이지 이동 함수
   void _navigateToPage(int index) {
@@ -47,6 +67,98 @@ class _WithdrawPageState extends State<WithdrawPage> {
     }
   }
 
+  void _withdraw() async {
+    final String pw = _pwController.text;
+
+    if (pw.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('비밀번호 입력 오류'),
+            content: Text('비밀번호를 입력해주세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    if (_password != pw) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('비밀번호 오류'),
+            content: Text('현재 비밀번호가 일치하지 않습니다.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    final response = await http.delete(
+      Uri.parse('http://10.0.2.2:8000/withdraw/${widget.userId}/'),
+    );
+
+    if (response.statusCode == 200) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('회원 탈퇴 성공'),
+            content: Text('회원 탈퇴가 완료되었습니다.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return const LoginPage();
+                    }),
+                  );
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('회원 탈퇴 중 오류가 발생했습니다.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,31 +182,31 @@ class _WithdrawPageState extends State<WithdrawPage> {
             const SizedBox(
               width: 300,
               child: Padding(
-                  padding: EdgeInsets.only(left: 0.0),
-                  child: Text(
-                    '회원탈퇴를 하시겠습니까?\n탈퇴하려면 현재 비밀번호를 입력해 주세요.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.start,
+                padding: EdgeInsets.only(left: 0.0),
+                child: Text(
+                  '회원탈퇴를 하시겠습니까?\n탈퇴하려면 현재 비밀번호를 입력해 주세요.',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),  
+                  textAlign: TextAlign.start,
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             const SizedBox(
               width: 300,
               child: Padding(
-                  padding: EdgeInsets.only(left: 0.0),
-                  child: Text(
-                    '비밀번호',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.start,
+                padding: EdgeInsets.only(left: 0.0),
+                child: Text(
+                  '비밀번호',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),  
+                  textAlign: TextAlign.start,
+                ),
+              ),
             ),
             const SizedBox(height: 5),
             SizedBox(
@@ -119,16 +231,10 @@ class _WithdrawPageState extends State<WithdrawPage> {
                   backgroundColor: const Color(0xFFC42AFA),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) {
-                          return const LoginPage();
-                        }),
-                      );
-                    },
+                onPressed: _withdraw,
                 child: const Text('탈퇴하기'),
               ),
             ),

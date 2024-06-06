@@ -141,6 +141,66 @@ def get_user_info(request, user_id):
     except Userlist.DoesNotExist:
         return Response({"message": "사용자를 찾을 수 없음"}, status=404)
 
+# 회원 정보 업데이트
+@api_view(['POST'])
+def update_user_info(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user_id = data.get('id')
+        nickname = data.get('nickname')
+        location = data.get('location')
+        email = data.get('email')
+        try:
+            user = Userlist.objects.get(id=user_id)
+            user.nickname = nickname
+            user.location = location
+            user.email = email
+            user.save()
+            return Response({'message': 'User info updated successfully'}, status=status.HTTP_200_OK)
+        except Userlist.DoesNotExist:
+            return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+# 업데이트 비밀번호
+@api_view(['POST'])
+def change_password(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user_id = data.get('id')
+        current_password = request.data.get('current_password')
+        new_password = request.data.get('new_password')
+
+        if user_id and current_password and new_password:
+            try:
+                # 사용자 확인
+                user = Userlist.objects.get(id=user_id)
+                user.password = new_password
+                user.save()
+                return Response({"message": "비밀번호가 성공적으로 업데이트되었습니다."}, status=200)
+            except Userlist.DoesNotExist:
+                return Response({"message": "일치하는 사용자가 없습니다."}, status=400)
+        else:
+            return Response({"message": "ID와 새로운 비밀번호를 모두 제공해주세요."}, status=400)
+
+# 정보삭제
+@api_view(['DELETE'])
+def withdraw(request, user_id):
+    if request.method == 'DELETE':
+        try:
+            user = Userlist.objects.get(id=user_id)
+            user.delete()
+            return Response({"message": "회원 탈퇴가 완료되었습니다."}, status=status.HTTP_200_OK)
+        except Userlist.DoesNotExist:
+            return Response({"message": "해당 사용자가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response({"message": "DELETE 메서드를 사용해야 합니다."})
+                        
 ## 세제 인증하기 
 @api_view(['POST'])
 def addTask(request):

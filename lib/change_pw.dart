@@ -4,6 +4,8 @@ import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
 import 'package:boggle/community.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ChangePW extends StatefulWidget {
   final String userId;
@@ -18,10 +20,30 @@ class _ChangePWState extends State<ChangePW> {
   final TextEditingController _pwController = TextEditingController();
   final TextEditingController _newPWController = TextEditingController();
   final TextEditingController _confirmPWController = TextEditingController();
+  String _password = '';
 
   @override
   var _index = 3; // 페이지 인덱스 0,1,2,3
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserInfo();
+  }
+
+  void _fetchUserInfo() async {
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/user_info/${widget.userId}'));
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
+      setState(() {
+        _password = data['password'] ?? ''; // null 체크 및 기본값 설정
+        widget.userId;
+      });
+    } else {
+      // 에러 처리
+      print('Failed to load user info');
+    }
+  }
   // 페이지 이동 함수
   void _navigateToPage(int index) {
     Widget nextPage;
@@ -44,6 +66,158 @@ class _ChangePWState extends State<ChangePW> {
     if (ModalRoute.of(context)?.settings.name != nextPage.toString()) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => nextPage));
+    }
+  }
+
+  void _updatePassword() {
+    final String pw = _pwController.text;
+    final String newPw = _newPWController.text;
+    final String confirmPw = _confirmPWController.text;
+
+    if (pw.isEmpty || newPw.isEmpty || confirmPw.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('비밀번호 입력 오류'),
+            content: Text('비밀번호를 모두 입력해주세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    if (newPw != confirmPw) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('비밀번호 불일치'),
+            content: Text('새로운 비밀번호가 일치하지 않습니다.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    if (_password.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('비밀번호 오류'),
+            content: Text('비밀번호를 불러올 수 없습니다.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    // 현재 비밀번호 확인
+    if (_password != pw) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('비밀번호 오류'),
+            content: Text('현재 비밀번호가 일치하지 않습니다.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    // 비밀번호 변경 API 호출
+    _callChangePasswordAPI(newPw);
+  }
+
+  void _callChangePasswordAPI(String newPassword) async {
+    final Map<String, String> data = {
+      'id': widget.userId,
+      'current_password': _pwController.text, // 현재 비밀번호 전송
+      'new_password': newPassword,
+    };
+
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:8000/change_password/'),
+      body: json.encode(data),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // 비밀번호 변경 성공
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('비밀번호 변경 성공'),
+            content: Text('비밀번호가 성공적으로 변경되었습니다.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyPage(userId: widget.userId)),
+                            );
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // 비밀번호 변경 실패
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('비밀번호 변경 실패'),
+            content: Text('비밀번호 변경 중 오류가 발생했습니다.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -70,8 +244,8 @@ class _ChangePWState extends State<ChangePW> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(
-              width: 300,
-              child: Padding(
+                width: 300,
+                child: Padding(
                   padding: EdgeInsets.only(left: 0.0),
                   child: Text(
                     '현재 비밀번호',
@@ -81,16 +255,17 @@ class _ChangePWState extends State<ChangePW> {
                     ),
                     textAlign: TextAlign.start,
                   ),
-                ),  
-            ),
-            const SizedBox(height: 5),
+                ),
+              ),
+              const SizedBox(height: 5),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _pwController,
+                  obscureText: true, // 비밀번호 입력 시 마스킹 처리
                   decoration: const InputDecoration(
-                    filled: true, 
-                    fillColor: Colors.white,                   
+                    filled: true,
+                    fillColor: Colors.white,
                     border: OutlineInputBorder(),
                     hintText: '현재 비밀번호를 입력해주세요',
                     contentPadding: EdgeInsets.all(8),
@@ -99,8 +274,8 @@ class _ChangePWState extends State<ChangePW> {
               ),
               const SizedBox(height: 30),
               const SizedBox(
-              width: 300,
-              child: Padding(
+                width: 300,
+                child: Padding(
                   padding: EdgeInsets.only(left: 0.0),
                   child: Text(
                     '새로운 비밀번호',
@@ -110,16 +285,17 @@ class _ChangePWState extends State<ChangePW> {
                     ),
                     textAlign: TextAlign.start,
                   ),
-                ),  
-            ),
-            const SizedBox(height: 5),
+                ),
+              ),
+              const SizedBox(height: 5),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _newPWController,
+                  obscureText: true, // 비밀번호 입력 시 마스킹 처리
                   decoration: const InputDecoration(
-                    filled: true, 
-                    fillColor: Colors.white,                   
+                    filled: true,
+                    fillColor: Colors.white,
                     border: OutlineInputBorder(),
                     hintText: '새로운 비밀번호를 입력해주세요',
                     contentPadding: EdgeInsets.all(8),
@@ -128,8 +304,8 @@ class _ChangePWState extends State<ChangePW> {
               ),
               const SizedBox(height: 10),
               const SizedBox(
-              width: 300,
-              child: Padding(
+                width: 300,
+                child: Padding(
                   padding: EdgeInsets.only(left: 0.0),
                   child: Text(
                     '새로운 비밀번호 확인',
@@ -139,16 +315,17 @@ class _ChangePWState extends State<ChangePW> {
                     ),
                     textAlign: TextAlign.start,
                   ),
-                ),  
-            ),
-            const SizedBox(height: 5),
+                ),
+              ),
+              const SizedBox(height: 5),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _confirmPWController,
+                  obscureText: true, // 비밀번호 입력 시 마스킹 처리
                   decoration: const InputDecoration(
-                    filled: true, 
-                    fillColor: Colors.white,                   
+                    filled: true,
+                    fillColor: Colors.white,
                     border: OutlineInputBorder(),
                     hintText: '새로운 비밀번호를 한번 더 입력해주세요',
                     contentPadding: EdgeInsets.all(8),
@@ -164,8 +341,9 @@ class _ChangePWState extends State<ChangePW> {
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                    ),),
-                  onPressed: () {},
+                    ),
+                  ),
+                  onPressed: _updatePassword,
                   child: const Text('비밀번호 수정'),
                 ),
               ),

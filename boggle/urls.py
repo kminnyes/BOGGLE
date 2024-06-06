@@ -32,4 +32,7 @@ path('update_user_points/', views.update_user_points, name='update_user_points')
     path('user_points/<str:user_id>/', views.get_user_points, name='user_points'),
 
     path('login_view/', views.login_view, name='login_view'),
+    path('update_user_info/', views.update_user_info, name='update_user_info'),
+    path('change_password/', views.change_password, name='change_password'),
+    path('withdraw/<str:user_id>/', views.withdraw, name='withdraw'),
 ]
