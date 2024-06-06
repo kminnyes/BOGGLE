@@ -32,4 +32,5 @@ path('update_user_points/', views.update_user_points, name='update_user_points')
     path('user_points/<str:user_id>/', views.get_user_points, name='user_points'),
 
     path('login_view/', views.login_view, name='login_view'),
+    path('get_water_quality/', views.get_water_quality, name='get_water_quality'),
 ]
