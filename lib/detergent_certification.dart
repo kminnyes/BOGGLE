@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-
-
 
 class Detergent extends StatefulWidget {
   final String title;
@@ -43,7 +40,8 @@ class Task {
 }
 
 class _DetergentState extends State<Detergent> {
-  final TextEditingController _textController = TextEditingController();
+  final TextEditingController _productNameController = TextEditingController();
+  final TextEditingController _certificationContentController = TextEditingController();
   List<Task> tasks = [];
   bool isModifying = false;
   int modifyingIndex = 0;
@@ -133,134 +131,127 @@ class _DetergentState extends State<Detergent> {
     );
   }
 
-
-
-  // 기존 코드와 동일
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Set background color to white
       appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.title),
+        backgroundColor: Colors.white,
+        centerTitle: true, // Center the title
+        title: Text(
+          '세제 인증',
+          style: TextStyle(color: Colors.black),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        elevation: 0, // Remove shadow
       ),
       body: SingleChildScrollView(
-        child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(getToday()),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    Center(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextField(
-                          controller: _textController,
-                          maxLines: null,
-                          keyboardType: TextInputType.multiline,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(10),
-                          ),
-                        ),
-                      ),
+              const Text(
+                ' 인증서 작성',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(),
+                  ),
+                  const Text(
+                    '작성시 유의 사항',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.info_outline,
+                      color: Color.fromARGB(255, 196, 42, 250),
                     ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: pickImage,
-                      child: const Text('이미지 선택'),
-                    ),
-                    _image != null
-                        ? GestureDetector(
-                      onTap: pickImage,
-                      child: Image.file(
-                        _image!,
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        width: MediaQuery.of(context).size.width * 0.8,
-                      ),
-                    )
-                        : const Text('이미지가 선택되지 않았습니다.'),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (_image != null || isModifying) {
-                          if (isModifying) {
-                            await updateTaskToServer(tasks[modifyingIndex].id, _textController.text);
-                          } else {
-                            var task = Task(
-                              id: 0,
-                              work: _textController.text,
-                              isComplete: false,
-                              imageUrl: '', // 이미지 URL은 서버에서 제공하는 값으로 설정
-                            );
-                            await addTaskToServer(task);
-                          }
-                          setState(() {
-                            _textController.clear();
-                            _image = null;
-                            isModifying = false;
-                          });
-                        } else {
-                          print("이미지를 선택하세요.");
-                        }
-                      },
-                      child: Text(isModifying ? "Update" : "Add"),
-                    ),
-                  ],
+                    onPressed: () {
+                      // Handle info icon press
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 3),
+              TextField(
+                controller: _productNameController,
+                decoration: const InputDecoration(
+                  hintText: '상품명을 입력하세요.',
+                  border: OutlineInputBorder(),
                 ),
               ),
-
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.6,
-                child: ListView.builder(
-                  itemCount: tasks.length,
-                  itemBuilder: (context, index) {
-                    final task = tasks[index];
-                    return ListTile(
-
-                      title: GestureDetector(
-                        onTap: () {
-                          navigateToDetailPage(task);
-                        },
-                        child: Text(
-                          task.work,
-                          softWrap: true,
-                        ),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _textController.text = task.work;
-                                isModifying = true;
-                                modifyingIndex = index;
-                              });
-                            },
-                            child: const Text("수정"),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                deleteTaskToServer(task.id);
-                              });
-                            },
-                            child: const Text("삭제"),
-                          ),
-                        ],
-                      ),
-                    );
+              const SizedBox(height: 20),
+              TextField(
+                controller: _certificationContentController,
+                maxLines: 5,
+                decoration: const InputDecoration(
+                  hintText: '인증 내용을 작성하세요. (최대 1000자)',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 35),
+              const Text(
+                '사진 첨부',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: pickImage,
+                ),
+              ),
+              const SizedBox(height: 45), // Added gap
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (_image != null || isModifying) {
+                      if (isModifying) {
+                        await updateTaskToServer(tasks[modifyingIndex].id, _productNameController.text);
+                      } else {
+                        var task = Task(
+                          id: 0,
+                          work: _productNameController.text,
+                          isComplete: false,
+                          imageUrl: '', // 이미지 URL은 서버에서 제공하는 값으로 설정
+                        );
+                        await addTaskToServer(task);
+                      }
+                      setState(() {
+                        _productNameController.clear();
+                        _image = null;
+                        isModifying = false;
+                      });
+                    } else {
+                      print("이미지를 선택하세요.");
+                    }
                   },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: Color.fromARGB(255, 196, 42, 250),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // 20% rounded corners
+                    ),
+                  ),
+                  child: const Text(
+                    '등록하기',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
                 ),
               ),
             ],
@@ -270,7 +261,6 @@ class _DetergentState extends State<Detergent> {
     );
   }
 }
-
 
 class TaskDetailPage extends StatelessWidget {
   final Task task;
@@ -296,11 +286,11 @@ class TaskDetailPage extends StatelessWidget {
             const SizedBox(height: 10),
             task.imageUrl.isNotEmpty
                 ? Image.network(
-                    task.imageUrl,
-                    height: 300, // Set your desired height here
-                    width: double.infinity, // Set the width to fill the available space
-                    fit: BoxFit.cover, // Adjust the image aspect ratio to cover the area
-                  )
+              task.imageUrl,
+              height: 300, // Set your desired height here
+              width: double.infinity, // Set the width to fill the available space
+              fit: BoxFit.cover, // Adjust the image aspect ratio to cover the area
+            )
                 : const Text('No image available'),
           ],
         ),
@@ -308,4 +298,3 @@ class TaskDetailPage extends StatelessWidget {
     );
   }
 }
-
