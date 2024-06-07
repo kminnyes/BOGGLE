@@ -9,12 +9,20 @@ from boggle.serializer import UserlistSerializer
 import requests
 from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import status
+from rest_framework import viewsets
+from boggle.models import Task
+from boggle.serializer import TaskSerializer
 from django.contrib.auth import authenticate, login
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db.models import F
 from django.contrib.auth.hashers import make_password
+
+
+class TestViewSet(viewsets.ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
 # 회원가입
 @api_view(['POST'])
@@ -253,7 +261,7 @@ import os
 import django
 from urllib.parse import urlencode, unquote
 import requests
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 
 # Django 프로젝트 설정을 로드합니다.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")  # 여기를 프로젝트 설정 모듈에 맞게 수정하세요
@@ -499,4 +507,5 @@ def get_water_quality(request):
         return JsonResponse({'waterQuality': water_quality}, status=200)
     else:
         return JsonResponse({'error': 'Failed to load water quality data'}, status=response.status_code)
+
 
