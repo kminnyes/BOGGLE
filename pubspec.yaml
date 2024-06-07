@@ -84,6 +84,7 @@ flutter:
     - image/fishes.png
     - image/fish_far.png
     - image/bubble.png
+    - image/cleanserocr.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
