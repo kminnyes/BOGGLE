@@ -110,7 +110,7 @@ class _DoListState extends State<DoList> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 15),
+                        SizedBox(height: 8),
                         Text(
                           '친환경 세제 인증',
                           style: TextStyle(
@@ -154,7 +154,7 @@ class _DoListState extends State<DoList> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 15),
+                        SizedBox(height: 8),
                         Text(
                           '하수구 빗물받이 불편 신고',
                           style: TextStyle(
@@ -198,7 +198,7 @@ class _DoListState extends State<DoList> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 8),
                         Text(
                           '퀴즈를 맞추면 뽑기 기회가!',
                           style: TextStyle(
