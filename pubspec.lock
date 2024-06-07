@@ -160,6 +160,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.4"
+  google_mlkit_commons:
+    dependency: transitive
+    description:
+      name: google_mlkit_commons
+      sha256: e1afd6aafe2f8c5078dff3875b5c2544a4c9d1ab5f1ec58af885d558b95b3eaa
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
+  google_mlkit_text_recognition:
+    dependency: "direct main"
+    description:
+      name: google_mlkit_text_recognition
+      sha256: add08291c5eafa7373afb10a00845a2b87f8bab9896841460083fd6077683ca5
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   http:
     dependency: "direct main"
     description:
