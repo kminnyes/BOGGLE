@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from .models import Task, Userlist
-from .models import Quiz
-from .models import Report
+from boggle.models import Task, Userlist, Quiz, Report, Dictionary
+
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:

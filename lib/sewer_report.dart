@@ -316,11 +316,7 @@ class _SewerReportState extends State<SewerReport> {
                   ],
                 ),
               ),
-                Text(
-                      '포인트: $_userPoints',
-                      style: const TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
+              
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.6,
                 child: ListView.builder(
@@ -433,36 +429,70 @@ class _SewerReportState extends State<SewerReport> {
       print("Failed to delete report. Status code: ${response.statusCode}");
     }
   }
-    Future<void> addReportToServer(Report report) async {
-    
-    var request = http.MultipartRequest(
-      'POST',
-      Uri.parse('http://10.0.2.2:8000/addReport'),
-    );
-
-    if (image != null) {
-      request.files
-          .add(await http.MultipartFile.fromPath('image', image!.path));
-    }
-
-    request.fields['work'] = report.work;
-    request.fields['title'] = report.title;
-
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('신고 접수되었습니다'),
-          
-          
+void showPointsEarnedDialog(BuildContext context, int points) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          width: 200.0, // Adjust the width as needed
+          height: 40.0, // Adjust the height as needed
+          child: Center(
+            child: Text(
+              '$points 포인트 획득',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16, // Adjust the font size as needed
+              ),
+            ),
+          ),
         ),
+        actions: [
+          Center(
+            child: TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ],
       );
-      _updateUserPoints(_userId, 30);
-      getReportFromServer();
-    } else {
-      print("Failed to add report. Status code: ${response.statusCode}");
-    }
+    },
+  );
+}
+
+
+   Future<void> addReportToServer(Report report) async {
+  var request = http.MultipartRequest(
+    'POST',
+    Uri.parse('http://10.0.2.2:8000/addReport'),
+  );
+
+  if (image != null) {
+    request.files.add(await http.MultipartFile.fromPath('image', image!.path));
   }
+
+  request.fields['work'] = report.work;
+  request.fields['title'] = report.title;
+
+  var response = await request.send();
+  if (response.statusCode == 200) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('신고 접수되었습니다'),
+      ),
+    );
+    _updateUserPoints(_userId, 30);
+    getReportFromServer();
+    
+    // Show the points earned dialog
+    showPointsEarnedDialog(context, 30);
+  } else {
+    print("Failed to add report. Status code: ${response.statusCode}");
+  }
+}
+
 
    Future<void> _updateUserPoints(String userId, int pointsToAdd) async {
     final response = await http.post(

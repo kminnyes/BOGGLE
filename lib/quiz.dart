@@ -79,7 +79,6 @@ class _QuizState extends State<Quiz> {
         if (result['result'] == 'correct') {
           _resultMessage = 'Correct!';
           _correctAnswers++;
-          _updateUserPoints(_userId, 3); // Update points here
         } else {
           _resultMessage = 'Incorrect!';
         }
@@ -90,6 +89,7 @@ class _QuizState extends State<Quiz> {
           _isQuizCompleted = true;
           _resultMessage +=
               '\n\nQuiz completed! You got $_correctAnswers out of ${_quizData.length} correct.';
+          _updateUserPoints(_userId, _correctAnswers * 3); // Update points here
         }
         _selectedAnswer = '';
       });
@@ -112,7 +112,7 @@ class _QuizState extends State<Quiz> {
 
     if (response.statusCode == 200) {
       print('Points updated successfully');
-      _fetchUserPoints(); // Update user points after adding points
+      _fetchUserPoints(); // Fetch user points after updating
     } else {
       throw Exception('Failed to update points');
     }
@@ -230,11 +230,12 @@ class _QuizState extends State<Quiz> {
                       style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 20),
-                    Text(
-                      '포인트: $_userPoints',
-                      style: const TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
+                    // Remove this line to stop showing real-time points
+                    // Text(
+                    //   '포인트: $_userPoints',
+                    //   style: const TextStyle(
+                    //       fontSize: 20.0, fontWeight: FontWeight.bold),
+                    // ),
                   ],
                 ),
               ],
@@ -262,6 +263,8 @@ class _QuizState extends State<Quiz> {
   }
 
   Widget _buildScorePage() {
+    int pointsEarned = _correctAnswers * 3;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -279,6 +282,13 @@ class _QuizState extends State<Quiz> {
           Text(
             '$_correctAnswers / ${_quizData.length} 정답',
             style: const TextStyle(fontSize: 20.0),
+          ),
+          const SizedBox(height: 30),
+          Text(
+            '$pointsEarned 포인트 획득',
+             style: const TextStyle(
+                  fontSize: 20.0, fontWeight: FontWeight.bold),
+          
           ),
           const SizedBox(height: 30),
           ElevatedButton(
@@ -302,6 +312,11 @@ class _QuizState extends State<Quiz> {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
           ),
+            Text(
+                      '포인트: $_userPoints',
+                      style: const TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
         ],
       ),
     );

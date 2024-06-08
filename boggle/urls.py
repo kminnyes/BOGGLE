@@ -3,9 +3,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from boggle import views
 from django.urls import path
+import rest_framework
+
 
 
 app_name = 'boggle'
+
 
 urlpatterns = [
     path('', views.getTaskList, name='getTaskList'),  
