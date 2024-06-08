@@ -49,19 +49,16 @@ class _TextcertificationState extends State<Textcertification> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start, // 텍스트를 왼쪽 정렬로 설정
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 45),
               const Text(
                 '세제 인증을 시작합니다.\n아래의 텍스트가 정확한지 확인해주세요.',
-                style: TextStyle(fontSize: 17),
+                style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.left, // 텍스트를 왼쪽 정렬로 설정
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 36),
               const Text(
                 '인식한 세제 이름',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 196, 42, 250)),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.purple),
                 textAlign: TextAlign.left, // 텍스트를 왼쪽 정렬로 설정
               ),
               const SizedBox(height: 10),
@@ -78,7 +75,7 @@ class _TextcertificationState extends State<Textcertification> {
                 style: TextStyle(fontSize: 14, color: Colors.black54),
                 textAlign: TextAlign.left, // 텍스트를 왼쪽 정렬로 설정
               ),
-              const SizedBox(height: 95),
+              const SizedBox(height: 80),
               ElevatedButton(
                 onPressed: () {
                   // 제출 로직을 여기에 추가
@@ -102,4 +99,3 @@ class _TextcertificationState extends State<Textcertification> {
     );
   }
 }
-

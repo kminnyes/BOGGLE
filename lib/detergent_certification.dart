@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:boggle/cleanser_certification.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:boggle/cleanser_certification.dart';
 
 class Detergent extends StatefulWidget {
   final String title;
@@ -14,7 +14,6 @@ class Detergent extends StatefulWidget {
 }
 
 class _DetergentState extends State<Detergent> {
-  File? _image;
   String scannedText = '';
 
   Future<void> pickImage() async {
@@ -22,9 +21,6 @@ class _DetergentState extends State<Detergent> {
     final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
       getRecognizedText(pickedFile);
     }
   }
@@ -106,14 +102,7 @@ class _DetergentState extends State<Detergent> {
               const SizedBox(height: 35),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: _image != null
-                    ? Image.file(
-                  _image!,
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                )
-                    : Image.asset(
+                child: Image.asset(
                   'image/cleanserocr.png',
                   fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width * 0.8,
@@ -126,7 +115,7 @@ class _DetergentState extends State<Detergent> {
                 style: TextStyle(fontSize: 15),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 80),
               ElevatedButton(
                 onPressed: pickImage,
                 style: ElevatedButton.styleFrom(
