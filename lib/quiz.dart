@@ -161,7 +161,7 @@ class _QuizState extends State<Quiz> {
             color: const Color.fromARGB(255, 196, 42, 250),
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: _isQuizCompleted ? _buildScorePage() : _buildQuizPage(),
       bottomNavigationBar: BottomNavigationBar(
@@ -214,7 +214,7 @@ class _QuizState extends State<Quiz> {
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 24),
-                        backgroundColor: Colors.purple,
+                        backgroundColor: Color.fromARGB(255, 196, 42, 250),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -272,7 +272,7 @@ class _QuizState extends State<Quiz> {
           const Icon(
             Icons.check_circle_outline,
             size: 80,
-            color: Colors.purple,
+            color: Color.fromARGB(255, 196, 42, 250),
           ),
           const SizedBox(height: 20),
           const Text(
@@ -288,7 +288,7 @@ class _QuizState extends State<Quiz> {
             '$pointsEarned 포인트 획득',
              style: const TextStyle(
                   fontSize: 20.0, fontWeight: FontWeight.bold),
-          
+
           ),
           const SizedBox(height: 30),
           ElevatedButton(

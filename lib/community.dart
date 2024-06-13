@@ -71,7 +71,7 @@ class _CommunityState extends State<Community> {
     if (result != null && result is Map<String, dynamic>) {
       setState(() {
         posts.add(CommunityPost(
-          '새 사용자', // 사용자의 닉네임
+          'one', // 사용자의 닉네임 -> DB에서 가져올 것
           'assets/usericon.png', // 사용자 아이콘 경로
           result['date'],
           result['title'],
@@ -101,6 +101,7 @@ class _CommunityState extends State<Community> {
       body: Column(
         children: [
           Container(
+            color: Colors.white,
             margin: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

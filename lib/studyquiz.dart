@@ -44,6 +44,7 @@ class _StudyQuizState extends State<StudyQuiz> {
           context, MaterialPageRoute(builder: (context) => nextPage));
     }
   }
+
   List<dynamic> _quizData = [];
   int _currentQuizIndex = 0;
 
@@ -92,118 +93,120 @@ class _StudyQuizState extends State<StudyQuiz> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
-              fontSize:27,
+              fontSize: 27,
               fontWeight: FontWeight.normal,
               color: const Color.fromARGB(255, 196, 42, 250)
           ),
         ),
-      
       ),
-      body: _quizData.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        color: Colors.white, // 배경색을 흰색으로 설정
+        child: _quizData.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Total Quizzes: ${_quizData.length}',
+                style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                _quizData[_currentQuizIndex]['explain'],
+                style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                '정답: ${_quizData[_currentQuizIndex]['hNm']}',
+                style: const TextStyle(fontSize: 16.0, color: Colors.black54),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Total Quizzes: ${_quizData.length}',
-                    style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    _quizData[_currentQuizIndex]['explain'],
-                    style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    '정답: ${_quizData[_currentQuizIndex]['hNm']}',
-                    style: const TextStyle(fontSize: 16.0, color: Colors.black54),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: _previousQuiz,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                          backgroundColor: const Color.fromARGB(255, 191, 116, 201),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          '이전',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
+                  ElevatedButton(
+                    onPressed: _previousQuiz,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                      backgroundColor: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      ElevatedButton(
-                        onPressed: _nextQuiz,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                          backgroundColor:  const Color.fromARGB(255, 100, 16, 111),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          '다음',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                    ],
+                    ),
+                    child: const Text(
+                      '이전',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
                   ),
-                  const SizedBox(height: 30),
-                  if (_currentQuizIndex == _quizData.length - 1) // Show buttons only after finishing the quizzes
-                   Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    ElevatedButton.icon(
-      onPressed: _fetchQuizData,
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16), // 패딩 조정
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8), // 버튼 모서리를 더 둥글게
-        ),
-        elevation: 4,
-      ),
-      icon: const Icon(Icons.book, size: 20, color: Colors.black), // 아이콘 크기 조정
-      label: const Text(
-        '더 학습하기',
-        style: TextStyle(fontSize: 14, color: Colors.black), // 텍스트 크기 조정
-      ),
-    ),
-    const SizedBox(width: 12),
-    ElevatedButton.icon(
-      onPressed: _navigateToQuizPage,
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        elevation: 4,
-      ),
-      icon: const Icon(Icons.quiz, size: 20, color: Colors.black),
-      label: const Text(
-        '퀴즈 맞추러 가기',
-        style: TextStyle(fontSize: 14, color: Colors.black),
-      ),
-    ),
-  ],
-),
-
+                  ElevatedButton(
+                    onPressed: _nextQuiz,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                      backgroundColor:  const Color.fromARGB(255, 196, 42, 250),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      '다음',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
                 ],
               ),
-            ),
-             bottomNavigationBar: BottomNavigationBar(
+              const SizedBox(height: 30),
+              if (_currentQuizIndex == _quizData.length - 1) // Show buttons only after finishing the quizzes
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: _fetchQuizData,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16), // 패딩 조정
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8), // 버튼 모서리를 더 둥글게
+                        ),
+                        elevation: 4,
+                      ),
+                      icon: const Icon(Icons.book, size: 20, color: Colors.black), // 아이콘 크기 조정
+                      label: const Text(
+                        '더 학습하기',
+                        style: TextStyle(fontSize: 14, color: Colors.black), // 텍스트 크기 조정
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    ElevatedButton.icon(
+                      onPressed: _navigateToQuizPage,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 4,
+                      ),
+                      icon: const Icon(Icons.quiz, size: 20, color: Colors.black),
+                      label: const Text(
+                        '퀴즈 맞추러 가기',
+                        style: TextStyle(fontSize: 14, color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
             _index = index;
