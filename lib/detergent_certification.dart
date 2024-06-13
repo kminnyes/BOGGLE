@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:boggle/cleanser_certification.dart';
+import 'model.dart';
 
 class Detergent extends StatefulWidget {
   final String title;
@@ -15,49 +16,42 @@ class Detergent extends StatefulWidget {
 
 class _DetergentState extends State<Detergent> {
   String scannedText = '';
+  File? imageFile;
 
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
+      imageFile = File(pickedFile.path);
       getRecognizedText(pickedFile);
     }
   }
 
   void getRecognizedText(XFile image) async {
     try {
-      // XFile 이미지를 InputImage 이미지로 변환
       final InputImage inputImage = InputImage.fromFilePath(image.path);
-
-      // textRecognizer 초기화, 이때 script에 인식하고자하는 언어를 인자로 넘겨줌
-      // ex) 영어는 script: TextRecognitionScript.latin, 한국어는 script: TextRecognitionScript.korean
       final textRecognizer = TextRecognizer(script: TextRecognitionScript.korean);
-
-      // 이미지의 텍스트 인식해서 recognizedText에 저장
       RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
 
-      print("Recognized text: ${recognizedText.text}");
-
-      // 인식한 텍스트 정보를 scannedText에 저장 (줄바꿈 문자를 제거)
       scannedText = recognizedText.text.replaceAll('\n', ' ');
-
-      print("Scanned text: $scannedText");
-
       setState(() {});
 
-      // 리소스 해제
       await textRecognizer.close();
 
-      // 인식한 텍스트를 다음 페이지로 전달
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => Textcertification(
             recognizedText: scannedText,
+            imageFile: imageFile!,
           ),
         ),
-      );
+      ).then((result) {
+        if (result != null && result is Certification) {
+          Navigator.pop(context, result); // result를 다시 상위 페이지로 전달
+        }
+      });
     } catch (e) {
       print("Error recognizing text: $e");
     }
@@ -66,10 +60,10 @@ class _DetergentState extends State<Detergent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // 배경색을 흰색으로 설정
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        centerTitle: true, // 제목을 가운데 정렬
+        centerTitle: true,
         title: const Text(
           '세제 인증',
           style: TextStyle(color: Colors.black),
@@ -80,7 +74,7 @@ class _DetergentState extends State<Detergent> {
             Navigator.of(context).pop();
           },
         ),
-        elevation: 0, // 그림자 제거
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -102,7 +96,7 @@ class _DetergentState extends State<Detergent> {
                   fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: MediaQuery.of(context).size.height * 0.3,
-                ), // 기본 이미지를 표시
+                ),
               ),
               const SizedBox(height: 35),
               const Text(

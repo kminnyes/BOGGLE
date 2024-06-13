@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:boggle/model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,7 @@ class CertificationPage extends StatelessWidget{
             SizedBox(
               height: 350,
               width: 350,
-              child: Image.asset(certification.cleanserImage),
+              child: Image.file(certification.cleanserImage as File),
             ),
             const SizedBox(
               height: 40,

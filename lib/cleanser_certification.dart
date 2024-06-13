@@ -1,10 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:boggle/cleanser_certificationList.dart'; // cleanserList 클래스를 import 합니다.
+import 'model.dart';
 
 class Textcertification extends StatefulWidget {
   final String recognizedText;
+  final File imageFile;
 
-  const Textcertification({Key? key, required this.recognizedText}) : super(key: key);
+  const Textcertification({Key? key, required this.recognizedText, required this.imageFile}) : super(key: key);
 
   @override
   _TextcertificationState createState() => _TextcertificationState();
@@ -36,10 +38,14 @@ class _TextcertificationState extends State<Textcertification> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // 대화 상자를 닫습니다.
-                Navigator.pushReplacement(
+                final String currentDate = DateTime.now().toIso8601String().split('T').first; // 시간 제외
+                Navigator.pop(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => cleanserList(),
+                  Certification(
+                    _textController.text,
+                    '인증완료',
+                    currentDate,
+                    widget.imageFile,
                   ),
                 );
               },
@@ -52,7 +58,8 @@ class _TextcertificationState extends State<Textcertification> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return Scaffold(
       backgroundColor: Colors.white, // 배경색을 흰색으로 설정
       appBar: AppBar(
@@ -92,7 +99,7 @@ class _TextcertificationState extends State<Textcertification> {
               TextField(
                 controller: _textController,
                 maxLines: null,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -104,9 +111,7 @@ class _TextcertificationState extends State<Textcertification> {
               ),
               const SizedBox(height: 80),
               ElevatedButton(
-                onPressed: () {
-                  _showDialog();
-                },
+                onPressed: _showDialog,
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
                   backgroundColor: const Color.fromARGB(255, 196, 42, 250),
