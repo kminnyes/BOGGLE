@@ -1,11 +1,11 @@
+import 'package:boggle/community_post.dart';
 import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
 import 'package:boggle/communityInfo.dart'; // Assuming this is the correct path for the detail screen
 import 'package:google_fonts/google_fonts.dart';
-
-
+import 'package:boggle/community_post.dart'; // Assuming this is the correct path for CommunityPostPage
 
 class Community extends StatefulWidget {
   final String userId;
@@ -62,19 +62,38 @@ class _CommunityState extends State<Community> {
     }
   }
 
+  Future<void> _navigateToCommunityPostPage() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CommunityPostPage()),
+    );
+
+    if (result != null && result is Map<String, dynamic>) {
+      setState(() {
+        posts.add(CommunityPost(
+          '새 사용자', // 사용자의 닉네임
+          'assets/usericon.png', // 사용자 아이콘 경로
+          result['date'],
+          result['title'],
+          result['content'],
+        ));
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Colors.white,
         title: Text(
           'BOGGLE',
           style: GoogleFonts.londrinaSolid(
             fontSize: 27,
             fontWeight: FontWeight.normal,
-            color: Color.fromARGB(255, 196, 42, 250),
+            color: const Color.fromARGB(255, 196, 42, 250),
           ),
         ),
         centerTitle: false,
@@ -82,11 +101,11 @@ class _CommunityState extends State<Community> {
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.all(16.0),
+            margin: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'ACTIVE',
                   style: TextStyle(
                     fontSize: 24,
@@ -94,13 +113,13 @@ class _CommunityState extends State<Community> {
                     color: Colors.black,
                   ),
                 ),
-                Text('금주의 플로깅에 참여해보세요!'),
-                SizedBox(height: 16.0),
+                const Text('금주의 플로깅에 참여해보세요!'),
+                const SizedBox(height: 16.0),
                 Image.asset('image/commu.png'), // Updated image path
               ],
             ),
           ),
-          Divider(color: Colors.grey),
+          const Divider(color: Colors.grey),
           Expanded(
             child: ListView.builder(
               itemCount: posts.length,
@@ -129,9 +148,9 @@ class _CommunityState extends State<Community> {
           _navigateToPage(index);
         },
         currentIndex: _index,
-        selectedItemColor: Color.fromARGB(255, 196, 42, 250),
-        unselectedItemColor: Color.fromARGB(255, 235, 181, 253),
-        items: <BottomNavigationBarItem>[
+        selectedItemColor: const Color.fromARGB(255, 196, 42, 250),
+        unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
           BottomNavigationBarItem(label: '실천', icon: Icon(Icons.check_circle)),
           BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.group)),
@@ -139,12 +158,10 @@ class _CommunityState extends State<Community> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Action to add a new post
-        },
+        onPressed: _navigateToCommunityPostPage,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.white),
-        backgroundColor: Color.fromARGB(255, 196, 42, 250),
+        backgroundColor: const Color.fromARGB(255, 196, 42, 250),
       ),
     );
   }
@@ -158,66 +175,85 @@ class _CommunityState extends State<Community> {
           Row(
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage(post.userImage),
-                backgroundColor: Colors.grey,
+                backgroundImage: AssetImage('image/usericon.png'),
               ),
-              SizedBox(width: 8.0),
+              const SizedBox(width: 8.0),
               Text(post.userNickname),
-              Spacer(),
+              const Spacer(),
               Text(post.postdate),
             ],
           ),
-          SizedBox(height: 8.0),
-          Text(post.postTitle, style: TextStyle(fontWeight: FontWeight.bold)),
-          SizedBox(height: 4.0),
+          const SizedBox(height: 8.0),
+          Text(post.postTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 4.0),
           Text(post.postContent),
           Row(
             children: [
               IconButton(
-                icon: Icon(Icons.favorite),
+                icon: const Icon(Icons.favorite),
                 color: Colors.grey,
                 onPressed: () {
                   // Handle like action
                 },
               ),
-              Text('15'), // Static example, replace with dynamic data
-              SizedBox(width: 16.0),
+              const Text('15'), // Static example, replace with dynamic data
+              const SizedBox(width: 16.0),
               IconButton(
-                icon: Icon(Icons.comment),
+                icon: const Icon(Icons.comment),
                 color: Colors.grey,
                 onPressed: () {
                   // Handle comment action
                 },
               ),
-              Text('1'), // Static example, replace with dynamic data
+              const Text('1'), // Static example, replace with dynamic data
             ],
           ),
-          Divider(color: Colors.grey),
+          const Divider(color: Colors.grey),
         ],
       ),
     );
   }
 }
 
-class CommunityPostScreen extends StatelessWidget {
+class CommunityPostScreen extends StatefulWidget {
   final CommunityPost post;
 
   CommunityPostScreen({required this.post});
+
+  @override
+  _CommunityPostScreenState createState() => _CommunityPostScreenState();
+}
+
+class _CommunityPostScreenState extends State<CommunityPostScreen> {
+  final TextEditingController _commentController = TextEditingController();
+  final List<String> _comments = [];
+
+  void _addComment() {
+    final comment = _commentController.text;
+    if (comment.isNotEmpty) {
+      setState(() {
+        _comments.add(comment);
+      });
+      _commentController.clear();
+    }
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
-          post.userNickname,
-          style: TextStyle(
-            color: Color.fromARGB(255, 196, 42, 250),
-          ),
-        ),
-        iconTheme: IconThemeData(color: Color.fromARGB(255, 196, 42, 250)),
+        title: const Text(''), // AppBar의 텍스트를 삭제합니다.
+        iconTheme: const IconThemeData(color: Color.fromARGB(255, 196, 42, 250)),
       ),
-      body: Padding(
+      body: Container(
+        color: Colors.white, // 배경색을 흰색으로 설정합니다.
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,37 +261,62 @@ class CommunityPostScreen extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage(post.userImage),
-                  backgroundColor: Colors.grey,
+                  backgroundImage: AssetImage('image/usericon.png'),
                 ),
-                SizedBox(width: 8.0),
-                Text(post.userNickname),
-                Spacer(),
-                Text(post.postdate),
+                const SizedBox(width: 8.0),
+                Text(widget.post.userNickname),
+                const Spacer(),
+                Text(widget.post.postdate),
               ],
             ),
-            SizedBox(height: 16.0),
-            Text(post.postTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-            SizedBox(height: 8.0),
-            Text(post.postContent, style: TextStyle(fontSize: 18)),
-            Divider(color: Colors.grey),
+            const SizedBox(height: 16.0),
+            Text(widget.post.postTitle,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 24)),
+            Padding(padding: const EdgeInsets.all(15.0)),
+            Text(widget.post.postContent, style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 8.0),
+            const Divider(color: Colors.grey),
             Expanded(
-              child: ListView(
-                children: [
-                  // Placeholder for comments
-                  Text('Comment Section Placeholder')
-                ],
+              child: ListView.builder(
+                itemCount: _comments.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: SizedBox(
+                      width: 24, // 원하는 너비 설정
+                      height: 24, // 원하는 높이 설정
+                      child: Image.asset('image/usericon.png'),
+                    ),
+                    title: Text(
+                      _comments[index],
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  );
+                },
               ),
             ),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Add a comment...',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    // Handle send comment
-                  },
-                ),
+            const Divider(color: Colors.grey), // 글과 댓글 사이에 경계를 추가합니다.
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _commentController,
+                      decoration: InputDecoration(
+                        hintText: '댓글을 입력해주세요.',
+                        hintStyle: const TextStyle(color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.send, color: Color.fromARGB(255, 196, 42, 250)),
+                    onPressed: _addComment,
+                  ),
+                ],
               ),
             ),
           ],
