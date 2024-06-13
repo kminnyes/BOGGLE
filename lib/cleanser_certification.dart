@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:boggle/cleanser_certificationList.dart'; // cleanserList 클래스를 import 합니다.
 
 class Textcertification extends StatefulWidget {
   final String recognizedText;
@@ -22,6 +23,32 @@ class _TextcertificationState extends State<Textcertification> {
   void dispose() {
     _textController.dispose();
     super.dispose();
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('알림'),
+          content: const Text('인증 되었습니다.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 대화 상자를 닫습니다.
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => cleanserList(),
+                  ),
+                );
+              },
+              child: const Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -78,7 +105,7 @@ class _TextcertificationState extends State<Textcertification> {
               const SizedBox(height: 80),
               ElevatedButton(
                 onPressed: () {
-                  // 제출 로직을 여기에 추가
+                  _showDialog();
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
@@ -88,7 +115,7 @@ class _TextcertificationState extends State<Textcertification> {
                   ),
                 ),
                 child: const Text(
-                  '등록하기',
+                  '인증하기',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),

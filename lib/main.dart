@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       home: const LoginPage(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 196, 42, 250)),
         useMaterial3: true,
       ),
     );

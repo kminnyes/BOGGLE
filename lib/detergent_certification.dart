@@ -39,13 +39,8 @@ class _DetergentState extends State<Detergent> {
 
       print("Recognized text: ${recognizedText.text}");
 
-      // 인식한 텍스트 정보를 scannedText에 저장
-      scannedText = "";
-      for (TextBlock block in recognizedText.blocks) {
-        for (TextLine line in block.lines) {
-          scannedText = scannedText + line.text + "\n";
-        }
-      }
+      // 인식한 텍스트 정보를 scannedText에 저장 (줄바꿈 문자를 제거)
+      scannedText = recognizedText.text.replaceAll('\n', ' ');
 
       print("Scanned text: $scannedText");
 
@@ -115,7 +110,7 @@ class _DetergentState extends State<Detergent> {
                 style: TextStyle(fontSize: 15),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 80),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: pickImage,
                 style: ElevatedButton.styleFrom(
