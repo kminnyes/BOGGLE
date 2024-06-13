@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
-import 'package:boggle/communityInfo.dart'; // Assuming this is the correct path for the detail screen
+import 'package:boggle/communityInfo.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:boggle/community_post.dart'; // Assuming this is the correct path for CommunityPostPage
+import 'package:like_button/like_button.dart';
+
 
 class Community extends StatefulWidget {
   final String userId;
@@ -19,7 +20,6 @@ class Community extends StatefulWidget {
 class _CommunityState extends State<Community> {
   var _index = 2; // 페이지 인덱스 0,1,2,3
 
-  // Generate sample data directly in community.dart
   final List<CommunityPost> posts = [
     CommunityPost(
       '홍길동',
@@ -196,7 +196,7 @@ class _CommunityState extends State<Community> {
                   // Handle like action
                 },
               ),
-              const Text('15'), // Static example, replace with dynamic data
+              Text('${post.likeCount}'), // Static example, replace with dynamic data
               const SizedBox(width: 16.0),
               IconButton(
                 icon: const Icon(Icons.comment),
@@ -205,7 +205,7 @@ class _CommunityState extends State<Community> {
                   // Handle comment action
                 },
               ),
-              const Text('1'), // Static example, replace with dynamic data
+              Text('${post.commentCount}'), // Static example, replace with dynamic data
             ],
           ),
           const Divider(color: Colors.grey),
@@ -225,22 +225,45 @@ class CommunityPostScreen extends StatefulWidget {
 }
 
 class _CommunityPostScreenState extends State<CommunityPostScreen> {
+  bool isLiked = false;
+  int likeCount = 0; // 좋아요 개수 초기화
+  int commentCount = 0;
+
   final TextEditingController _commentController = TextEditingController();
   final List<String> _comments = [];
+
+  @override
+  void initState() {
+    super.initState();
+    likeCount = widget.post.likeCount;
+    commentCount = widget.post.commentCount;
+  }
 
   void _addComment() {
     final comment = _commentController.text;
     if (comment.isNotEmpty) {
       setState(() {
         _comments.add(comment);
+        commentCount++;
+        widget.post.commentCount = commentCount;
       });
       _commentController.clear();
     }
   }
 
+  Future<bool> onLikeButtonTapped(bool isLiked) async {
+    setState(() {
+      this.isLiked = !isLiked;
+      likeCount += this.isLiked ? 1 : -1;
+      widget.post.likeCount = likeCount;
+    });
+    return !isLiked;
+  }
+
   @override
   void dispose() {
     _commentController.dispose();
+    Navigator.pop(context, widget.post); // 변경된 post 객체를 상위 페이지로 전달합니다.
     super.dispose();
   }
 
@@ -276,6 +299,16 @@ class _CommunityPostScreenState extends State<CommunityPostScreen> {
             Padding(padding: const EdgeInsets.all(15.0)),
             Text(widget.post.postContent, style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 8.0),
+            Row(
+              children: [
+                LikeButton(
+                  size: 20,
+                  isLiked: isLiked,
+                  likeCount: likeCount,
+                  onTap: onLikeButtonTapped,
+                ),
+              ],
+            ),
             const Divider(color: Colors.grey),
             Expanded(
               child: ListView.builder(
