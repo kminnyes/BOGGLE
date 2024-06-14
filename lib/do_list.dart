@@ -64,7 +64,7 @@ class _DoListState extends State<DoList> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           title: const Text(
-            ' BOGGLE',
+            'BOGGLE',
             style: TextStyle(
                 fontSize: 27,
                 fontWeight: FontWeight.normal,
@@ -85,8 +85,7 @@ class _DoListState extends State<DoList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              const cleanserCertificationList(),
+                          builder: (context) => CleanserCertificationList(userId: widget.userId), // 수정된 부분
                         ),
                       );
                     },
@@ -129,8 +128,7 @@ class _DoListState extends State<DoList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              Sewer(title: '하수구 신고', userId: widget.userId),
+                          builder: (context) => Sewer(title: '하수구 신고', userId: widget.userId),
                         ),
                       );
                     },
@@ -225,12 +223,9 @@ class _DoListState extends State<DoList> {
           unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(
-                label: '실천', icon: Icon(Icons.volunteer_activism)),
-            BottomNavigationBarItem(
-                label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
-            BottomNavigationBarItem(
-                label: 'MY', icon: Icon(Icons.account_circle)),
+            BottomNavigationBarItem(label: '실천', icon: Icon(Icons.volunteer_activism)),
+            BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+            BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.account_circle)),
           ],
         ),
       ),
