@@ -280,6 +280,10 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 248, 248, 248),
                 borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(
+                  color: Colors.grey, // 테두리 색상
+                  width: 1.0, // 테두리 두께
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
