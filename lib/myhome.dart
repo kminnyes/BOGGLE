@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _fetchUserInfo() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8000/user_info/$_userId'));
+    await http.get(Uri.parse('http://10.0.2.2:8000/user_info/$_userId'));
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
       setState(() {
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _fetchWaterQuality() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8000/get_water_quality/'));
+    await http.get(Uri.parse('http://10.0.2.2:8000/get_water_quality/'));
 
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
@@ -122,15 +122,27 @@ class _MyHomePageState extends State<MyHomePage> {
               Tab(text: '포인트'),
             ],
             indicatorColor: Color.fromARGB(255, 196, 42, 250), // 인디케이터 색상
+            labelStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ), // 탭의 글씨를 굵게 설정
             labelColor: Color.fromARGB(255, 196, 42, 250), // 선택된 탭의 색상
             unselectedLabelColor: Colors.black, // 선택되지 않은 탭의 색상
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(
+                width: 2.0,
+                color: Color.fromARGB(255, 196, 42, 250),
+              ),
+            ),
           ),
         ),
-        body: TabBarView(
-          children: [
-            _buildAquariumTab(indicatorTextStyle),
-            _buildPointsTab(),
-          ],
+        body: Container(
+          color: Colors.white, // 배경색을 흰색으로 설정
+          child: TabBarView(
+            children: [
+              _buildAquariumTab(indicatorTextStyle),
+              _buildPointsTab(),
+            ],
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           onTap: (index) {
@@ -270,47 +282,66 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '$_nickname 님의 포인트',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
             Container(
+              width: double.infinity, // 가로로 꽉 채우기
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 248, 248, 248),
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                  color: Colors.grey, // 테두리 색상
-                  width: 1.0, // 테두리 두께
-                ),
+                color: Color.fromARGB(255, 240, 240, 240), // 컨테이너 색상 변경
+                borderRadius: BorderRadius.circular(25.0), // 모서리를 25% 둥글게 설정
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2), // 그림자 색상 및 투명도
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: Offset(0, 3), // 그림자 위치
+                  ),
+                ],
+                border: null, // 외곽선 제거
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '$_points P',
-                    style: TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 196, 42, 250),
+                  RichText(
+                    text: TextSpan(
+                      text: ' ',
+                      style: GoogleFonts.notoSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: _nickname,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                        TextSpan(
+                          text: ' 님의 포인트',
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Center(),
+                  SizedBox(height: 3),
+                  Text(
+                    '   $_points P',
+                    style: GoogleFonts.notoSans(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Text(
               '포인트 리포트',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(
               '나의 포인트를 비교하고 분석해보세요',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.end, // 그래프를 아래쪽에 정렬
@@ -321,39 +352,39 @@ class _MyHomePageState extends State<MyHomePage> {
                     Color.fromARGB(255, 196, 42, 250), '나의 포인트', _points),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Text(
               '나의 순위',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(
               '나는 상위 몇 프로?',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
             Text(
               '나의 포인트 순위를 알려드립니다.',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
             SizedBox(height: 10),
             Center(
               child: Column(
                 children: [
                   SizedBox(
-                    width: 300, // 크기를 더 크게 설정
-                    height: 300, // 크기를 더 크게 설정
+                    width: 300,
+                    height: 300,
                     child: Stack(
                       children: [
                         Center(
                             child: Container(
-                          width: 200,
-                          height: 200,
-                          child: CircularProgressIndicator(
-                            value: 0.7,
-                            strokeWidth: 10, // 원의 두께를 더 두껍게 설정
-                            color: Color.fromARGB(255, 196, 42, 250),
-                            backgroundColor: Colors.grey[200],
-                          ),
-                        )),
+                              width: 200,
+                              height: 200,
+                              child: CircularProgressIndicator(
+                                value: 0.7,
+                                strokeWidth: 40, // 원의 두께를 더 두껍게 설정
+                                color: Color.fromARGB(255, 196, 42, 250),
+                                backgroundColor: Colors.grey[200],
+                              ),
+                            )),
                         Center(
                           child: Text(
                             '상위 70%',
@@ -407,7 +438,14 @@ class _MyHomePageState extends State<MyHomePage> {
         Container(
           width: 50,
           height: height.toDouble(),
-          color: color,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10), // 상단 좌측 둥글게
+              topRight: Radius.circular(10), // 상단 우측 둥글게
+            ),
+            border: Border.all(color: Colors.black), // 검은색 외곽선
+          ),
         ),
         SizedBox(height: 10),
         Text(label),
