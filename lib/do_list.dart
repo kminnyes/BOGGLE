@@ -86,7 +86,7 @@ class _DoListState extends State<DoList> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                          const cleanserCertificationList(),
+                              const cleanserCertificationList(),
                         ),
                       );
                     },
@@ -173,8 +173,7 @@ class _DoListState extends State<DoList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              Quizlist(userId: widget.userId),
+                          builder: (context) => Quizlist(userId: widget.userId),
                         ),
                       );
                     },
