@@ -48,9 +48,10 @@ class _SewerState extends State<Sewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Colors.white,
         title: Text(
           'BOGGLE',
           style: GoogleFonts.londrinaSolid(
@@ -59,6 +60,7 @@ class _SewerState extends State<Sewer> {
               color: const Color.fromARGB(255, 196, 42, 250)),
         ),
         centerTitle: false,
+        iconTheme: IconThemeData(color: Colors.black), // Ensure back arrow is black
       ),
       body: SingleChildScrollView(
         child: Center(

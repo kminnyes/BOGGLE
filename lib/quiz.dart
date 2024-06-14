@@ -197,7 +197,7 @@ class _QuizState extends State<Quiz> {
         child: Padding(
           padding: const EdgeInsets.all(10.10),
           child: AppBar(
-            title: const Text('세제 인증 내역', style: TextStyle(color: Colors.black)),
+            title: const Text('오늘의 퀴즈', style: TextStyle(color: Colors.black)),
             centerTitle: true,
             backgroundColor: Colors.white,
             elevation: 0,
@@ -278,10 +278,13 @@ class _QuizState extends State<Quiz> {
     return choiceButtons;
   }
 
-  Widget _buildScorePage() {
-    int pointsEarned = _correctAnswers * 3;
+Widget _buildScorePage() {
+  int pointsEarned = _correctAnswers * 3;
 
-    return Center(
+  return Scaffold(
+    
+    backgroundColor: Colors.white,
+    body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -327,6 +330,7 @@ class _QuizState extends State<Quiz> {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
           ),
+          const SizedBox(height: 20), // Added to separate elements
           Text(
             '포인트: $_userPoints',
             style: const TextStyle(
@@ -334,8 +338,10 @@ class _QuizState extends State<Quiz> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 class CorrectAnswersPage extends StatelessWidget {

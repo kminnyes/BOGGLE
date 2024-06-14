@@ -76,13 +76,15 @@ class _SewerReportState extends State<SewerReport> {
       throw Exception('Failed to load user points');
     }
   }
-
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
         title: Text(
-          ' BOGGLE',
+          'BOGGLE',
           style: GoogleFonts.londrinaSolid(
             fontSize: 27,
             fontWeight: FontWeight.normal,
