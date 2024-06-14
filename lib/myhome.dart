@@ -293,21 +293,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 192, 52, 243),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      child: Text(
-                        '뽑기 바로 진행하러 가기',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
+                  Center(),
                 ],
               ),
             ),
