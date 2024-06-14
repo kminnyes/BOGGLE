@@ -483,11 +483,11 @@ void showPointsEarnedDialog(BuildContext context, int points) {
         content: Text('신고 접수되었습니다'),
       ),
     );
-    _updateUserPoints(_userId, 30);
+    _updateUserPoints(_userId, 25);
     getReportFromServer();
     
     // Show the points earned dialog
-    showPointsEarnedDialog(context, 30);
+    showPointsEarnedDialog(context, 25);
   } else {
     print("Failed to add report. Status code: ${response.statusCode}");
   }

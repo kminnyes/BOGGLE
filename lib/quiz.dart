@@ -158,6 +158,7 @@ class _QuizState extends State<Quiz> {
           style: GoogleFonts.londrinaSolid(
             fontSize: 27,
             fontWeight: FontWeight.normal,
+               backgroundColor: Colors.white,
             color: const Color.fromARGB(255, 196, 42, 250),
           ),
         ),
@@ -189,7 +190,21 @@ class _QuizState extends State<Quiz> {
 
   Widget _buildQuizPage() {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.white,
+     
+       appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Padding(
+          padding: const EdgeInsets.all(10.10),
+          child: AppBar(
+            title: const Text('세제 인증 내역', style: TextStyle(color: Colors.black)),
+            centerTitle: true,
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+        ),
+      ),
+      
       body: _quizData.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : ListView(
@@ -214,7 +229,7 @@ class _QuizState extends State<Quiz> {
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 24),
-                        backgroundColor: Color.fromARGB(255, 196, 42, 250),
+                        backgroundColor: const Color.fromARGB(255, 196, 42, 250),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -249,6 +264,7 @@ class _QuizState extends State<Quiz> {
       choiceButtons.add(
         RadioListTile<String>(
           title: Text(choice),
+          
           value: choice,
           groupValue: _selectedAnswer,
           onChanged: (String? value) {
@@ -286,9 +302,8 @@ class _QuizState extends State<Quiz> {
           const SizedBox(height: 30),
           Text(
             '$pointsEarned 포인트 획득',
-             style: const TextStyle(
-                  fontSize: 20.0, fontWeight: FontWeight.bold),
-
+            style: const TextStyle(
+                fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
@@ -312,11 +327,11 @@ class _QuizState extends State<Quiz> {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
           ),
-            Text(
-                      '포인트: $_userPoints',
-                      style: const TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
+          Text(
+            '포인트: $_userPoints',
+            style: const TextStyle(
+                fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );
@@ -331,11 +346,14 @@ class CorrectAnswersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           ' BOGGLE',
           style: GoogleFonts.londrinaSolid(
             fontSize: 27,
+               backgroundColor: Colors.white,
             fontWeight: FontWeight.normal,
             color: const Color.fromARGB(255, 196, 42, 250),
           ),
@@ -346,6 +364,7 @@ class CorrectAnswersPage extends StatelessWidget {
         itemCount: quizData.length,
         itemBuilder: (context, index) {
           return Card(
+            color: Colors.white,
             margin: const EdgeInsets.symmetric(vertical: 8.0),
             elevation: 4,
             shape: RoundedRectangleBorder(
