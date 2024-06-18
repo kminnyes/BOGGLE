@@ -21,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _points = 0;
   int _rank = 0;
   String? _location; // 초기값을 null로 설정
-  double _waterQuality = 2.0; // 수질 ppm 값
+  double _waterQuality = 1.1; // 수질 ppm 값
   late String _userId = widget.userId; // userId 할당
 
   @override
