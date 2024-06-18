@@ -21,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _points = 0;
   int _rank = 0;
   String? _location; // 초기값을 null로 설정
-  double _waterQuality = 1.1; // 수질 ppm 값
+  double _waterQuality = 2.0; // 수질 ppm 값
   late String _userId = widget.userId; // userId 할당
 
   @override
@@ -269,11 +269,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Text('0'),
                         Text('1'),
                         Text('2'),
                         Text('3'),
+                        Text('4'),
                         Text('5'),
+                        Text('6'),
+                        Text('7'),
                         Text('8'),
+                        Text('9'),
                         Text('10'),
                       ],
                     ),
@@ -486,40 +491,30 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           SizedBox(height: 10),
           _buildWaterQualityRow(Icons.water_drop, Colors.blue, '매우 좋음',
-              '간단한 정수 후 마실 수 있음', 1.0, 2.0),
+              '간단한 정수 후 마실 수 있음', 0.0, 1.0),
           SizedBox(height: 10),
           _buildWaterQualityRow(Icons.water_drop, Colors.lightBlue, '좋음',
+              '일반 정수 처리 후 마실 수 있음', 1.0, 2.0),
+          SizedBox(height: 10),
+          _buildWaterQualityRow(Icons.water_drop, Colors.green, '약간 좋음',
               '일반 정수 처리 후 마실 수 있음', 2.0, 3.0),
           SizedBox(height: 10),
-          _buildWaterQualityRow(
-              Icons.water_drop,
-              Color.fromARGB(255, 34, 192, 81),
-              '약간 좋음',
-              '일반 정수 처리 후 마실 수 있음',
-              3.0,
-              5.0),
+          _buildWaterQualityRow(Icons.water_drop, Colors.blueGrey, '보통',
+              '일반 정수 후 공업용수로 사용 가능', 3.0, 6.0),
           SizedBox(height: 10),
           _buildWaterQualityRow(
               Icons.water_drop,
-              Color.fromARGB(255, 148, 147, 147),
-              '보통',
-              '일반 정수 후 공업용수로 사용 가능',
-              5.0,
-              8.0),
-          SizedBox(height: 10),
-          _buildWaterQualityRow(
-              Icons.water_drop,
-              Color.fromARGB(255, 125, 115, 28),
+              const Color.fromARGB(255, 172, 155, 1),
               '약간 나쁨',
               '농업용수로 사용 가능',
-              8.0,
-              10.0),
+              6.0,
+              8.0),
           SizedBox(height: 10),
           _buildWaterQualityRow(Icons.water_drop, Colors.orange, '나쁨',
               '특수처리 후 공업용수로 사용 가능', 8.0, 10.0),
           SizedBox(height: 10),
           _buildWaterQualityRow(
-              Icons.water_drop, Colors.red, '매우 나쁨', '이용 불가능', 8.0, 10.0),
+              Icons.water_drop, Colors.red, '매우 나쁨', '이용 불가능', 10.0, 100),
         ],
       ),
     );
@@ -551,30 +546,32 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Color _getColorForIndex(int index) {
-    if (index < 2) return Colors.blue;
-    if (index < 3) return Colors.lightBlue;
-    if (index < 5) return Colors.green;
-    if (index < 8) return Colors.orange;
+    if (index < 1) return Colors.blue;
+    if (index < 2) return Colors.lightBlue;
+    if (index < 3) return Colors.green;
+    if (index < 5) return Colors.blueGrey;
+    if (index < 7) return Colors.yellow;
+    if (index < 9) return Colors.orange;
     return Colors.red;
   }
 
   Color _getColorForArrow() {
     double ppm = _waterQuality;
-    if (ppm <= 2) return Colors.blue;
-    if (ppm <= 3) return Colors.lightBlue;
-    if (ppm <= 5) return Colors.green;
-    if (ppm <= 8) return Colors.orange;
+    if (ppm < 2) return Colors.blue;
+    if (ppm < 3) return Colors.lightBlue;
+    if (ppm < 4) return Colors.green;
+    if (ppm < 7) return Colors.blueGrey;
+    if (ppm < 9) return Colors.yellow;
+    if (ppm < 11) return Colors.orange;
     return Colors.red;
   }
 
   double _getArrowPosition() {
     double ppm = _waterQuality;
-    double maxPosition = 160.0;
-    if (ppm <= 1) return 0.0;
-    if (ppm <= 2) return 16.0;
-    if (ppm <= 3) return 32.0;
-    if (ppm <= 5) return 64.0;
-    if (ppm <= 8) return 128.0;
+    double maxPosition = 365;
+    if (ppm < 3) return 37 * ppm - 9;
+    if (ppm < 4) return 36.5 * ppm - 6;
+    if (ppm < 11) return 36 * ppm - 5;
     return maxPosition;
   }
 }
