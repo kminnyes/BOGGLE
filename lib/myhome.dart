@@ -557,12 +557,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Color _getColorForArrow() {
     double ppm = _waterQuality;
-    if (ppm < 2) return Colors.blue;
-    if (ppm < 3) return Colors.lightBlue;
-    if (ppm < 4) return Colors.green;
-    if (ppm < 7) return Colors.blueGrey;
-    if (ppm < 9) return Colors.yellow;
-    if (ppm < 11) return Colors.orange;
+    if (ppm < 1) return Colors.blue;
+    if (ppm < 2) return Colors.lightBlue;
+    if (ppm < 3) return Colors.green;
+    if (ppm < 5) return Colors.blueGrey;
+    if (ppm < 7) return Colors.yellow;
+    if (ppm < 9) return Colors.orange;
     return Colors.red;
   }
 
