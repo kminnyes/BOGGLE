@@ -63,12 +63,10 @@ class _DoListState extends State<DoList> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
-          title: const Text(
-            'BOGGLE',
-            style: TextStyle(
-                fontSize: 27,
-                fontWeight: FontWeight.normal,
-                color: Color.fromARGB(255, 196, 42, 250)),
+          title: Image.asset(
+            'image/boggleimg.png',
+            height: 28, // 이미지 높이 설정
+            fit: BoxFit.cover, // 이미지 fit 설정
           ),
           centerTitle: false,
         ),
@@ -85,7 +83,8 @@ class _DoListState extends State<DoList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CleanserCertificationList(userId: widget.userId), // 수정된 부분
+                          builder: (context) => CleanserCertificationList(
+                              userId: widget.userId), // 수정된 부분
                         ),
                       );
                     },
@@ -128,7 +127,8 @@ class _DoListState extends State<DoList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Sewer(title: '하수구 신고', userId: widget.userId),
+                          builder: (context) =>
+                              Sewer(title: '하수구 신고', userId: widget.userId),
                         ),
                       );
                     },
@@ -223,9 +223,12 @@ class _DoListState extends State<DoList> {
           unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(label: '실천', icon: Icon(Icons.volunteer_activism)),
-            BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
-            BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.account_circle)),
+            BottomNavigationBarItem(
+                label: '실천', icon: Icon(Icons.volunteer_activism)),
+            BottomNavigationBarItem(
+                label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+            BottomNavigationBarItem(
+                label: 'MY', icon: Icon(Icons.account_circle)),
           ],
         ),
       ),

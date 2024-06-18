@@ -7,7 +7,6 @@ import 'package:boggle/communityInfo.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 
-
 class Community extends StatefulWidget {
   final String userId;
 
@@ -88,13 +87,10 @@ class _CommunityState extends State<Community> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: Text(
-          'BOGGLE',
-          style: GoogleFonts.londrinaSolid(
-            fontSize: 27,
-            fontWeight: FontWeight.normal,
-            color: const Color.fromARGB(255, 196, 42, 250),
-          ),
+        title: Image.asset(
+          'image/boggleimg.png',
+          height: 28, // 이미지 높이 설정
+          fit: BoxFit.cover, // 이미지 fit 설정
         ),
         centerTitle: false,
       ),
@@ -130,7 +126,8 @@ class _CommunityState extends State<Community> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CommunityPostScreen(post: posts[index]),
+                        builder: (context) =>
+                            CommunityPostScreen(post: posts[index]),
                       ),
                     );
                   },
@@ -185,7 +182,8 @@ class _CommunityState extends State<Community> {
             ],
           ),
           const SizedBox(height: 8.0),
-          Text(post.postTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(post.postTitle,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 4.0),
           Text(post.postContent),
           Row(
@@ -197,7 +195,8 @@ class _CommunityState extends State<Community> {
                   // Handle like action
                 },
               ),
-              Text('${post.likeCount}'), // Static example, replace with dynamic data
+              Text(
+                  '${post.likeCount}'), // Static example, replace with dynamic data
               const SizedBox(width: 16.0),
               IconButton(
                 icon: const Icon(Icons.comment),
@@ -206,7 +205,8 @@ class _CommunityState extends State<Community> {
                   // Handle comment action
                 },
               ),
-              Text('${post.commentCount}'), // Static example, replace with dynamic data
+              Text(
+                  '${post.commentCount}'), // Static example, replace with dynamic data
             ],
           ),
           const Divider(color: Colors.grey),
@@ -274,7 +274,8 @@ class _CommunityPostScreenState extends State<CommunityPostScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(''), // AppBar의 텍스트를 삭제합니다.
-        iconTheme: const IconThemeData(color: Color.fromARGB(255, 196, 42, 250)),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 196, 42, 250)),
       ),
       body: Container(
         color: Colors.white, // 배경색을 흰색으로 설정합니다.
@@ -295,8 +296,8 @@ class _CommunityPostScreenState extends State<CommunityPostScreen> {
             ),
             const SizedBox(height: 16.0),
             Text(widget.post.postTitle,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 24)),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
             Padding(padding: const EdgeInsets.all(15.0)),
             Text(widget.post.postContent, style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 8.0),
@@ -347,7 +348,8 @@ class _CommunityPostScreenState extends State<CommunityPostScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.send, color: Color.fromARGB(255, 196, 42, 250)),
+                    icon: const Icon(Icons.send,
+                        color: Color.fromARGB(255, 196, 42, 250)),
                     onPressed: _addComment,
                   ),
                 ],

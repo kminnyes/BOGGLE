@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _fetchUserInfo() async {
     final response =
-    await http.get(Uri.parse('http://10.0.2.2:8000/user_info/$_userId'));
+        await http.get(Uri.parse('http://10.0.2.2:8000/user_info/$_userId'));
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
       setState(() {
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _fetchWaterQuality() async {
     final response =
-    await http.get(Uri.parse('http://10.0.2.2:8000/get_water_quality/'));
+        await http.get(Uri.parse('http://10.0.2.2:8000/get_water_quality/'));
 
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8 디코딩
@@ -110,7 +110,11 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.white,
           title: Row(
             children: [
-              Text('BOGGLE', style: titleStyle),
+              Image.asset(
+                'image/boggleimg.png',
+                height: 28, // 이미지 높이 설정
+                fit: BoxFit.cover, // 이미지 fit 설정
+              ),
             ],
           ),
           centerTitle: false,
@@ -177,40 +181,56 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 200,
             child: Stack(
               children: [
-                Image.asset(
-                  'image/background.png',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-                if (_points > 25)
+                if (_points <= 10)
                   Image.asset(
-                    'image/bubble.png',
-                    fit: BoxFit.cover,
+                    'image/Poor.png',
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    height: double.infinity,
+                  )
+                else if (_points > 10 && _points <= 25)
+                  Image.asset(
+                    'image/FishBowl.png',
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    height: double.infinity,
+                  )
+                else ...[
+                  Image.asset(
+                    'image/background.png',
+                    fit: BoxFit.contain,
                     width: double.infinity,
                     height: double.infinity,
                   ),
-                if (_points > 50)
-                  Image.asset(
-                    'image/fish_far.png',
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                if (_points > 75)
-                  Image.asset(
-                    'image/weeds.png',
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                if (_points > 100)
-                  Image.asset(
-                    'image/fishes.png',
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
+                  if (_points > 25)
+                    Image.asset(
+                      'image/bubble.png',
+                      fit: BoxFit.contain,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  if (_points > 50)
+                    Image.asset(
+                      'image/fish_far.png',
+                      fit: BoxFit.contain,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  if (_points > 75)
+                    Image.asset(
+                      'image/weeds.png',
+                      fit: BoxFit.contain,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  if (_points > 100)
+                    Image.asset(
+                      'image/fishes.png',
+                      fit: BoxFit.contain,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                ],
               ],
             ),
           ),
@@ -312,7 +332,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: <TextSpan>[
                         TextSpan(
                           text: _nickname,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
                         ),
                         TextSpan(
                           text: ' 님의 포인트',
@@ -376,15 +397,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         Center(
                             child: Container(
-                              width: 200,
-                              height: 200,
-                              child: CircularProgressIndicator(
-                                value: 0.7,
-                                strokeWidth: 40, // 원의 두께를 더 두껍게 설정
-                                color: Color.fromARGB(255, 196, 42, 250),
-                                backgroundColor: Colors.grey[200],
-                              ),
-                            )),
+                          width: 200,
+                          height: 200,
+                          child: CircularProgressIndicator(
+                            value: 0.7,
+                            strokeWidth: 40, // 원의 두께를 더 두껍게 설정
+                            color: Color.fromARGB(255, 196, 42, 250),
+                            backgroundColor: Colors.grey[200],
+                          ),
+                        )),
                         Center(
                           child: Text(
                             '상위 70%',

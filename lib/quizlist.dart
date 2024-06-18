@@ -53,12 +53,10 @@ class _QuizlistState extends State<Quizlist> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: Text(
-          'BOGGLE',
-          style: GoogleFonts.londrinaSolid(
-              fontSize: 27,
-              fontWeight: FontWeight.normal,
-              color: Color.fromARGB(255, 196, 42, 250)),
+        title: Image.asset(
+          'image/boggleimg.png',
+          height: 28, // 이미지 높이 설정
+          fit: BoxFit.cover, // 이미지 fit 설정
         ),
         centerTitle: false,
       ),
@@ -68,10 +66,13 @@ class _QuizlistState extends State<Quizlist> {
           children: <Widget>[
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 235, 181, 253), // Button color
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor:
+                    const Color.fromARGB(255, 235, 181, 253), // Button color
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 minimumSize: const Size(200, 60),
-                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -90,10 +91,13 @@ class _QuizlistState extends State<Quizlist> {
             const SizedBox(height: 20), // Add space between buttons
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 235, 181, 253), // Button color
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor:
+                    const Color.fromARGB(255, 235, 181, 253), // Button color
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 minimumSize: const Size(200, 60), // Button size
-                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -124,9 +128,12 @@ class _QuizlistState extends State<Quizlist> {
         unselectedItemColor: const Color.fromARGB(255, 235, 181, 253),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: '홈', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: '실천', icon: Icon(Icons.volunteer_activism)),
-          BottomNavigationBarItem(label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
-          BottomNavigationBarItem(label: 'MY', icon: Icon(Icons.account_circle)),
+          BottomNavigationBarItem(
+              label: '실천', icon: Icon(Icons.volunteer_activism)),
+          BottomNavigationBarItem(
+              label: '커뮤니티', icon: Icon(Icons.mark_chat_unread)),
+          BottomNavigationBarItem(
+              label: 'MY', icon: Icon(Icons.account_circle)),
         ],
       ),
     );

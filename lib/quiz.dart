@@ -153,14 +153,10 @@ class _QuizState extends State<Quiz> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: Text(
-          ' BOGGLE',
-          style: GoogleFonts.londrinaSolid(
-            fontSize: 27,
-            fontWeight: FontWeight.normal,
-               backgroundColor: Colors.white,
-            color: const Color.fromARGB(255, 196, 42, 250),
-          ),
+        title: Image.asset(
+          'image/boggleimg.png',
+          height: 28, // 이미지 높이 설정
+          fit: BoxFit.cover, // 이미지 fit 설정
         ),
         centerTitle: false,
       ),
@@ -191,8 +187,7 @@ class _QuizState extends State<Quiz> {
   Widget _buildQuizPage() {
     return Scaffold(
       backgroundColor: Colors.white,
-     
-       appBar: PreferredSize(
+      appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Padding(
           padding: const EdgeInsets.all(10.10),
@@ -204,7 +199,6 @@ class _QuizState extends State<Quiz> {
           ),
         ),
       ),
-      
       body: _quizData.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : ListView(
@@ -229,7 +223,8 @@ class _QuizState extends State<Quiz> {
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 24),
-                        backgroundColor: const Color.fromARGB(255, 196, 42, 250),
+                        backgroundColor:
+                            const Color.fromARGB(255, 196, 42, 250),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -264,7 +259,6 @@ class _QuizState extends State<Quiz> {
       choiceButtons.add(
         RadioListTile<String>(
           title: Text(choice),
-          
           value: choice,
           groupValue: _selectedAnswer,
           onChanged: (String? value) {
@@ -278,70 +272,70 @@ class _QuizState extends State<Quiz> {
     return choiceButtons;
   }
 
-Widget _buildScorePage() {
-  int pointsEarned = _correctAnswers * 3;
+  Widget _buildScorePage() {
+    int pointsEarned = _correctAnswers * 3;
 
-  return Scaffold(
-    
-    backgroundColor: Colors.white,
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.check_circle_outline,
-            size: 80,
-            color: Color.fromARGB(255, 196, 42, 250),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            '퀴즈 완료!',
-            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            '$_correctAnswers / ${_quizData.length} 정답',
-            style: const TextStyle(fontSize: 20.0),
-          ),
-          const SizedBox(height: 30),
-          Text(
-            '$pointsEarned 포인트 획득',
-            style: const TextStyle(
-                fontSize: 20.0, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CorrectAnswersPage(quizData: _quizData),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.check_circle_outline,
+              size: 80,
+              color: Color.fromARGB(255, 196, 42, 250),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              '퀴즈 완료!',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              '$_correctAnswers / ${_quizData.length} 정답',
+              style: const TextStyle(fontSize: 20.0),
+            ),
+            const SizedBox(height: 30),
+            Text(
+              '$pointsEarned 포인트 획득',
+              style:
+                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        CorrectAnswersPage(quizData: _quizData),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Text(
+                '정답 확인하기',
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
-            child: const Text(
-              '정답 확인하기',
-              style: TextStyle(fontSize: 18, color: Colors.white),
+            const SizedBox(height: 20), // Added to separate elements
+            Text(
+              '포인트: $_userPoints',
+              style:
+                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
-          ),
-          const SizedBox(height: 20), // Added to separate elements
-          Text(
-            '포인트: $_userPoints',
-            style: const TextStyle(
-                fontSize: 20.0, fontWeight: FontWeight.bold),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 }
 
 class CorrectAnswersPage extends StatelessWidget {
@@ -355,14 +349,10 @@ class CorrectAnswersPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
-          ' BOGGLE',
-          style: GoogleFonts.londrinaSolid(
-            fontSize: 27,
-               backgroundColor: Colors.white,
-            fontWeight: FontWeight.normal,
-            color: const Color.fromARGB(255, 196, 42, 250),
-          ),
+        title: Image.asset(
+          'image/boggleimg.png',
+          height: 28, // 이미지 높이 설정
+          fit: BoxFit.cover, // 이미지 fit 설정
         ),
       ),
       body: ListView.builder(
