@@ -32,10 +32,7 @@ class CleanserCertificationList extends StatefulWidget {
 }
 
 class _CleanserCertificationListState extends State<CleanserCertificationList> {
-  List<Certification> certificationData = [
-    Certification('살림인 100% 친환경 세제', '인증완료', '2024-05-01', File('image/sallimin.jpg')),
-    Certification('슈가버블 친환경 세제', '인증완료', '2024-02-15', File('image/sugarbubble.jpg'))
-  ];
+  List<Certification> certificationData = [];
 
   @override
   void initState() {
