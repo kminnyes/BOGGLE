@@ -1,10 +1,8 @@
-import 'package:boggle/community_post.dart';
 import 'package:flutter/material.dart';
 import 'package:boggle/do_list.dart';
 import 'package:boggle/myhome.dart';
 import 'package:boggle/mypage.dart';
 import 'package:boggle/communityInfo.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
@@ -271,7 +269,7 @@ class _CommunityPostScreenState extends State<CommunityPostScreen> {
   @override
   void dispose() {
     _commentController.dispose();
-    Navigator.pop(context, widget.post); // 변경된 post 객체를 상위 페이지로 전달합니다.
+    Navigator.pop(context, widget.post); // 변경된 post 객체를 상위 페이지로 전달
     super.dispose();
   }
 
@@ -280,12 +278,12 @@ class _CommunityPostScreenState extends State<CommunityPostScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(''), // AppBar의 텍스트를 삭제합니다.
+        title: const Text(''), // AppBar의 텍스트를 삭제
         iconTheme:
         const IconThemeData(color: Color.fromARGB(255, 196, 42, 250)),
       ),
       body: Container(
-        color: Colors.white, // 배경색을 흰색으로 설정합니다.
+        color: Colors.white, // 배경색을 흰색으로 설정
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,7 +339,7 @@ class _CommunityPostScreenState extends State<CommunityPostScreen> {
                 },
               ),
             ),
-            const Divider(color: Colors.grey), // 글과 댓글 사이에 경계를 추가합니다.
+            const Divider(color: Colors.grey), // 글과 댓글 사이에 경계를 추가
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
@@ -421,7 +419,7 @@ class _CommunityPostPageState extends State<CommunityPostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // 배경색을 흰색으로 설정합니다.
+      backgroundColor: Colors.white, // 배경색 흰색으로 설정
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
