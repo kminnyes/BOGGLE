@@ -1,7 +1,8 @@
 ## BOGGLE
 + 실천형 수질 관리 애플리케이션 (➡️Name 'BOGGLE' is the onomatopoeia that explan bubble's shape in Korean.)
 + 2024.03.02 ~ 2024.06.20
-
++ 김민, 구경선, 예경민, 윤별
+  
 ## 사용 기술 및 환경
 + PYTHON
 + Django
