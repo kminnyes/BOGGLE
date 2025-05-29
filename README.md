@@ -67,22 +67,26 @@ you can certify your detergent and sewer to get points!
 
 #### 💻메인화면
 <p float ="left">
-  <img src="https://github.com/kminnyes/BOGGLE/assets/129060022/5bb6a2fa-d74b-473d-9615-3b095bc7068c.png" width="180" height="340"/>
-  <img src="https://github.com/kminnyes/BOGGLE/assets/129060022/595bae09-1d69-43d7-81e1-db09b7987e9b.png" width="180" height="340"/>
+  <img src="https://github.com/kminnyes/BOGGLE/blob/main/readme_upload_image/%EC%88%98%EC%A0%95%ED%9B%84%20%EB%A9%94%EC%9D%B8%ED%99%94%EB%A9%B41%20(1).png" width="180" height="340"/>
+  <img src="https://github.com/kminnyes/BOGGLE/blob/main/readme_upload_image/%EC%88%98%EC%A0%95%ED%9B%84%20%EB%A9%94%EC%9D%B8%ED%99%94%EB%A9%B41%20(2).png" width="180" height="340"/>
 </p>
 
 <br/><br/>
 #### 🏃🏽‍♂️‍➡️실천하기(세제인증, 빗물받이 신고, 수질 관련 퀴즈)
 * 세제인증
 <p float ="left">
-  <img src="https://github.com/kminnyes/BOGGLE/assets/129060022/a6ca434e-2388-481a-8a63-056584db72ab.png" width="170" height="340"/>
-  <img src="https://github.com/kminnyes/BOGGLE/assets/129060022/9e225aa8-7db8-4ea9-a3b0-179b58995262.png" width="170" height="340"/>
+  <img src="https://github.com/kminnyes/BOGGLE/blob/main/readme_upload_image/%EC%88%98%EC%A0%95%ED%9B%84%20%EC%84%B8%EC%A0%9C%EC%9D%B8%EC%A6%9D1.png" width="170" height="340"/>
+  <img src="https://github.com/kminnyes/BOGGLE/blob/main/readme_upload_image/%EC%88%98%EC%A0%95%ED%9B%84%20%EC%84%B8%EC%A0%9C%EC%9D%B8%EC%A6%9D2.png" width="170" height="340"/>
+  <img src="https://github.com/kminnyes/BOGGLE/blob/main/readme_upload_image/%EC%88%98%EC%A0%95%ED%9B%84%20%EC%84%B8%EC%A0%9C%EC%9D%B8%EC%A6%9D3.png" width="170" height="340"/>
 </p>
+
+###### YOLOv5 학습(performance: mAP@0.5: 0.81 on validation set (20 images))
+<br/>
 
 * 빗물받이 신고, 수질 관련 퀴즈
 <p float ="left">
   <img src="https://github.com/kminnyes/BOGGLE/assets/129060022/b21f593d-b9d7-4e62-8351-c2965e5ec4f3.png" width="170" height="340"/>
-  <img src="https://github.com/kminnyes/BOGGLE/assets/129060022/047bfaf4-9bab-442a-a091-a042cde7ea6c.png" width="170" height="340"/>
+  <img src="https://github.com/kminnyes/BOGGLE/blob/main/readme_upload_image/%EC%88%98%EC%A0%95%ED%9B%84%20%ED%80%B4%EC%A6%88.png" width="180" height="320"/>
 </p>
 
 
